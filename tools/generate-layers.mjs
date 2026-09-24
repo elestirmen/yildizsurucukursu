@@ -58,6 +58,7 @@ function chimney(x, baseY, h, w, o) {
   if (o.windows) {
     for (const [dx, dy, ww, wh] of o.windows) {
       s += `<rect x="${f(x + dx * w - ww / 2)}" y="${f(baseY - dy * h)}" width="${f(ww)}" height="${f(wh)}" rx="${f(ww / 2)}" fill="${o.win}"/>`;
+      if (o.lights) o.lights.push([x + dx * w - ww / 2, baseY - dy * h, ww, wh]);
     }
   }
   return s;
@@ -69,6 +70,19 @@ function poplar(x, baseY, h, w, c) {
     `<ellipse cx="${f(x)}" cy="${f(baseY - h * 0.56)}" rx="${f(w / 2)}" ry="${f(h * 0.46)}" fill="${c.leaf}"/>` +
     `<path d="M${f(x + 1)} ${f(baseY - h * 1.0)} C${f(x + w * 0.62)} ${f(baseY - h * 0.8)} ${f(x + w * 0.55)} ${f(baseY - h * 0.3)} ${f(x + 1)} ${f(baseY - h * 0.12)} Z" fill="${c.hi}"/>`
   );
+}
+
+// Gece: pencerelerin bir kısmı sıcak ışıkla yanar (ayrı RNG => gündüz katmanı değişmez)
+function lightsSvg(H, wins, seed, extra = '') {
+  const r = rng(seed);
+  let glow = '', core = '';
+  for (const [x, y, w, h] of wins) {
+    if (r() > 0.78) continue;
+    glow += `<rect x="${f(x - w * 0.9)}" y="${f(y - h * 0.6)}" width="${f(w * 2.8)}" height="${f(h * 2.2)}" rx="${f(w)}"/>`;
+    core += `<rect x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}" rx="${f(w / 2)}"/>`;
+  }
+  return svg(H, `<defs><filter id="g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs>` +
+    `<g fill="#ffb347" opacity=".55" filter="url(#g)">${glow}</g><g fill="#ffe29a">${core}</g>${extra}`);
 }
 
 function svg(H, body) {
@@ -96,6 +110,13 @@ function svg(H, body) {
     b += `<path d="M${f(x - w / 2)} ${f(y)} Q${f(x)} ${f(y - h * 2)} ${f(x + w / 2)} ${f(y)} Z" fill="#8a5d7f"/>`;
   }
   writeFileSync(join(OUT, 'layer-far.svg'), svg(H, b));
+  const rl = rng(71);
+  let town = '';
+  for (let i = 0; i < 46; i++) {
+    const x = 20 + rl() * (W - 40), y = hill(x) + 6 + rl() * 26, s = 0.9 + rl() * 1.4;
+    town += `<circle cx="${f(x)}" cy="${f(y)}" r="${f(s)}"/>`;
+  }
+  writeFileSync(join(OUT, 'layer-far-lights.svg'), svg(H, `<g fill="#ffd27a" opacity=".85">${town}</g>`));
 }
 
 // ---------- ORTA KATMAN: peri bacası kümeleri (Üç Güzeller dahil) ----------
@@ -105,6 +126,7 @@ function svg(H, body) {
   const g = ridge(226, [[10, 2, 1.0], [6, 5, 2.1], [3, 11, 0.2]]);
   const pal = { body: '#d8946f', shade: '#b97252', cap: '#6f4234', capHi: '#9a624e', win: '#6a3a2b' };
   let b = `<path d="${groundPath(g, H)}" fill="#c9825f"/>`;
+  const lights = [];
   const items = [];
   // Üç Güzeller: şapkalı üçlü
   items.push([380, 170, 54, true], [436, 132, 46, true], [482, 104, 40, true]);
@@ -124,9 +146,10 @@ function svg(H, body) {
     const win = h > 110 && r() > 0.3
       ? [[0.08, 0.5, 5, 8], [-0.12, 0.34, 4, 7], [0.14, 0.28, 4, 6]].slice(0, 1 + Math.floor(r() * 3))
       : null;
-    b += chimney(x, g(x), h, w, { ...pal, cap: cap ? pal.cap : null, windows: win });
+    b += chimney(x, g(x), h, w, { ...pal, cap: cap ? pal.cap : null, windows: win, lights });
   }
   writeFileSync(join(OUT, 'layer-mid.svg'), svg(H, b));
+  writeFileSync(join(OUT, 'layer-mid-lights.svg'), lightsSvg(H, lights, 303));
 }
 
 // ---------- YAKIN KATMAN: büyük bacalar, kavaklar, tabelalar ----------
@@ -138,6 +161,7 @@ function svg(H, body) {
   const tree = { leaf: '#4a6838', hi: '#5f8248', trunk: '#3b2a20' };
   let b = `<path d="${groundPath(g, H)}" fill="#9a5a40"/>`;
   b += `<path d="${groundPath((x) => g(x) + 22, H)}" fill="#8a4f38"/>`;
+  const lights = [];
   const big = [[90, 140, 78, true], [300, 170, 96, false], [372, 126, 70, true], [760, 158, 88, true], [1120, 172, 100, false], [1190, 132, 72, true], [1460, 150, 84, true]];
   const trees = [[520, 6], [930, 4], [1300, 5]];
   for (const [tx, n] of trees) {
@@ -149,7 +173,7 @@ function svg(H, body) {
   }
   for (const [x, h, w, cap] of big) {
     const win = [[0.06, 0.52, 7, 11], [-0.14, 0.36, 6, 9], [0.16, 0.3, 5, 8]].slice(0, 1 + Math.floor(r() * 3));
-    b += chimney(x, g(x) + 6, h, w, { ...pal, cap: cap ? pal.cap : null, windows: win });
+    b += chimney(x, g(x) + 6, h, w, { ...pal, cap: cap ? pal.cap : null, windows: win, lights });
   }
   // Çalılar
   for (let i = 0; i < 26; i++) {
@@ -168,5 +192,6 @@ function svg(H, body) {
   b += sign(640, 92, '#1f5fb8', 'ÜRGÜP', 14);
   b += sign(1560 - 560, 118, '#7b4a2a', 'ÜÇ GÜZELLER', 12);
   writeFileSync(join(OUT, 'layer-near.svg'), svg(H, b));
+  writeFileSync(join(OUT, 'layer-near-lights.svg'), lightsSvg(H, lights, 404));
 }
 console.log('ok');

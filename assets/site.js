@@ -35,6 +35,41 @@
   }, { rootMargin: '-45% 0px -50% 0px' });
   navLinks.forEach((l) => { const t = $(l.getAttribute('href')); if (t) spy.observe(t); });
 
+  /* ---------------- Tema: aydınlık / karanlık ---------------- */
+  const root = document.documentElement;
+  const themeBtn = $('.theme-toggle');
+  const metaTheme = $('meta[name="theme-color"]');
+  const THEME_KEY = 'yildiz-tema';
+  const paintThemeUI = () => {
+    const dark = root.dataset.theme === 'dark';
+    themeBtn.setAttribute('aria-pressed', String(dark));
+    themeBtn.setAttribute('aria-label', dark ? 'Aydınlık temaya geç' : 'Karanlık temaya geç');
+    if (metaTheme) metaTheme.setAttribute('content', dark ? '#0e1016' : '#fbf7f1');
+  };
+  const applyTheme = (t, persist) => {
+    root.dataset.theme = t;
+    if (persist) { try { localStorage.setItem(THEME_KEY, t); } catch (e) { /* depolama kapalı olabilir */ } }
+    paintThemeUI();
+    document.dispatchEvent(new CustomEvent('themechange', { detail: t }));
+  };
+  paintThemeUI();
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('no-anim')));
+  themeBtn.addEventListener('click', (e) => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    const r = themeBtn.getBoundingClientRect();
+    root.style.setProperty('--tx', `${Math.round(r.left + r.width / 2)}px`);
+    root.style.setProperty('--ty', `${Math.round(r.top + r.height / 2)}px`);
+    if (document.startViewTransition && !reduced) document.startViewTransition(() => applyTheme(next, true));
+    else applyTheme(next, true);
+  });
+  try {
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      let saved = null;
+      try { saved = localStorage.getItem(THEME_KEY); } catch (err) { /* yok say */ }
+      if (!saved) applyTheme(e.matches ? 'dark' : 'light', false);
+    });
+  } catch (e) { /* eski tarayıcı */ }
+
   /* ---------------- Açık / kapalı durumu (İstanbul saati) ---------------- */
   const OPEN = 8 * 60 + 30, CLOSE = 17 * 60 + 30;
   function istanbulNow() {
@@ -128,6 +163,7 @@
   function buildGauge(el) {
     const v = parseFloat(el.dataset.value), max = parseFloat(el.dataset.max);
     const ticks = parseInt(el.dataset.ticks, 10), dec = parseInt(el.dataset.decimals, 10) || 0;
+    const zone = el.dataset.zone ? parseFloat(el.dataset.zone) : null;
     const cx = 100, cy = 100, r = 80, id = 'gg' + (++gid);
     const [sx, sy] = polar(cx, cy, r, 210), [ex, ey] = polar(cx, cy, r, -30);
     const arc = `M${sx.toFixed(2)} ${sy.toFixed(2)} A${r} ${r} 0 1 1 ${ex.toFixed(2)} ${ey.toFixed(2)}`;
@@ -147,9 +183,14 @@
       `<svg viewBox="0 0 200 168" role="img" aria-label="${trNum(v, dec)} / ${max}">` +
       `<defs><linearGradient id="${id}" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffc83d"/><stop offset="1" stop-color="#ff4a3d"/></linearGradient></defs>` +
       `<path class="g-track" d="${arc}"/>` +
+      (zone != null ? (() => {
+        const zr = r - 7, z0 = 210 - 240 * (zone / max);
+        const [zx, zy] = polar(cx, cy, zr, z0), [zx2, zy2] = polar(cx, cy, zr, -30);
+        return `<path class="g-zone" d="M${zx.toFixed(2)} ${zy.toFixed(2)} A${zr} ${zr} 0 0 1 ${zx2.toFixed(2)} ${zy2.toFixed(2)}"/>`;
+      })() : '') +
       `<path class="g-val" d="${arc}" stroke="url(#${id})" style="stroke-dasharray:${len.toFixed(1)};stroke-dashoffset:${len.toFixed(1)}"/>` +
       marks +
-      `<g class="g-needle"><path d="M100 34 104.5 100h-9z" fill="#ff4a3d"/><circle cx="100" cy="100" r="9" fill="#e9ecef"/><circle cx="100" cy="100" r="3.5" fill="#16171b"/></g>` +
+      `<g class="g-needle"><path d="M100 34 104.5 100h-9z" fill="#ff4a3d"/><circle class="g-hub" cx="100" cy="100" r="9"/><circle cx="100" cy="100" r="3.5" fill="#ff4a3d"/></g>` +
       `<text class="g-value" x="100" y="160">${trNum(0, dec)}</text></svg>`;
     el._run = () => {
       const val = $('.g-val', el), needle = $('.g-needle', el), txt = $('.g-value', el);
@@ -303,6 +344,7 @@
     else { confRAF = 0; ctx.clearRect(0, 0, innerWidth, innerHeight); }
   }
   const burstFrom = (el) => { const r = el.getBoundingClientRect(); confetti(r.left + r.width / 2, r.top + r.height / 2); };
+  window.YildizFX = { confetti, burstFrom, focusForm: (c) => focusForm(c) };
 
   /* ---------------- Süreç: kaydırmayla ilerleyen araç ---------------- */
   const J = $('#journey');
@@ -415,133 +457,6 @@
     c.addEventListener('change', () => { saved[c.dataset.doc] = c.checked; store.set(KEY, saved); paintDocs(true); });
   });
   paintDocs(false);
-
-  /* ---------------- Deneme sınavı ---------------- */
-  const octagon = (R) => Array.from({ length: 8 }, (_, i) => {
-    const a = ((22.5 + i * 45) * Math.PI) / 180;
-    return `${(50 + R * Math.cos(a)).toFixed(2)},${(50 - R * Math.sin(a)).toFixed(2)}`;
-  }).join(' ');
-  const FONT = 'font-family="Archivo, Arial, sans-serif"';
-  const V = {
-    dur: `<svg viewBox="0 0 100 100"><polygon points="${octagon(49)}" fill="#fff"/><polygon points="${octagon(45)}" fill="#d71920"/><polygon points="${octagon(41.5)}" fill="none" stroke="#fff" stroke-width="1.8"/><text x="50" y="51" ${FONT} font-weight="900" font-size="27" fill="#fff" text-anchor="middle" dominant-baseline="central">DUR</text></svg>`,
-    yolver: `<svg viewBox="0 0 100 100"><polygon points="6,12 94,12 50,90" fill="#d71920" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><polygon points="21.4,21 78.6,21 50,71.7" fill="#fff"/></svg>`,
-    girisyok: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#fff"/><circle cx="50" cy="50" r="45" fill="#d71920"/><rect x="17" y="41.5" width="66" height="17" rx="1.5" fill="#fff"/></svg>`,
-    hiz50: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#fff"/><circle cx="50" cy="50" r="46" fill="#d71920"/><circle cx="50" cy="50" r="35" fill="#fff"/><text x="50" y="52" ${FONT} font-weight="800" font-size="36" fill="#111" text-anchor="middle" dominant-baseline="central">50</text></svg>`,
-    parkyok: `<svg viewBox="0 0 100 100"><defs><clipPath id="pc"><circle cx="50" cy="50" r="44"/></clipPath></defs><circle cx="50" cy="50" r="48" fill="#fff"/><circle cx="50" cy="50" r="46" fill="#d71920"/><circle cx="50" cy="50" r="36" fill="#1e5aa8"/><line x1="18" y1="18" x2="82" y2="82" stroke="#d71920" stroke-width="9" clip-path="url(#pc)"/></svg>`,
-    anayol: `<svg viewBox="0 0 100 100"><rect x="18" y="18" width="64" height="64" rx="3" transform="rotate(45 50 50)" fill="#fff" stroke="#333" stroke-width="1.2"/><rect x="29" y="29" width="42" height="42" transform="rotate(45 50 50)" fill="#f7c600"/></svg>`,
-    sehir: `<svg viewBox="0 0 100 100"><rect x="4" y="18" width="92" height="64" rx="8" fill="#fff" stroke="#111" stroke-width="3"/><rect x="10" y="24" width="80" height="52" rx="4" fill="none" stroke="#111" stroke-width="1.5"/><text x="50" y="51" ${FONT} font-weight="900" font-size="20" fill="#111" text-anchor="middle" dominant-baseline="central">ÜRGÜP</text></svg>`,
-    bolunmus: `<svg viewBox="0 0 100 100"><rect x="2" y="2" width="96" height="96" rx="18" fill="#2a2c32"/><path d="M50 8v84" stroke="#6ba34f" stroke-width="10"/><path d="M26 10v80M74 10v80" stroke="#fff" stroke-width="3" stroke-dasharray="10 9"/><path d="M8 8v84M92 8v84" stroke="#fff" stroke-width="2.5"/></svg>`,
-    ilkyardim: `<svg viewBox="0 0 100 100"><rect x="4" y="4" width="92" height="92" rx="18" fill="#0f8a4a"/><path d="M40 20h20v20h20v20H60v20H40V60H20V40h20z" fill="#fff"/></svg>`,
-    polis: `<svg viewBox="0 0 100 100"><rect x="30" y="4" width="40" height="92" rx="14" fill="#1b1c20"/><circle cx="50" cy="24" r="10" fill="#ff3b30"/><circle cx="50" cy="50" r="10" fill="#3a3c42"/><circle cx="50" cy="76" r="10" fill="#34c759"/><path d="M78 30c8 4 14 10 16 18M78 44c4 2 7 5 8 9" stroke="#ffc83d" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`,
-    abs: `<svg viewBox="0 0 100 100"><rect x="2" y="2" width="96" height="96" rx="22" fill="#16171b"/><circle cx="50" cy="50" r="24" fill="none" stroke="#ffb020" stroke-width="5"/><path d="M20 30a36 36 0 0 0 0 40M80 30a36 36 0 0 1 0 40" stroke="#ffb020" stroke-width="5" fill="none" stroke-linecap="round"/><text x="50" y="51" ${FONT} font-weight="900" font-size="16" fill="#ffb020" text-anchor="middle" dominant-baseline="central">ABS</text></svg>`,
-    yaya: `<svg viewBox="0 0 100 100"><rect x="4" y="4" width="92" height="92" rx="10" fill="#1e5aa8"/><polygon points="50,14 88,82 12,82" fill="#fff"/><circle cx="52" cy="38" r="5" fill="#111"/><path d="M50 45l-6 14 7 4-3 14M50 45l8 9 7 1M44 59l-8 16" stroke="#111" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 78h48" stroke="#111" stroke-width="4" stroke-dasharray="6 4"/></svg>`
-  };
-  const POOL = [
-    { v: 'dur', q: 'Bu trafik işareti sürücüye neyi bildirir?', o: ['Dur: tamamen durmadan geçme', 'Yol ver', 'Park etmek yasaktır', 'Taşıt giremez'], a: 0, e: 'Kırmızı sekizgen DUR levhasında tamamen durulur; yol kontrol edilip geçiş hakkı olanlara yol verildikten sonra geçilir.' },
-    { v: 'yolver', q: 'Kavşağa yaklaşırken bu işaretle karşılaşan sürücü ne yapmalıdır?', o: ['Hızını artırıp önce geçmeli', 'Hızını azaltıp geçiş hakkı olan araçlara yol vermeli', 'Korna çalarak geçmeli', 'Her durumda durup bir dakika beklemeli'], a: 1, e: 'Ters üçgen “Yol ver” işaretidir. Hız azaltılır, gerekirse durulur ve geçiş hakkı olan araçlara yol verilir.' },
-    { v: 'girisyok', q: 'Bu işaret neyi bildirir?', o: ['Tek yönlü yol', 'Girişi olmayan yol', 'Duraklamak yasaktır', 'Ana yol bitti'], a: 1, e: 'Kırmızı daire içindeki beyaz yatay bant “Girişi olmayan yol” anlamına gelir; bu yöne taşıtla girilemez.' },
-    { v: 'hiz50', q: 'Bu işaret neyi bildirir?', o: ['Asgari hız sınırı 50 km/s', 'Azami hız sınırı 50 km/s', '50 metre sonra kavşak', 'Tavsiye edilen hız 50 km/s'], a: 1, e: 'Kırmızı çerçeveli yuvarlak levha azami hızı gösterir. Asgari hız levhaları mavi zeminlidir.' },
-    { v: 'parkyok', q: 'Bu işaret neyi bildirir?', o: ['Duraklamak ve park etmek yasaktır', 'Park etmek yasaktır', 'Girişi olmayan yol', 'Taşıt trafiğine kapalı yol'], a: 1, e: 'Mavi zemin üzerindeki tek çapraz çizgi park yasağını gösterir. Çarpı (X) şeklinde iki çizgi varsa duraklamak da yasaktır.' },
-    { v: 'anayol', q: 'Sarı eşkenar dörtgen şeklindeki bu işaret neyi bildirir?', o: ['Ana yol', 'Ana yol bitti', 'Dikkat, kavşak var', 'Yol çalışması'], a: 0, e: 'Bu levha “Ana yol”u gösterir; kavşaklarda geçiş hakkı sizdedir. Yine de dikkatli olunmalıdır.' },
-    { v: 'sehir', q: 'Yerleşim yeri içinde, aksine bir işaret yoksa otomobiller için azami hız kaç km/s\'tir?', o: ['30', '50', '70', '90'], a: 1, e: 'Yerleşim yeri içinde otomobiller için azami hız 50 km/s\'tir.' },
-    { v: 'bolunmus', q: 'Yerleşim yeri dışındaki bölünmüş yollarda otomobiller için azami hız kaç km/s\'tir?', o: ['90', '100', '110', '130'], a: 2, e: 'Bölünmüş yollarda otomobiller için azami hız 110, otoyollarda 120 km/s\'tir.' },
-    { v: 'ilkyardim', q: 'Yetişkin bir kazazedeye temel yaşam desteği uygulanırken göğüs basısı ve suni solunum hangi oranda yapılır?', o: ['15 : 2', '30 : 2', '5 : 1', '30 : 1'], a: 1, e: 'Yetişkinlerde 30 göğüs basısının ardından 2 suni solunum yapılır.' },
-    { v: 'polis', q: 'Trafik görevlisinin işareti ile trafik ışığı farklı şeyler gösteriyorsa sürücü hangisine uyar?', o: ['Trafik ışığına', 'Trafik görevlisine', 'Trafik levhalarına', 'Kendi değerlendirmesine'], a: 1, e: 'Öncelik sırası: trafik görevlisi, ışıklı işaretler, trafik işaretleri ve son olarak trafik kuralları.' },
-    { v: 'abs', q: 'Göstergede uyarı lambası da bulunan ABS sistemi ne işe yarar?', o: ['Yakıt tüketimini azaltır', 'Ani frenlemede tekerleklerin kilitlenmesini önler', 'Motor hararetini düşürür', 'Lastik basıncını ölçer'], a: 1, e: 'ABS ani frenlemede tekerleklerin kilitlenmesini önler; böylece fren yaparken direksiyon hâkimiyeti korunur.' },
-    { v: 'yaya', q: 'Yaya geçidine yaklaşırken geçitte karşıya geçen bir yaya varsa sürücü ne yapmalıdır?', o: ['Korna çalarak uyarmalı', 'Hızlanıp yayadan önce geçmeli', 'Durup yayaya yol vermeli', 'Selektör yaparak geçmeli'], a: 2, e: 'Yaya geçitlerinde öncelik yayalarındır; sürücü durarak yayaya yol verir.' }
-  ];
-  const quiz = $('#quiz');
-  const screens = $$('.quiz-screen', quiz);
-  const show = (name) => screens.forEach((s) => s.classList.toggle('is-active', s.dataset.screen === name));
-  const qNum = $('#q-num'), qTime = $('#q-time'), qProg = $('#q-prog'), qVis = $('#q-visual'), qText = $('#q-text'), qOpts = $('#q-opts'), qFb = $('#q-feedback'), qNext = $('#q-next');
-  const shuffle = (arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-  const N = 10;
-  let set = [], idx = 0, correct = 0, answered = false, t0 = 0, timer = 0;
-  const mmss = (ms) => { const s = Math.floor(ms / 1000); return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; };
-  const clockIcon = qTime.querySelector('svg').outerHTML;
-
-  function startQuiz() {
-    set = shuffle(POOL).slice(0, N).map((q) => {
-      const order = shuffle(q.o.map((_, i) => i));
-      return { ...q, opts: order.map((i) => q.o[i]), ans: order.indexOf(q.a) };
-    });
-    idx = 0; correct = 0;
-    show('count');
-    const tl = $('.q-count .tl', quiz), txt = $('.count-text', quiz);
-    const seq = [['r', 'Kırmızı…'], ['y', 'Sarı…'], ['g', 'Yeşil, başla!']];
-    const d = reduced ? 150 : 650;
-    seq.forEach(([c, label], i) => setTimeout(() => { tl.className = 'tl tl-big ' + c; txt.textContent = label; }, i * d));
-    setTimeout(() => {
-      show('play'); t0 = Date.now(); clearInterval(timer);
-      timer = setInterval(() => { qTime.innerHTML = clockIcon + mmss(Date.now() - t0); }, 500);
-      renderQ();
-    }, seq.length * d + 150);
-  }
-  function renderQ() {
-    const q = set[idx];
-    answered = false;
-    qNum.textContent = `Soru ${idx + 1}/${N}`;
-    qProg.style.width = `${(idx / N) * 100}%`;
-    qVis.innerHTML = V[q.v] || '';
-    qText.textContent = q.q;
-    qOpts.innerHTML = q.opts.map((o, i) => `<button class="opt" type="button" data-i="${i}"><span class="k">${'ABCD'[i]}</span><span>${o}</span></button>`).join('');
-    qFb.innerHTML = '';
-    qNext.hidden = true;
-    const first = qOpts.querySelector('.opt');
-    if (first && finePointer) first.focus({ preventScroll: true });
-  }
-  function answer(i) {
-    if (answered) return;
-    answered = true;
-    const q = set[idx], btns = $$('.opt', qOpts);
-    btns.forEach((b, j) => {
-      b.disabled = true;
-      if (j === q.ans) b.classList.add('right');
-      else if (j === i) b.classList.add('wrong');
-      else b.classList.add('dim');
-    });
-    const ok = i === q.ans;
-    if (ok) correct++;
-    qFb.innerHTML = `<b class="${ok ? 'ok' : 'no'}">${ok ? 'Doğru!' : 'Yanlış.'}</b> ${q.e}`;
-    qProg.style.width = `${((idx + 1) / N) * 100}%`;
-    qNext.hidden = false;
-    qNext.innerHTML = idx === N - 1 ? 'Sonucu gör <svg class="ic"><use href="#i-flag"/></svg>' : 'Sonraki soru <svg class="ic"><use href="#i-arrow"/></svg>';
-    qNext.focus({ preventScroll: true });
-  }
-  function nextQ() {
-    if (!answered) return;
-    if (idx < N - 1) { idx++; renderQ(); } else finish();
-  }
-  function finish() {
-    clearInterval(timer);
-    const took = mmss(Date.now() - t0), score = correct * 10;
-    show('result');
-    const ring = $('.score-ring', quiz), fg = $('#score-fg');
-    ring.classList.toggle('pass', score >= 70);
-    fg.style.strokeDashoffset = '326.73';
-    requestAnimationFrame(() => requestAnimationFrame(() => { fg.style.strokeDashoffset = (326.73 * (1 - score / 100)).toFixed(2); }));
-    const num = $('#score-num'), tS = performance.now();
-    const count = (t) => { const k = Math.min(1, (t - tS) / 1100); num.textContent = Math.round(score * easeOut(k)); if (k < 1) requestAnimationFrame(count); };
-    requestAnimationFrame(count);
-    let title, text;
-    if (score === 100) { title = 'Kusursuz! 🏁'; text = `${correct}/${N} doğru, süre ${took}. Direksiyon seni bekliyor!`; }
-    else if (score >= 70) { title = 'Tebrikler, geçtin!'; text = `${correct}/${N} doğru, süre ${took}. Gerçek e-Sınav'da da bu tempoyu koru.`; }
-    else if (score >= 40) { title = 'Az kaldı!'; text = `${correct}/${N} doğru, süre ${took}. Geçme puanı 70; eksik konuları derslerimizde birlikte tamamlayalım.`; }
-    else { title = 'Her şey bir yerden başlar.'; text = `${correct}/${N} doğru, süre ${took}. Teorik derslerimizde her konuyu adım adım işliyoruz.`; }
-    $('#score-title').textContent = title;
-    $('#score-text').textContent = text;
-    if (score >= 70) setTimeout(() => burstFrom(ring), 500);
-  }
-  $$('[data-quiz-start]', quiz).forEach((b) => b.addEventListener('click', startQuiz));
-  qOpts.addEventListener('click', (e) => { const b = e.target.closest('.opt'); if (b) answer(Number(b.dataset.i)); });
-  qNext.addEventListener('click', nextQ);
-  quiz.addEventListener('keydown', (e) => {
-    if (!$('.q-play', quiz).classList.contains('is-active')) return;
-    const map = { 1: 0, 2: 1, 3: 2, 4: 3, a: 0, b: 1, c: 2, d: 3 };
-    const k = e.key.toLowerCase();
-    if (!answered && k in map) { e.preventDefault(); answer(map[k]); }
-    else if (answered && (e.key === 'Enter' || e.key === 'ArrowRight') && e.target !== qNext) { e.preventDefault(); nextQ(); }
-  });
 
   /* ---------------- Kursiyer paylaşımları ---------------- */
   const track = $('#story-track');

@@ -1,13 +1,20 @@
 <!doctype html>
-<html lang="tr">
+<html lang="tr" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Ürgüp Yıldız Sürücü Kursu | 35 Yıllık Tecrübe · B, A1, A2, A Ehliyet</title>
   <meta name="description" content="Ürgüp Yıldız Sürücü Kursu: 35 yıllık tecrübeyle Ürgüp merkezde B sınıfı otomobil, A1-A2-A motosiklet ehliyeti ve özel direksiyon dersi. MEB'e bağlı özel sürücü kursu. ☎ 0384 341 36 73">
   <meta name="keywords" content="Ürgüp sürücü kursu, Ürgüp ehliyet, Yıldız sürücü kursu, Nevşehir sürücü kursu, B sınıfı ehliyet, motosiklet ehliyeti, A1 A2 A ehliyet, özel direksiyon dersi, Kapadokya sürücü kursu">
-  <meta name="theme-color" content="#121317">
-  <script>document.documentElement.classList.add('js')</script>
+  <meta name="theme-color" content="#fbf7f1">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    (function () {
+      var t; try { t = localStorage.getItem('yildiz-tema'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      var d = document.documentElement; d.dataset.theme = t; d.classList.add('js', 'no-anim');
+    })();
+  </script>
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://yildiz.perinet.org/">
 
@@ -30,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;600;700&display=swap">
-  <link rel="stylesheet" href="assets/site.css?v=1">
+  <link rel="stylesheet" href="assets/site.css?v=4">
 
   <script type="application/ld+json">
   {
@@ -109,6 +116,21 @@
     <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
     <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></symbol>
     <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></symbol>
+    <symbol id="i-light" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="20" rx="3"/><circle cx="12" cy="7" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="17" r="1.6"/></symbol>
+    <symbol id="i-cross" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 18a9 9 0 1 1 16 0"/><path d="m12 14 4.5-4.5"/><circle cx="12" cy="14" r="1.6"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-sign" viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 9.5v4.5M12 17h.01"/></symbol>
+    <symbol id="i-lanes" viewBox="0 0 24 24"><path d="M5 2v20M19 2v20M12 3v3M12 10.5v3M12 18v3"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></symbol>
+    <symbol id="i-left2" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.6 1.3 6.5L12 17.3l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></symbol>
+    <symbol id="i-park" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9.5 17V7h3.6a3 3 0 0 1 0 6H9.5"/></symbol>
+    <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="12" rx="2"/><path d="M6.5 7V5h3v2M14.5 7V5h3v2M6 13h4M14 13h4M16 11v4"/></symbol>
     <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></symbol>
 
     <!-- Sıcak hava balonu (renkler CSS değişkenlerinden) -->
@@ -141,8 +163,8 @@
       </a>
       <nav class="nav-links" id="menu" aria-label="Ana menü">
         <a href="#kurslar">Kurslar</a>
+        <a href="#egitim">Eğitim</a>
         <a href="#surec">Süreç</a>
-        <a href="#belgeler">Belgeler</a>
         <a href="#sinav">Deneme Sınavı</a>
         <a href="#sss">SSS</a>
         <a href="#iletisim">İletişim</a>
@@ -153,6 +175,9 @@
       </nav>
       <div class="nav-cta">
         <span class="status-pill nav-status" data-status="short"><i></i><span>…</span></span>
+        <button class="theme-toggle" type="button" aria-label="Karanlık temaya geç" aria-pressed="false" title="Tema değiştir">
+          <svg class="ic t-sun"><use href="#i-sun"/></svg><svg class="ic t-moon"><use href="#i-moon"/></svg>
+        </button>
         <a class="btn btn-red btn-sm" href="#iletisim" data-kayit>Ön Kayıt</a>
         <button class="burger" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="menu">
           <svg class="ic ic-open"><use href="#i-menu"/></svg><svg class="ic ic-close"><use href="#i-x"/></svg>
@@ -165,8 +190,11 @@
     <!-- HERO -->
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="scene" aria-hidden="true">
+        <div class="sky sky-day"></div>
+        <div class="sky sky-night"></div>
         <div class="sun"></div>
-        <div class="layer far"><i></i></div>
+        <div class="moon"></div>
+        <div class="layer far"><i class="base"></i><i class="lights"></i></div>
         <div class="balloons">
           <div class="bl bl-1"><svg style="--b1:#e8412f;--b2:#ffd24a;--b3:#1f5fd1"><use href="#balloon"/></svg></div>
           <div class="bl bl-2"><svg style="--b1:#1aa39a;--b2:#f4f1e8;--b3:#e8412f"><use href="#balloon"/></svg></div>
@@ -176,8 +204,8 @@
           <div class="bl drift d-3"><svg style="--b1:#3d7bff;--b2:#ffffff;--b3:#ff8a3d"><use href="#balloon"/></svg></div>
           <div class="bl drift d-4"><svg style="--b1:#ffd24a;--b2:#e8412f;--b3:#1aa39a"><use href="#balloon"/></svg></div>
         </div>
-        <div class="layer mid"><i></i></div>
-        <div class="layer near"><i></i></div>
+        <div class="layer mid"><i class="base"></i><i class="lights"></i></div>
+        <div class="layer near"><i class="base"></i><i class="lights"></i></div>
         <div class="road"><i class="lane"></i></div>
         <div class="car-wrap">
           <svg class="car" viewBox="0 0 440 190">
@@ -188,6 +216,7 @@
               <linearGradient id="carGlass" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stop-color="#4a5d7c"/><stop offset=".55" stop-color="#26324a"/><stop offset="1" stop-color="#141b29"/>
               </linearGradient>
+              <radialGradient id="tailGlow"><stop offset="0" stop-color="#ff3b30" stop-opacity=".9"/><stop offset="1" stop-color="#ff3b30" stop-opacity="0"/></radialGradient>
               <radialGradient id="carBeam" cx="0" cy=".5" r="1">
                 <stop offset="0" stop-color="#fff3c4" stop-opacity=".6"/><stop offset="1" stop-color="#fff3c4" stop-opacity="0"/>
               </radialGradient>
@@ -195,6 +224,7 @@
               <clipPath id="wellClip"><rect x="0" y="0" width="440" height="141"/></clipPath>
             </defs>
             <path class="beam" d="M404 110 700 60v110z" fill="url(#carBeam)"/>
+            <circle class="tail-glow" cx="44" cy="102" r="22" fill="url(#tailGlow)"/>
             <ellipse cx="222" cy="170" rx="196" ry="9" fill="#000" opacity=".4"/>
             <g clip-path="url(#wellClip)" fill="#0d0e11"><circle cx="95" cy="140" r="35"/><circle cx="320" cy="140" r="35"/></g>
             <g class="roof-sign">
@@ -248,7 +278,7 @@
         </div>
         <ul class="hero-meta reveal d4">
           <li class="status-pill" data-status><i></i><span>…</span></li>
-          <li><a href="https://maps.google.com/?cid=17309508902141883623" target="_blank" rel="noopener"><b>4,3</b> <span class="stars" aria-hidden="true">★★★★☆</span> Google · 21 yorum</a></li>
+          <li><a href="#iletisim"><svg class="ic"><use href="#i-pin"/></svg>Ürgüp merkez · Güllüce Cd.</a></li>
         </ul>
       </div>
     </section>
@@ -270,8 +300,8 @@
             <p class="dash-label">Yıllık tecrübe</p>
           </div>
           <div class="dash-item">
-            <div class="gauge gauge-y" data-value="4.3" data-max="5" data-ticks="5" data-decimals="1"></div>
-            <p class="dash-label">Google puanı <small>21 değerlendirme</small></p>
+            <div class="gauge" data-value="70" data-max="100" data-ticks="5" data-decimals="0" data-zone="70"></div>
+            <p class="dash-label">e-Sınav geçme puanı <small>100 üzerinden</small></p>
           </div>
           <div class="dash-item">
             <div class="gear" aria-label="Kursumuzdaki ehliyet sınıfları: B, A1, A2, A">
@@ -414,11 +444,360 @@
       </svg>
     </section>
 
+    <!-- TRAFİK AKADEMİSİ -->
+    <section class="academy" id="egitim" aria-labelledby="academy-title">
+      <div class="wrap">
+        <div class="sec-head center">
+          <p class="kicker reveal"><b>03</b> Trafik Akademisi</p>
+          <h2 id="academy-title" class="h2 reveal">Oynayarak öğren: <span class="u">trafik kuralları.</span></h2>
+          <p class="sec-sub reveal">e-Sınav’ın dört dersine göre hazırlanmış 10 oyun: Ürgüp sokaklarında 3B sürüş, kuşbakışı kavşak ve park bulmacaları, ayna görüntüsü, gösterge paneli ve ilk yardım ritmi. Her derste bir hedef ve kısa bir kural kartı var; hatasız bitirirsen 3 yıldız alırsın. Hepsini bitir, akademiden mezun ol.</p>
+        </div>
+
+        <div class="academy-shell reveal">
+          <div class="academy-top">
+            <div class="lesson-tabs" role="tablist" aria-label="Dersler">
+              <button class="lesson-tab" role="tab" id="tab-isik" aria-controls="ders-isik" aria-selected="true" data-lesson="isik" data-s="tc"><span class="lt-ic"><svg class="ic"><use href="#i-light"/></svg></span><span class="lt-txt"><b>Trafik ışıkları</b><small>3B sürüş</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-gecis" aria-controls="ders-gecis" aria-selected="false" tabindex="-1" data-lesson="gecis" data-s="tc"><span class="lt-ic"><svg class="ic"><use href="#i-cross"/></svg></span><span class="lt-txt"><b>Kim önce geçer?</b><small>Kavşak bulmacası</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-levha" aria-controls="ders-levha" aria-selected="false" tabindex="-1" data-lesson="levha" data-s="tc"><span class="lt-ic"><svg class="ic"><use href="#i-sign"/></svg></span><span class="lt-txt"><b>Levhaların dili</b><small>Levha avı</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-serit" aria-controls="ders-serit" aria-selected="false" tabindex="-1" data-lesson="serit" data-s="tc"><span class="lt-ic"><svg class="ic"><use href="#i-lanes"/></svg></span><span class="lt-txt"><b>Yol çizgileri</b><small>Güvenli sollama</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-park" aria-controls="ders-park" aria-selected="false" tabindex="-1" data-lesson="park" data-s="tc"><span class="lt-ic"><svg class="ic"><use href="#i-park"/></svg></span><span class="lt-txt"><b>Park ve duraklama</b><small>Park bulmacası</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-durus" aria-controls="ders-durus" aria-selected="false" tabindex="-1" data-lesson="durus" data-s="tc"><span class="lt-ic"><svg class="ic"><use href="#i-gauge"/></svg></span><span class="lt-txt"><b>Duruş mesafesi</b><small>Hız ve fren</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-ayna" aria-controls="ders-ayna" aria-selected="false" tabindex="-1" data-lesson="ayna" data-s="tc"><span class="lt-ic"><svg class="ic"><use href="#i-eye"/></svg></span><span class="lt-txt"><b>Ayna ve kör nokta</b><small>Ayna görüntüsü</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-tyd" aria-controls="ders-tyd" aria-selected="false" tabindex="-1" data-lesson="tyd" data-s="iy"><span class="lt-ic"><svg class="ic"><use href="#i-heart"/></svg></span><span class="lt-txt"><b>Temel yaşam desteği</b><small>Kalp masajı ritmi</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-gosterge" aria-controls="ders-gosterge" aria-selected="false" tabindex="-1" data-lesson="gosterge" data-s="at"><span class="lt-ic"><svg class="ic"><use href="#i-battery"/></svg></span><span class="lt-txt"><b>Gösterge ışıkları</b><small>Uyarı lambaları</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+              <button class="lesson-tab" role="tab" id="tab-adab" aria-controls="ders-adab" aria-selected="false" tabindex="-1" data-lesson="adab" data-s="ta"><span class="lt-ic"><svg class="ic"><use href="#i-smile"/></svg></span><span class="lt-txt"><b>Trafik adabı</b><small>Durum sahneleri</small></span><span class="lt-stars" aria-hidden="true"></span><span class="lt-done" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></button>
+            </div>
+            <div class="academy-progress" aria-live="polite">
+              <div class="ap-bar"><i id="ap-fill"></i></div>
+              <span id="ap-text">0/10 ders tamamlandı</span>
+              <button class="ap-sound" id="academy-sound" type="button" aria-pressed="true"><svg class="ic"><use href="#i-sound"/></svg><span>Ses açık</span></button>
+              <span class="ap-legend"><span class="xa-subj" data-s="tc">Trafik ve Çevre</span><span class="xa-subj" data-s="iy">İlk Yardım</span><span class="xa-subj" data-s="at">Araç Tekniği</span><span class="xa-subj" data-s="ta">Trafik Adabı</span></span>
+            </div>
+          </div>
+
+          <article class="lesson is-active" id="ders-isik" role="tabpanel" aria-labelledby="tab-isik" data-lesson="isik" data-s="tc">
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 1 · 3B sürüş</span><span class="xa-subj" data-s="tc">Trafik ve Çevre</span></div>
+                <h3>Trafik ışıklarına göre sür</h3>
+                <p>Ürgüp sokaklarında direksiyon sende. Kavşaklara yaklaşırken ışığı izle: <b>Fren</b>’e basılı tutarak yavaşla ve çizginin önünde dur, yeşil yanınca <b>Kalk</b>. Yaya geçidindeki yayaları unutma. <b>Hedef:</b> 5 doğru karar.</p>
+              </div>
+              <div class="sim sim-3d" data-sim="isik"><canvas class="sim-cv" role="img" aria-label="Trafik ışıklı kavşaklara yaklaşan aracın arkadan görünümü"></canvas></div>
+              <div class="sim-bar">
+                <button class="btn btn-red sim-main sim-hold" type="button" data-act="brake"><svg class="ic"><use href="#i-play"/></svg><span>Başla</span><kbd>Boşluk</kbd></button>
+                <button class="sim-ghost" type="button" data-act="pause"><svg class="ic"><use href="#i-pause"/></svg><span>Duraklat</span></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ul class="rule-list">
+                <li data-phase="red"><span class="lamp"><i class="on-r"></i><i></i><i></i></span><div><b>Kırmızı</b>Dur; hiçbir yöne hareket etme.</div></li>
+                <li data-phase="redamber"><span class="lamp"><i class="on-r"></i><i class="on-y"></i><i></i></span><div><b>Kırmızı + sarı</b>Yol açılmak üzere: hazırlan ama geçme.</div></li>
+                <li data-phase="green"><span class="lamp"><i></i><i></i><i class="on-g"></i></span><div><b>Yeşil</b>Yol açık; yayalara ve kavşaktakilere dikkat ederek geç.</div></li>
+                <li data-phase="amber"><span class="lamp"><i></i><i class="on-y"></i><i></i></span><div><b>Sarı</b>Yol kapanmak üzere: güvenle durabiliyorsan dur, duramayacak kadar yaklaştıysan geç.</div></li>
+                <li><span class="lamp blink"><i></i><i class="on-y"></i><i></i></span><div><b>Yanıp sönen sarı</b>Yavaş ve dikkatli geç.</div></li>
+              </ul>
+              <p class="rule-note">Trafik görevlisinin işareti ışıklı işaretlerden önce gelir.</p>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-gecis" role="tabpanel" aria-labelledby="tab-gecis" data-lesson="gecis" data-s="tc" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 2 · Kavşak bulmacası</span><span class="xa-subj" data-s="tc">Trafik ve Çevre</span></div>
+                <h3>Kim önce geçer?</h3>
+                <p>Araçlara <b>geçiş sırasına göre</b> dokun (ya da A/B tuşları). Doğru sırada araçlar kavşaktan geçer; yanlış seçimde ne olacağını görürsün. İşaretsiz kavşaktan trafik görevlisine 6 durum. <b>Hedef:</b> hepsini çöz.</p>
+              </div>
+              <div class="sim" data-sim="gecis"><canvas class="sim-cv" role="img" aria-label="Kuşbakışı kavşakta geçiş sırası bulmacası"></canvas></div>
+              <div class="sim-bar">
+                <button class="btn btn-red sim-main" type="button" data-act="next" hidden><span>Sonraki durum</span><svg class="ic"><use href="#i-arrow"/></svg></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ol class="rule-steps">
+                <li>Işıklı ve sesli uyarı veren ambulans, itfaiye, polis gibi <b>geçiş üstünlüğüne sahip araçlara</b> her zaman yol verilir.</li>
+                <li>Uyma sırası: trafik görevlisi → ışıklar → levhalar → genel kurallar.</li>
+                <li><b>Tali yoldan</b> ana yola çıkan, ana yoldaki araca yol verir.</li>
+                <li><b>Dönel kavşağa</b> giren, kavşağın içindeki araca yol verir.</li>
+                <li>İşaretsiz kavşakta <b>sağdan gelene</b> yol verilir.</li>
+                <li><b>Sola dönen</b>, karşıdan gelip düz giden araca yol verir.</li>
+              </ol>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-levha" role="tabpanel" aria-labelledby="tab-levha" data-lesson="levha" data-s="tc" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 3 · Levha avı</span><span class="xa-subj" data-s="tc">Trafik ve Çevre</span></div>
+                <h3>Levhaların dili</h3>
+                <p>Levhalar şekil ve renkleriyle konuşur. Kapadokya yolunda ilerlerken yaklaşan levhanın grubunu <b>levhayı geçmeden</b> seç (ya da 1–4 tuşları). Yanlış bildiğin ya da kaçırdığın levha yeniden karşına çıkar. <b>Hedef:</b> 8 doğru.</p>
+              </div>
+              <div class="sim sim-3d" data-sim="levha"><canvas class="sim-cv" role="img" aria-label="Yol kenarındaki trafik levhalarına yaklaşan aracın arkadan görünümü"></canvas></div>
+              <div class="lv-cats" role="group" aria-label="Levha grupları">
+                  <button class="lv-cat" type="button" data-cat="uyari"><span class="gs-k">1</span><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5 36 33H4z" fill="#fff" stroke="#d71920" stroke-width="4" stroke-linejoin="round"/></svg><span>Tehlike uyarı</span></button>
+                  <button class="lv-cat" type="button" data-cat="yasak"><span class="gs-k">2</span><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="#fff" stroke="#d71920" stroke-width="4.5"/></svg><span>Yasaklama / kısıtlama</span></button>
+                  <button class="lv-cat" type="button" data-cat="mecburi"><span class="gs-k">3</span><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="#1e5aa8"/><path d="M20 28V13m-6 6 6-6 6 6" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mecburiyet</span></button>
+                  <button class="lv-cat" type="button" data-cat="bilgi"><span class="gs-k">4</span><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="6" width="28" height="28" rx="4" fill="#1e5aa8"/><path d="M16 13v14M24 13v14M16 20h8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><span>Bilgi</span></button>
+                </div>
+              <div class="sim-bar">
+                <button class="sim-ghost" type="button" data-act="pause"><svg class="ic"><use href="#i-pause"/></svg><span>Duraklat</span></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ul class="rule-shapes">
+                <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5 36 33H4z" fill="#fff" stroke="#d71920" stroke-width="4" stroke-linejoin="round"/></svg><div><b>Üçgen, kırmızı çerçeve</b>Tehlike uyarı: ileride bir tehlike var, yavaşla.</div></li>
+                <li><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="#fff" stroke="#d71920" stroke-width="4.5"/></svg><div><b>Yuvarlak, kırmızı çerçeve</b>Yasaklama veya kısıtlama.</div></li>
+                <li><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="#1e5aa8"/></svg><div><b>Yuvarlak, mavi zemin</b>Mecburiyet: gösterileni yapmak zorunlu.</div></li>
+                <li><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="6" width="28" height="28" rx="4" fill="#1e5aa8"/></svg><div><b>Kare veya dikdörtgen</b>Bilgi: yol ve çevresi hakkında bilgi verir.</div></li>
+              </ul>
+              <p class="rule-note">Yasaklama ve mecburiyet levhaları “trafik tanzim işaretleri” grubundadır. DUR (sekizgen) ve Yol ver (ters üçgen) kendine özgü şekilleriyle hemen tanınır.</p>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-serit" role="tabpanel" aria-labelledby="tab-serit" data-lesson="serit" data-s="tc" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 4 · 3B sürüş</span><span class="xa-subj" data-s="tc">Trafik ve Çevre</span></div>
+                <h3>Yol çizgileri ve sollama</h3>
+                <p>Önünde yavaş bir traktör var. Orta çizgi senin tarafında <b>kesik</b> ve karşı şerit <b>boşken</b> <b>Solla</b>’ya bas; traktörü geçip arayı açınca <b>Sağa dön</b>. Düz çizgi, karşıdan gelen araç ya da erken dönüş hata sayılır. <b>Hedef:</b> 3 güvenli sollama.</p>
+              </div>
+              <div class="sim sim-3d" data-sim="serit"><canvas class="sim-cv" role="img" aria-label="Kırsal yolda traktörü sollayan aracın arkadan görünümü"></canvas></div>
+              <div class="sim-bar">
+                <button class="btn btn-red sim-main" type="button" data-act="overtake"><svg class="ic"><use href="#i-play"/></svg><span>Başla</span><kbd>Boşluk</kbd></button>
+                <button class="sim-ghost" type="button" data-act="pause"><svg class="ic"><use href="#i-pause"/></svg><span>Duraklat</span></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ul class="rule-lines">
+                <li><svg viewBox="0 0 60 24" aria-hidden="true"><rect width="60" height="24" rx="4" class="rl-road"/><path d="M4 12h52" class="rl-line" stroke-dasharray="9 7"/></svg><div><b>Kesik çizgi</b>Güvenliyse şerit değiştirip geçebilirsin.</div></li>
+                <li><svg viewBox="0 0 60 24" aria-hidden="true"><rect width="60" height="24" rx="4" class="rl-road"/><path d="M4 12h52" class="rl-line"/></svg><div><b>Düz çizgi</b>Üzerinden geçilmez, sollama yapılmaz.</div></li>
+                <li><svg viewBox="0 0 60 24" aria-hidden="true"><rect width="60" height="24" rx="4" class="rl-road"/><path d="M4 9h52M4 15h52" class="rl-line"/></svg><div><b>Çift düz çizgi</b>Hiçbir şekilde geçilmez.</div></li>
+                <li><svg viewBox="0 0 60 24" aria-hidden="true"><rect width="60" height="24" rx="4" class="rl-road"/><path d="M4 9h52" class="rl-line"/><path d="M4 15h52" class="rl-line" stroke-dasharray="9 7"/></svg><div><b>Kesik + düz</b>Sana yakın olan çizgiye göre davran: kesik taraftaysan geçebilirsin.</div></li>
+              </ul>
+              <p class="rule-note">Sollamadan önce: karşı yön boş mu, ayna, sinyal ve omuz kontrolü.</p>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-park" role="tabpanel" aria-labelledby="tab-park" data-lesson="park" data-s="tc" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 5 · Park bulmacası</span><span class="xa-subj" data-s="tc">Trafik ve Çevre</span></div>
+                <h3>Park ve duraklama</h3>
+                <p>Aracı park edeceğin numaralı yere dokun (ya da 1–5 tuşları); araç oraya geri geri park eder, kurala aykırıysa ceza yersin. Bir yerin üstüne gelince en yakın durak, musluk, geçit ya da kavşağa uzaklığı görürsün. <b>Hedef:</b> 4 doğru park.</p>
+              </div>
+              <div class="sim" data-sim="park"><canvas class="sim-cv" role="img" aria-label="Kuşbakışı sokakta park yasakları bulmacası"></canvas></div>
+              <div class="sim-bar">
+                <button class="sim-ghost" type="button" data-act="zones" aria-pressed="false"><svg class="ic"><use href="#i-eye"/></svg><span>Yasak bölgeleri göster</span></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ul class="rule-bullets">
+                <li><b>Yaya ve okul geçitlerinde</b>, kavşaklarda ve yerleşim yerinde <b>kavşağa 5 m</b> içinde duraklamak da park etmek de yasaktır.</li>
+                <li>Otobüs durağı levhasına iki yönden <b>15 m</b> içinde park edilmez.</li>
+                <li>Yangın musluğuna her iki yönden <b>5 m</b> içinde park edilmez.</li>
+                <li>Garaj, otopark gibi <b>geçiş yollarının önüne</b> park edilmez.</li>
+                <li><b>Engelli park yerleri</b> yalnızca engelli araçları içindir.</li>
+              </ul>
+              <p class="rule-note">Duraklama, yolcu veya yük indirip bindirmek için kısa süre durmaktır. Duraklamanın yasak olduğu her yerde park etmek de yasaktır.</p>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-durus" role="tabpanel" aria-labelledby="tab-durus" data-lesson="durus" data-s="tc" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 6 · Fizik laboratuvarı</span><span class="xa-subj" data-s="tc">Trafik ve Çevre</span></div>
+                <h3>Duruş mesafesi</h3>
+                <p>Hızı, yol durumunu (kuru, ıslak, karlı, buzlu) ve tepki türünü seç, <b>Sür</b>’e bas: park etmiş araçların arasından 50 m ileride yola top fırlayacak. <b>Benim tepkim</b> seçiliyse top görünür görünmez <b>FREN</b>’e bas; tepki ve fren mesafen çizelgeye işlenir. <b>Hedef:</b> 3 farklı koşulu dene.</p>
+              </div>
+              <div class="sim sim-3d" data-sim="durus"><canvas class="sim-cv" role="img" aria-label="Park etmiş araçların arasından yola top fırlayan sokağın arkadan görünümü"></canvas></div>
+              <div class="sim-controls">
+                <label class="range"><span>Hız <b data-k="speed">50</b> km/s</span><input type="range" min="30" max="130" step="10" value="50" data-k="speedIn" aria-label="Hız (km/s)"></label>
+                <div class="chips" role="radiogroup" aria-label="Yol durumu">
+                  <button class="chip-btn is-on" type="button" role="radio" aria-checked="true" data-mu="0.8">Kuru</button>
+                  <button class="chip-btn" type="button" role="radio" aria-checked="false" data-mu="0.5">Islak</button>
+                  <button class="chip-btn" type="button" role="radio" aria-checked="false" data-mu="0.25">Karlı</button>
+                  <button class="chip-btn" type="button" role="radio" aria-checked="false" data-mu="0.1">Buzlu</button>
+                </div>
+                <div class="chips" role="radiogroup" aria-label="Tepki süresi">
+                  <button class="chip-btn is-on" type="button" role="radio" aria-checked="true" data-rt="me">Benim tepkim</button>
+                  <button class="chip-btn" type="button" role="radio" aria-checked="false" data-rt="std">Standart 1 sn</button>
+                </div>
+              </div>
+              <div class="sim-bar">
+                <button class="btn btn-red sim-main sim-hold" type="button" data-act="run"><svg class="ic"><use href="#i-play"/></svg><span>Sür</span><kbd>Boşluk</kbd></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <div class="ds-result" data-k="result" hidden></div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ul class="rule-bullets">
+                <li><b>Duruş mesafesi</b> = tepki mesafesi + fren mesafesi.</li>
+                <li>Tepki süresi yaklaşık 1 saniyedir; 90 km/s hızla bu sürede 25 metre yol alırsın.</li>
+                <li>Hız 2 katına çıkınca fren mesafesi yaklaşık <b>4 katına</b> çıkar.</li>
+                <li>Islak yolda fren mesafesi yaklaşık 1,6 kat, buzlu yolda 8 kat uzar.</li>
+                <li><b>Takip mesafesi:</b> hızının yarısı kadar metre (90 km/s → 45 m) ya da en az 2 saniye; kötü havada artır.</li>
+              </ul>
+              <p class="rule-note">Değerler yaklaşıktır; lastik, yol ve araç durumuna göre değişir.</p>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-ayna" role="tabpanel" aria-labelledby="tab-ayna" data-lesson="ayna" data-s="tc" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 7 · Görüş simülatörü</span><span class="xa-subj" data-s="tc">Trafik ve Çevre</span></div>
+                <h3>Ayna ayarı ve kör nokta</h3>
+                <p>Sol ve sağ aynayı ayarla; üstte aynaların gerçekte ne gösterdiğini, altta kırmızı taralı <b>kör noktayı</b> izle. Sonra <b>omuz kontrolü</b> yapıp boşken şerit değiştir. <b>Hedef:</b> doğru ayar + 2 güvenli şerit değiştirme.</p>
+              </div>
+              <div class="sim sim-dark" data-sim="ayna"><canvas class="sim-cv" role="img" aria-label="Sol ayna, iç ayna ve sağ ayna görüntüsüyle kuşbakışı görüş açıları ve kör nokta simülasyonu"></canvas></div>
+              <div class="sim-controls">
+                <label class="range"><span>Sol ayna <b data-k="l">4°</b></span><input type="range" min="0" max="30" value="4" data-k="lIn" aria-label="Sol ayna açısı"></label>
+                <label class="range"><span>Sağ ayna <b data-k="r">4°</b></span><input type="range" min="0" max="30" value="4" data-k="rIn" aria-label="Sağ ayna açısı"></label>
+              </div>
+              <div class="sim-bar">
+                <button class="btn btn-red sim-main" type="button" data-act="shoulder"><svg class="ic"><use href="#i-eye"/></svg><span>Omuz kontrolü</span><kbd>Boşluk</kbd></button>
+                <button class="sim-ghost" type="button" data-act="left"><svg class="ic"><use href="#i-left2"/></svg><span>Sola geç</span><kbd>←</kbd></button>
+                <button class="sim-ghost" type="button" data-act="right"><span>Sağa geç</span><svg class="ic"><use href="#i-arrow"/></svg><kbd>→</kbd></button>
+                <button class="sim-ghost" type="button" data-act="ideal"><span>İdeal ayar</span></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-readout">Kör nokta: <b data-k="blind">%0</b></div>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ul class="rule-bullets">
+                <li><b>İç ayna</b> arka camın tamamını görecek şekilde ayarlanır.</li>
+                <li><b>Dış aynalar</b>, kendi aracının kenarını aynanın iç kenarında çok az görecek kadar dışa çevrilir.</li>
+                <li>Doğru ayarda bile kör nokta tamamen kaybolmaz.</li>
+                <li>Şerit değiştirmeden önce: <b>ayna → sinyal → omuz kontrolü → manevra.</b></li>
+              </ul>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-tyd" role="tabpanel" aria-labelledby="tab-tyd" data-lesson="tyd" data-s="iy" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 8 · Ritim çalışması</span><span class="xa-subj" data-s="iy">İlk Yardım</span></div>
+                <h3>Temel yaşam desteği</h3>
+                <p>Kaza yerinde bilinci kapalı bir kazazede var. Önce ilk yardım adımlarını <b>doğru sırayla</b> seç; sonra ritim şeridindeki noktalar halkaya geldikçe basarak dakikada ~110 ritimle <b>30 göğüs basısı + 2 suni solunum</b> uygula. <b>Hedef:</b> 5 adım + 2 tur 30:2.</p>
+              </div>
+              <div class="sim" data-sim="tyd"><canvas class="sim-cv" role="img" aria-label="Kaza yerinde kazazede ve ilk yardımcının yandan görünümü"></canvas></div>
+              <div class="tyd-steps" data-k="steps" role="group" aria-label="İlk yardım adımları"></div>
+              <div class="sim-bar">
+                <button class="btn btn-red sim-main" type="button" data-act="press" hidden><svg class="ic"><use href="#i-heart"/></svg><span>Bas</span><kbd>Boşluk</kbd></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ol class="rule-steps">
+                <li><b>Koru:</b> kendi ve olay yerinin güvenliğini sağla.</li>
+                <li><b>Bilinç kontrolü:</b> omuzlara hafifçe dokun, “İyi misiniz?” diye seslen.</li>
+                <li><b>Bildir:</b> 112’yi ara; yeri ve kazazedenin durumunu söyle.</li>
+                <li><b>Hava yolunu aç:</b> baş geri – çene yukarı.</li>
+                <li><b>Solunumu kontrol et:</b> en fazla 10 sn bak – dinle – hisset.</li>
+                <li>Solunum yoksa <b>30 göğüs basısı + 2 suni solunum.</b></li>
+              </ol>
+              <ul class="rule-bullets rule-gap">
+                <li>Eller göğsün ortasına; kollar dik, omuzlar ellerin üzerinde.</li>
+                <li>Göğüs 5–6 cm çöksün; dakikada <b>100–120</b> bası.</li>
+                <li>Sağlık ekibi gelene kadar kesintisiz sürdür.</li>
+              </ul>
+              <p class="rule-note">Bu ders bilgilendirme amaçlıdır; ilk yardım uygulamalarını teorik derslerimizde eğitmen eşliğinde öğrenirsin.</p>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-gosterge" role="tabpanel" aria-labelledby="tab-gosterge" data-lesson="gosterge" data-s="at" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 9 · Gösterge paneli</span><span class="xa-subj" data-s="at">Araç Tekniği</span></div>
+                <h3>Gösterge ışıkları</h3>
+                <p>Kontağı aç, lamba testini izle ve yola çık. Sürüş sırasında göstergede bir uyarı ışığı yandığında rengine ve sembolüne bakıp ne yapman gerektiğini seç (ya da 1–3 tuşları); araç da kararına göre sağa çekip durur ya da yavaşlar. <b>Hedef:</b> 8 doğru.</p>
+              </div>
+              <div class="sim sim-dark" data-sim="gosterge"><canvas class="sim-cv" role="img" aria-label="Ön camdan yol görünümü ve dijital gösterge paneli"></canvas></div>
+              <div class="gs-choices" role="group" aria-label="Ne yapmalısın?">
+                <button class="gs-choice" type="button" data-g="dur"><span class="gs-k">1</span><span class="gs-dot red"></span><span class="gs-t"><b>Hemen müdahale et, gerekirse dur</b><small>Tehlike: sürüşe böyle devam etme</small></span></button>
+                <button class="gs-choice" type="button" data-g="dikkat"><span class="gs-k">2</span><span class="gs-dot amber"></span><span class="gs-t"><b>Dikkatle devam et, kontrol ettir</b><small>Uyarı: ilk fırsatta servise veya kontrole</small></span></button>
+                <button class="gs-choice" type="button" data-g="bilgi"><span class="gs-k">3</span><span class="gs-dot info"></span><span class="gs-t"><b>Bilgi: bir sistem çalışıyor</b><small>Arıza yok, yalnızca bilgilendirme</small></span></button>
+              </div>
+              <div class="sim-bar">
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ul class="rule-shapes rule-lamps">
+                <li><span class="gs-dot red"></span><div><b>Kırmızı: tehlike</b>Yağ basıncı, hararet, fren, akü şarjı: güvenli bir yerde hemen dur. Emniyet kemeri: hemen tak.</div></li>
+                <li><span class="gs-dot amber"></span><div><b>Sarı / turuncu: uyarı</b>ABS, motor arıza, lastik basıncı, yakıt: dikkatle devam et, ilk fırsatta kontrol ettir.</div></li>
+                <li><span class="gs-dot info"></span><div><b>Yeşil / mavi: bilgi</b>Farlar, sis farı, sinyal: bir sistemin çalıştığını gösterir.</div></li>
+              </ul>
+              <p class="rule-note">Kontağı açınca bütün lambaların kısa süre yanması normaldir (lamba testi). Motor çalıştıktan sonra sönmeyen uyarı lambası bir arıza işaretidir.</p>
+            </aside>
+          </article>
+          <article class="lesson" id="ders-adab" role="tabpanel" aria-labelledby="tab-adab" data-lesson="adab" data-s="ta" hidden>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Ders 10 · Durum sahneleri</span><span class="xa-subj" data-s="ta">Trafik Adabı</span></div>
+                <h3>Trafik adabı</h3>
+                <p>Trafikte karşılaşacağın durumlarda nasıl davranırsın? Seçimini yap (ya da 1–3 tuşları) ve sonucunu sahnede izle: yağmur, yaşlı yaya, ambulans, gece farları, emniyet şeridi ve daha fazlası. Yanlış seçtiğin durum yeniden gelir. <b>Hedef:</b> 5 doğru davranış.</p>
+              </div>
+              <div class="sim" data-sim="adab"><canvas class="sim-cv" role="img" aria-label="Kuşbakışı trafik adabı durum sahnesi"></canvas></div>
+              <div class="ad-choices" data-k="choices" role="group" aria-label="Seçenekler"></div>
+              <div class="sim-bar">
+                <button class="btn btn-red sim-main" type="button" data-act="next" hidden><span>Sonraki durum</span><svg class="ic"><use href="#i-arrow"/></svg></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Kural kartı</h4>
+              <ul class="rule-bullets">
+                <li><b>Empati:</b> kendini yayanın, yaşlının, bisikletlinin yerine koy.</li>
+                <li>Yaya geçidinde ve geçişini bitirmemiş yayaya <b>her zaman yol ver</b>.</li>
+                <li>Ambulans, itfaiye ve polise <b>sağa yanaşarak</b> yol aç; emniyet şeridini boş bırak.</li>
+                <li>Sollanırken <b>hızını artırma</b>; gece karşılaşmalarda kısa fara geç.</li>
+                <li>Korna ve selektörü öfke için değil, yalnızca tehlikeyi önlemek için kullan.</li>
+                <li>Engelli park yerlerine saygı göster.</li>
+              </ul>
+              <p class="rule-note">Trafik adabı, kurallara uymanın ötesinde saygı, sabır ve nezakettir.</p>
+            </aside>
+          </article>
+
+          <div class="academy-grad" id="academy-grad" hidden>
+            <svg class="ic"><use href="#i-trophy"/></svg>
+            <div><b>Tebrikler, Trafik Akademisi'ni bitirdin!</b><span>Kuralları öğrendin; şimdi deneme sınavıyla kendini dene ve direksiyon başında birlikte pekiştirelim.</span></div>
+            <a class="btn btn-dark" href="#sinav">Deneme sınavı <svg class="ic"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-red" href="#iletisim" data-kayit>Ön kayıt <svg class="ic"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- YAŞ HESAPLAYICI -->
     <section class="age" id="yas" aria-labelledby="age-title">
       <div class="wrap age-grid">
         <div class="age-copy">
-          <p class="kicker reveal"><b>03</b> Yaş hesaplayıcı</p>
+          <p class="kicker reveal"><b>04</b> Yaş hesaplayıcı</p>
           <h2 id="age-title" class="h2 reveal">Hangi ehliyeti <span class="u">ne zaman</span> alabilirsin?</h2>
           <p class="sec-sub reveal">Doğum tarihini gir; Karayolları Trafik Yönetmeliği'ndeki yaş şartlarına göre alabileceğin sınıfları ve kalan süreyi anında gör.</p>
           <label class="date-field reveal" for="birth">
@@ -436,7 +815,7 @@
     <section class="journey-sec" id="surec" aria-labelledby="journey-title">
       <div class="wrap">
         <div class="sec-head center">
-          <p class="kicker reveal"><b>04</b> Süreç</p>
+          <p class="kicker reveal"><b>05</b> Süreç</p>
           <h2 id="journey-title" class="h2 reveal">Kayıttan ehliyete, <span class="u">6 durakta.</span></h2>
           <p class="sec-sub reveal">Aşağı kaydır, aracımız seni yol boyunca götürsün.</p>
         </div>
@@ -522,7 +901,7 @@
     <section class="docs" id="belgeler" aria-labelledby="docs-title">
       <div class="wrap docs-grid">
         <div class="docs-copy">
-          <p class="kicker reveal"><b>05</b> Gerekli belgeler</p>
+          <p class="kicker reveal"><b>06</b> Gerekli belgeler</p>
           <h2 id="docs-title" class="h2 reveal">Kayıt için <span class="u">hazırlaman</span> gerekenler.</h2>
           <p class="sec-sub reveal">Hazırladıklarını işaretle; listen bu cihazda saklanır. Hepsi tamamsa kayıt için yola çıkabilirsin.</p>
           <div class="progress-card reveal">
@@ -551,57 +930,55 @@
       </div>
     </section>
 
-    <!-- DENEME SINAVI -->
+    <!-- DENEME SINAVI · e-Sınav simülasyonu -->
     <section class="quiz-sec" id="sinav" aria-labelledby="quiz-title">
       <div class="wrap quiz-grid">
         <div class="quiz-copy">
-          <p class="kicker reveal"><b>06</b> Deneme sınavı</p>
-          <h2 id="quiz-title" class="h2 reveal">Isınma turu: <span class="u">10 soruda</span> <span class="nowrap">e-Sınav</span> provası.</h2>
-          <p class="sec-sub reveal">Gerçek sınav 50 soru ve 45 dakika sürer; soruların 23'ü Trafik ve Çevre, 12'si İlk Yardım, 9'u Araç Tekniği, 6'sı Trafik Adabı konusundandır. Bakalım bu turda kaç doğru yapacaksın?</p>
+          <p class="kicker reveal"><b>07</b> Deneme sınavı</p>
+          <h2 id="quiz-title" class="h2 reveal">Gerçek sınav provası: <span class="u">50 soru,</span> <span class="nowrap">45 dakika.</span></h2>
+          <p class="sec-sub reveal">MEB e-Sınavı'ndaki düzenle: soruların 12'si İlk Yardım, 23'ü Trafik ve Çevre, 9'u Araç Tekniği, 6'sı Trafik Adabı dersinden gelir. Sorular arasında serbestçe dolaş, “Sınavım” panelinden boş bıraktıklarını gör, süre bitmeden sınavı bitir.</p>
           <ul class="quiz-facts reveal">
             <li><b>50</b><span>soru</span></li>
             <li><b>45</b><span>dakika</span></li>
             <li><b>70</b><span>geçme puanı</span></li>
           </ul>
+          <p class="quiz-note reveal">Puan = doğru ÷ soru × 100; yanlışlar doğruları götürmez. Sınav bitince her dersteki başarını, sana önerilen Akademi derslerini ve bütün soruların açıklamalı çözümünü görürsün.</p>
           <a class="text-link reveal" href="https://www.kolayehliyet.com/kurs/urgup-yildiz-surucu-kursu" target="_blank" rel="noopener">Kursiyerlerimize özel online dersler ve tam deneme sınavları <svg class="ic"><use href="#i-out"/></svg></a>
         </div>
 
-        <div class="quiz reveal d1" id="quiz">
-          <div class="quiz-screen q-intro is-active" data-screen="intro">
-            <div class="tl" aria-hidden="true"><i></i><i></i><i></i></div>
-            <h3>Hazır mısın?</h3>
-            <p>10 soru, her birinde 4 şık. Işık yeşile dönünce süre başlar.</p>
-            <button class="btn btn-red btn-lg" type="button" data-quiz-start>Sınava başla <svg class="ic"><use href="#i-arrow"/></svg></button>
-          </div>
-          <div class="quiz-screen q-count" data-screen="count">
-            <div class="tl tl-big" aria-hidden="true"><i></i><i></i><i></i></div>
-            <p class="count-text" aria-live="assertive">Kırmızı…</p>
-          </div>
-          <div class="quiz-screen q-play" data-screen="play">
-            <div class="q-bar">
-              <span class="q-num" id="q-num">Soru 1/10</span>
-              <span class="q-time" id="q-time"><svg class="ic"><use href="#i-clock"/></svg>00:00</span>
+        <div class="quiz exam-lobby reveal d1" id="exam">
+          <div class="xl-body">
+            <div class="xl-modes" role="radiogroup" aria-label="Sınav türü">
+              <button class="xl-mode is-on" type="button" role="radio" aria-checked="true" data-mode="full"><span class="xl-mode-ic"><svg class="ic"><use href="#i-monitor"/></svg></span><b>Gerçek sınav</b><span>50 soru · 45 dakika</span></button>
+              <button class="xl-mode" type="button" role="radio" aria-checked="false" data-mode="mini"><span class="xl-mode-ic"><svg class="ic"><use href="#i-bolt"/></svg></span><b>Kısa deneme</b><span>10 soru · 9 dakika</span></button>
             </div>
-            <div class="q-progress"><i id="q-prog"></i></div>
-            <div class="q-body">
-              <div class="q-visual" id="q-visual" aria-hidden="true"></div>
-              <p class="q-text" id="q-text"></p>
+            <div class="xl-dist">
+              <p class="xl-label">Soru dağılımı · <b data-k="n">50</b> soru</p>
+              <div class="xl-bar" aria-hidden="true"><i data-s="iy"></i><i data-s="tc"></i><i data-s="at"></i><i data-s="ta"></i></div>
+              <ul class="xl-legend">
+                <li data-s="iy"><i></i>İlk Yardım <b>12</b></li>
+                <li data-s="tc"><i></i>Trafik ve Çevre <b>23</b></li>
+                <li data-s="at"><i></i>Araç Tekniği <b>9</b></li>
+                <li data-s="ta"><i></i>Trafik Adabı <b>6</b></li>
+              </ul>
             </div>
-            <div class="q-opts" id="q-opts" role="group" aria-label="Cevap şıkları"></div>
-            <div class="q-feedback" id="q-feedback" aria-live="polite"></div>
-            <button class="btn btn-dark q-next" type="button" id="q-next" hidden>Sonraki soru <svg class="ic"><use href="#i-arrow"/></svg></button>
-          </div>
-          <div class="quiz-screen q-result" data-screen="result">
-            <div class="score-ring">
-              <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="ring-bg"/><circle cx="60" cy="60" r="52" class="ring-fg" id="score-fg"/></svg>
-              <div><b id="score-num">0</b><span>puan</span></div>
+            <ul class="xl-rules">
+              <li>Süre <b data-k="min">45</b> dakika; süre bitince sınav ekranı kendiliğinden kapanır.</li>
+              <li>Her sorunun 4 şıkkı var, yalnızca biri doğru. Cevabını sınav boyunca değiştirebilirsin.</li>
+              <li>Geçmek için en az <b data-k="need">35</b> doğru (70 puan) gerekir.</li>
+              <li>Sınav iki aşamalı onayla bitirilir; bitirdikten sonra sorulara dönülmez.</li>
+            </ul>
+            <label class="xl-agree"><input type="checkbox" id="xl-agree"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><span>Sınav kurallarını okudum, sınava başlamak istiyorum.</span></label>
+            <div class="xl-cta">
+              <button class="btn btn-red btn-lg" type="button" data-exam-start disabled>Sınava başla <svg class="ic"><use href="#i-arrow"/></svg></button>
+              <button class="sim-ghost" type="button" data-exam-last hidden><svg class="ic"><use href="#i-flag"/></svg><span>Son sonucum</span></button>
             </div>
-            <h3 id="score-title">Sonuç</h3>
-            <p id="score-text"></p>
-            <div class="result-cta">
-              <button class="btn btn-dark" type="button" data-quiz-start><svg class="ic"><use href="#i-refresh"/></svg>Tekrar dene</button>
-              <a class="btn btn-red" href="#iletisim" data-kayit>Kayıt ol <svg class="ic"><use href="#i-arrow"/></svg></a>
+            <div class="xl-resume" hidden>
+              <div><b>Yarım kalan sınavın var</b><span data-k="resume"></span></div>
+              <button class="btn btn-dark btn-sm" type="button" data-exam-resume>Devam et <svg class="ic"><use href="#i-arrow"/></svg></button>
+              <button class="sim-ghost" type="button" data-exam-discard><span>Sil</span></button>
             </div>
+            <div class="xl-history" hidden><span>Son denemelerin</span><ul class="xl-hist-list"></ul></div>
           </div>
         </div>
       </div>
@@ -612,7 +989,7 @@
       <div class="wrap">
         <div class="stories-head">
           <div>
-            <p class="kicker kicker-light reveal"><b>07</b> Kursiyerlerimiz</p>
+            <p class="kicker kicker-light reveal"><b>08</b> Kursiyerlerimiz</p>
             <h2 id="stories-title" class="h2 reveal">Her hafta yeni bir <span class="script">“Hayırlı olsun!”</span></h2>
             <p class="sec-sub reveal">Ehliyetini alan her kursiyerimizi Instagram'da “Hayırlı olsun canlar” diyerek uğurluyoruz. O paylaşımlardan birkaç satır:</p>
           </div>
@@ -637,11 +1014,6 @@
             <blockquote><p>Yeter ki azimli ol. Yaşın hiç önemi yok.</p></blockquote>
             <figcaption>Temmuz 2026'da 1.500'ü aşkın beğeni alan paylaşımımızın altına yazılan bir yorumdan.</figcaption>
           </figure>
-          <figure class="story story-g">
-            <div class="g-score"><b>4,3</b><span class="stars" aria-hidden="true">★★★★☆</span><small>21 Google değerlendirmesi</small></div>
-            <ul class="g-tags"><li>“Başarılı”</li><li>“Profesyonellik”</li></ul>
-            <a class="btn btn-dark btn-sm" href="https://maps.google.com/?cid=17309508902141883623" target="_blank" rel="noopener">Google'da gör <svg class="ic"><use href="#i-out"/></svg></a>
-          </figure>
           <figure class="story story-ig">
             <svg class="ic big-ig"><use href="#i-insta"/></svg>
             <p class="ig-count"><b>1.400+</b> takipçi · <b>340+</b> paylaşım</p>
@@ -656,7 +1028,7 @@
     <section class="faq-sec" id="sss" aria-labelledby="faq-title">
       <div class="wrap faq-grid">
         <div class="faq-aside">
-          <p class="kicker reveal"><b>08</b> SSS</p>
+          <p class="kicker reveal"><b>09</b> SSS</p>
           <h2 id="faq-title" class="h2 reveal">Sıkça <span class="u">sorulanlar.</span></h2>
           <p class="sec-sub reveal">Aklındaki soru burada yoksa çekinme; bir telefon ya da bir WhatsApp mesajı uzağındayız.</p>
           <div class="faq-cta reveal">
@@ -717,7 +1089,7 @@
     <section class="contact" id="iletisim" aria-labelledby="contact-title">
       <div class="wrap">
         <div class="sec-head">
-          <p class="kicker kicker-light reveal"><b>09</b> İletişim</p>
+          <p class="kicker kicker-light reveal"><b>10</b> İletişim</p>
           <h2 id="contact-title" class="h2 reveal">Yolun Ürgüp'ten geçiyorsa, <span class="u">bir çayımızı iç.</span></h2>
         </div>
         <div class="contact-grid">
@@ -824,6 +1196,7 @@
         <div>
           <h4>Rehber</h4>
           <ul>
+            <li><a href="#egitim">Trafik Akademisi</a></li>
             <li><a href="#yas">Yaş hesaplayıcı</a></li>
             <li><a href="#surec">Ehliyet süreci</a></li>
             <li><a href="#belgeler">Gerekli belgeler</a></li>
@@ -844,7 +1217,7 @@
       </div>
       <div class="foot-bottom">
         <p>© <span id="year">2026</span> Ürgüp Yıldız Sürücü Kursu. Tüm hakları saklıdır.</p>
-        <p class="legal">Mevzuat bilgileri MEB Özel Motorlu Taşıt Sürücüleri Kursu Yönetmeliği ve 2026 MTSK e-Sınav Kılavuzu esas alınarak hazırlanmıştır; güncel durum için kursumuza danışınız. Sitemiz çerez kullanmaz ve ziyaretçi verisi toplamaz; evrak listesi işaretlemeleriniz yalnızca kendi cihazınızda saklanır. Harita Google Haritalar tarafından sağlanır.</p>
+        <p class="legal">Mevzuat bilgileri MEB Özel Motorlu Taşıt Sürücüleri Kursu Yönetmeliği ve 2026 MTSK e-Sınav Kılavuzu esas alınarak hazırlanmıştır; güncel durum için kursumuza danışınız. Sitemiz çerez kullanmaz ve ziyaretçi verisi toplamaz; evrak listesi işaretlemeleriniz, akademi ilerlemeniz ve deneme sınavı sonuçlarınız yalnızca kendi cihazınızda saklanır. Harita Google Haritalar tarafından sağlanır.</p>
         <a class="to-top" href="#top">Yukarı <svg class="ic"><use href="#i-arrow"/></svg></a>
       </div>
     </div>
@@ -872,6 +1245,13 @@
     ]
   }
   </script>
-  <script src="assets/site.js?v=1" defer></script>
+  <script src="assets/site.js?v=3" defer></script>
+  <script src="assets/kit.js?v=3" defer></script>
+  <script src="assets/academy-gfx.js?v=4" defer></script>
+  <script src="assets/academy-3d.js?v=4" defer></script>
+  <script src="assets/academy-top.js?v=4" defer></script>
+  <script src="assets/academy.js?v=4" defer></script>
+  <script src="assets/exam-bank.js?v=3" defer></script>
+  <script src="assets/exam.js?v=3" defer></script>
 </body>
 </html>
