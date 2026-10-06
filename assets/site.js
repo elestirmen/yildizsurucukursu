@@ -115,48 +115,20 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   $$('.reveal').forEach((el) => revealIO.observe(el));
 
-  /* ---------------- Hero: kaydırma efektleri ---------------- */
-  const hero = $('.hero');
-  const heroContent = $('.hero-content');
+  /* ---------------- Üst menü gölgesi ve hızlı arama çubuğu ---------------- */
   const quickbar = $('.quickbar');
-  new IntersectionObserver(([e]) => hero.classList.toggle('paused', !e.isIntersecting)).observe(hero);
-
   let ticking = false;
   function onScroll() {
     const y = scrollY;
-    nav.classList.toggle('scrolled', y > 30);
-    quickbar.classList.toggle('show', y > innerHeight * 0.75);
-    if (!reduced && y < innerHeight * 1.3) {
-      heroContent.style.transform = `translate3d(0, ${(y * 0.28).toFixed(1)}px, 0)`;
-      heroContent.style.opacity = String(Math.max(0, 1 - y / (innerHeight * 0.8)));
-    }
+    nav.classList.toggle('scrolled', y > 8);
+    if (quickbar) quickbar.classList.toggle('show', y > innerHeight * 0.75);
     ticking = false;
   }
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   onScroll();
 
-  // Kaydırırken araç hızlanır (Web Animations API ile oynatma hızı)
-  if (!reduced && typeof document.getAnimations === 'function') {
-    let boost = 0, lastY = scrollY, raf = 0, anims = [];
-    const collect = () => { anims = $$('.layer i, .lane, .car .spin').flatMap((el) => el.getAnimations()); };
-    setTimeout(collect, 600);
-    const tick = () => {
-      boost *= 0.9;
-      const rate = 1 + boost;
-      anims.forEach((a) => { a.playbackRate = rate; });
-      if (boost > 0.02) raf = requestAnimationFrame(tick);
-      else { anims.forEach((a) => { a.playbackRate = 1; }); raf = 0; }
-    };
-    addEventListener('scroll', () => {
-      const dy = Math.abs(scrollY - lastY);
-      lastY = scrollY;
-      if (hero.classList.contains('paused') || !anims.length) return;
-      boost = Math.min(5, boost + dy / 45);
-      if (!raf) raf = requestAnimationFrame(tick);
-    }, { passive: true });
-  }
-
   /* ---------------- Gösterge paneli ---------------- */
+  if ($('.dash')) {
   const polar = (cx, cy, r, deg) => { const a = (deg * Math.PI) / 180; return [cx + r * Math.cos(a), cy - r * Math.sin(a)]; };
   const trNum = (n, d) => n.toFixed(d).replace('.', ',');
   let gid = 0;
@@ -220,6 +192,7 @@
     });
   }, { threshold: 0.35 }).observe($('.dash'));
 
+  }
   /* ---------------- Kartlarda 3B eğim ---------------- */
   if (finePointer && !reduced) {
     $$('.tilt').forEach((card) => {
@@ -238,6 +211,7 @@
   /* ---------------- Ön kayıt formuna yönlendirme ---------------- */
   const form = $('#apply');
   const focusForm = (course) => {
+    if (!form) return;
     if (course) {
       const radio = $$('input[name="egitim"]', form).find((r) => r.value === course);
       if (radio) radio.checked = true;
@@ -248,6 +222,7 @@
   $$('[data-kayit]').forEach((a) => a.addEventListener('click', () => focusForm(null)));
 
   /* ---------------- Yaş hesaplayıcı ---------------- */
+  if ($('#age-board')) {
   const CLASSES = [
     { k: 'M', name: 'Moped', age: 16, desc: '50 cm³ ve 45 km/s\'e kadar motorlu bisiklet' },
     { k: 'A1', name: 'Hafif motosiklet', age: 16, desc: '125 cm³ ve 11 kW\'a kadar', ours: true },
@@ -289,9 +264,9 @@
       let cls = 'idle', st = `<span>${c.desc}</span>`;
       if (birth) {
         const need = c.age;
-        if (c.alt && age >= c.alt) { cls = 'ok'; st = `${ICON('i-check')}<span>Alabilirsin</span>`; okCount++; }
-        else if (c.alt && age >= need) { cls = 'soft'; st = `${ICON('i-check')}<span>2 yıllık A2 belgenle alabilirsin</span>`; okCount++; }
-        else if (age >= need) { cls = 'ok'; st = `${ICON('i-check')}<span>Alabilirsin</span>`; okCount++; }
+        if (c.alt && age >= c.alt) { cls = 'ok'; st = `${ICON('i-check')}<span>Alabilirsiniz</span>`; okCount++; }
+        else if (c.alt && age >= need) { cls = 'soft'; st = `${ICON('i-check')}<span>2 yıllık A2 belgesiyle alınabilir</span>`; okCount++; }
+        else if (age >= need) { cls = 'ok'; st = `${ICON('i-check')}<span>Alabilirsiniz</span>`; okCount++; }
         else {
           const when = addYears(birth, need);
           cls = 'wait';
@@ -305,18 +280,21 @@
         `<div class="cls-st">${st}</div></div>`;
     }).join('');
 
-    if (!birthInput.value) summary.textContent = 'Tarih girdiğinde sonuçlar burada belirecek.';
-    else if (!birth) summary.textContent = 'Lütfen geçerli bir doğum tarihi gir.';
-    else if (okCount === 0) summary.innerHTML = `<b>${age} yaşındasın.</b> 16 yaşını doldurduğunda M, A1 ve B1 sınıfları için başvurabilirsin — ${next ? `yani ${fmtDate(next.when)} tarihinde.` : ''}`;
-    else if (!next) summary.innerHTML = `<b>${age} yaşındasın.</b> Listedeki tüm sınıflar için yaş şartını karşılıyorsun!`;
-    else summary.innerHTML = `<b>${age} yaşındasın.</b> Şu an ${okCount} sınıf için yaş şartını karşılıyorsun. Sıradaki: <b>${next.k}</b> sınıfı, ${fmtDate(next.when)}.`;
+    if (!birthInput.value) summary.textContent = 'Tarih girdiğinizde sonuçlar burada görünecek.';
+    else if (!birth) summary.textContent = 'Lütfen geçerli bir doğum tarihi girin.';
+    else if (okCount === 0) summary.innerHTML = `<b>${age} yaşındasınız.</b> 16 yaşını doldurduğunuzda M, A1 ve B1 sınıfları için başvurabilirsiniz — ${next ? `yani ${fmtDate(next.when)} tarihinde.` : ''}`;
+    else if (!next) summary.innerHTML = `<b>${age} yaşındasınız.</b> Listedeki tüm sınıflar için yaş şartını karşılıyorsunuz.`;
+    else summary.innerHTML = `<b>${age} yaşındasınız.</b> Şu an ${okCount} sınıf için yaş şartını karşılıyorsunuz. Sıradaki: <b>${next.k}</b> sınıfı, ${fmtDate(next.when)}.`;
   }
   birthInput.addEventListener('input', renderAge);
   birthInput.addEventListener('change', renderAge);
   renderAge();
 
+  }
   /* ---------------- Konfeti ---------------- */
-  const cv = $('#confetti'), ctx = cv.getContext('2d');
+  let cv = $('#confetti');
+  if (!cv) { cv = document.createElement('canvas'); cv.className = 'confetti'; cv.id = 'confetti'; cv.setAttribute('aria-hidden', 'true'); document.body.appendChild(cv); }
+  const ctx = cv.getContext('2d');
   let bits = [], confRAF = 0;
   function confetti(x, y, n = 150) {
     if (reduced) return;
@@ -347,6 +325,7 @@
   window.YildizFX = { confetti, burstFrom, focusForm: (c) => focusForm(c) };
 
   /* ---------------- Süreç: kaydırmayla ilerleyen araç ---------------- */
+  if ($('#journey')) {
   const J = $('#journey');
   const roadSvg = $('.road-svg', J);
   const roadPaths = $$('path', roadSvg);
@@ -436,12 +415,14 @@
   addEventListener('load', buildRoad);
   buildRoad();
 
+  }
   /* ---------------- Evrak listesi ---------------- */
+  if ($('#checklist')) {
   const KEY = 'yildiz-evrak-v1';
   const saved = store.get(KEY, {});
   const checks = $$('#checklist input');
   const pCard = $('.progress-card');
-  const MSGS = ['Hadi başlayalım!', 'Güzel başlangıç!', 'İyi gidiyorsun.', 'Yarıyı geçtin!', 'Son bir belge kaldı!', 'Harika! Evrakların tamam, seni bekliyoruz 🎉'];
+  const MSGS = ['Başlayalım', 'İyi bir başlangıç', 'İlerliyorsunuz', 'Yarıyı geçtiniz', 'Son bir belge kaldı', 'Belgeleriniz tamam; kaydınız için sizi bekliyoruz'];
   function paintDocs(fromUser) {
     const req = checks.filter((c) => c.hasAttribute('data-req'));
     const done = req.filter((c) => c.checked).length;
@@ -458,7 +439,9 @@
   });
   paintDocs(false);
 
+  }
   /* ---------------- Kursiyer paylaşımları ---------------- */
+  if ($('#story-track')) {
   const track = $('#story-track');
   $$('[data-slide]').forEach((b) => b.addEventListener('click', () => {
     const card = track.querySelector('.story');
@@ -466,7 +449,9 @@
     track.scrollBy({ left: w * Number(b.dataset.slide), behavior: reduced ? 'auto' : 'smooth' });
   }));
 
+  }
   /* ---------------- Ön kayıt formu → WhatsApp ---------------- */
+  if ($('#apply')) {
   const err = $('#form-error');
   const fail = (input, msg) => {
     err.textContent = msg;
@@ -478,17 +463,18 @@
     e.preventDefault();
     const ad = form.elements.ad.value.trim(), tel = form.elements.tel.value.trim();
     const egitim = form.elements.egitim.value, mesaj = form.elements.mesaj.value.trim();
-    if (ad.length < 3) return fail(form.elements.ad, 'Lütfen adını ve soyadını yaz.');
-    if (tel.replace(/\D/g, '').length < 10) return fail(form.elements.tel, 'Lütfen geçerli bir telefon numarası yaz.');
-    if (!form.elements.onay.checked) return fail(null, 'Devam etmek için onay kutusunu işaretlemelisin.');
+    if (ad.length < 3) return fail(form.elements.ad, 'Lütfen adınızı ve soyadınızı yazın.');
+    if (tel.replace(/\D/g, '').length < 10) return fail(form.elements.tel, 'Lütfen geçerli bir telefon numarası yazın.');
+    if (!form.elements.onay.checked) return fail(null, 'Devam etmek için onay kutusunu işaretlemelisiniz.');
     err.textContent = '';
     const text = `Merhaba, web sitenizden ön kayıt yaptırmak istiyorum.\n\nAd Soyad: ${ad}\nTelefon: ${tel}\nİlgilendiğim eğitim: ${egitim}` + (mesaj ? `\nNot: ${mesaj}` : '');
     window.open(waLink(text), '_blank', 'noopener');
     let ok = $('.form-ok', form);
     if (!ok) { ok = document.createElement('p'); ok.className = 'form-ok'; ok.setAttribute('role', 'status'); err.after(ok); }
-    ok.textContent = 'WhatsApp açılıyor… Mesajı göndermeyi unutma. Açılmadıysa 0532 452 77 22\'ye yazabilirsin.';
+    ok.textContent = 'WhatsApp açılıyor… Mesajı göndermeyi unutmayın. Açılmadıysa 0532 452 77 22\'ye yazabilirsiniz.';
   });
 
+  }
   /* ---------------- Yıl ---------------- */
   const yr = $('#year');
   if (yr) yr.textContent = String(new Date().getFullYear());

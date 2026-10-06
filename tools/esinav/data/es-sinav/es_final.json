@@ -1,0 +1,956 @@
+{
+ "e101": {
+  "a": "D",
+  "topic": "iy-tyd",
+  "exp": "Hayat kurtarma zincirinde önce sağlık kuruluşuna (112) haber verilir, olay yerinde ilk yardımcı temel yaşam desteği uygular, ardından ambulans ekibi müdahale eder ve hasta hastane acil servisinde tedavi edilir.",
+  "fixq": null,
+  "fixo": [
+   "I - III - II - IV",
+   "II - III - I - IV",
+   "III - II - IV - I",
+   "IV - II - I - III"
+  ]
+ },
+ "e102": {
+  "a": "C",
+  "topic": "iy-tyd",
+  "exp": "Yetişkinde temel yaşam desteği 30 kalp masajı, 2 yapay solunum şeklinde uygulanır. Uygulamaya kalp masajıyla başlanır; göğüs kemiği 5-6 cm çöktürülür ve dakikada 100-120 bası yapılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e103": {
+  "a": "C",
+  "topic": "iy-tyd",
+  "exp": "Bebekte kalp basısı, iki meme başını birleştiren hayali çizginin hemen altında göğüs kemiğinin ortasına, bir elin orta ve yüzük parmaklarıyla yapılır; göğüs yaklaşık 4 cm çöktürülür.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e104": {
+  "a": "C",
+  "topic": "iy-tyd",
+  "exp": "Baş geri-çene yukarı pozisyonunda bir el alna, diğer elin iki parmağı çeneye konur; baş geriye itilince dil kökü soluk yolundan uzaklaşır ve bilinci kapalı kazazedenin hava yolu açılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e105": {
+  "a": "C",
+  "topic": "iy-kanama",
+  "exp": "Görseldeki fışkırır tarzdaki atardamar kanamasında yara üzerine temiz bezle baskı yapılır, uzuv yukarı kaldırılır; gerekirse yara ile kalp arasındaki, yaraya en yakın basınç noktasına bastırılır. Uzak noktaya baskı işe yaramaz.",
+  "fixq": "Görseldeki kanama türünde yaralıya ilk yardım olarak hangisinin yapılması yanlıştır?",
+  "fixo": null
+ },
+ "e106": {
+  "a": "D",
+  "topic": "iy-kirik",
+  "exp": "Görseldeki, sırtta çaprazlanıp omuzları arkaya çeken sekiz (8) şeklindeki bandaj, köprücük kemiği kırığında omuzları geride tutarak kırık uçlarının hareketini ve ağrıyı azaltmak için uygulanır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e107": {
+  "a": "B",
+  "topic": "iy-kirik",
+  "exp": "Açık kırıkta kemik bütünlüğüyle birlikte deri bütünlüğü de bozulur ve kırık bölge dış ortamla temas eder. Bu yüzden kan kaybı olur ve enfeksiyon tehlikesi yüksektir.",
+  "fixq": "Açık kırıkla ilgili hangisi söylenemez?",
+  "fixo": null
+ },
+ "e108": {
+  "a": "A",
+  "topic": "iy-tasima",
+  "exp": "Görseldeki yarı yüzükoyun yan yatış (koma) pozisyonu, bilinci kapalı ama solunumu ve nabzı olan kazazedeye uygulanır; dilin geriye kaçmasını ve kusmuğun soluk yoluna girmesini önler.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e109": {
+  "a": "A",
+  "topic": "iy-bilinc",
+  "exp": "Bayılan kişi sırtüstü yatırılıp ayakları yaklaşık 30 cm kaldırılır, sıkan giysiler gevşetilir ve hava yolu açık tutulur. Kusma varsa oturtulmaz; kusmuk soluk yoluna kaçmasın diye yan yatırılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e110": {
+  "a": "B",
+  "topic": "iy-tasima",
+  "exp": "Rentek manevrasında ilk yardımcı kollarını kazazedenin koltuk altlarından geçirir; bir eliyle çenesini, diğeriyle göğsüne bükülmüş kolunu kavrar. Böylece baş-boyun-gövde ekseni korunarak kazazede araçtan çıkarılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e111": {
+  "a": "A",
+  "topic": "iy-tasima",
+  "exp": "Kazazede taşınırken baş-boyun-gövde ekseni korunur ve en az 6 destek noktasından kavranır. Gereksiz hareket ettirilmez; ilk yardımcı kalkarken yükü bacak kaslarına verir ve kendi güvenliğini riske atmaz.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e112": {
+  "a": "D",
+  "topic": "iy-temel",
+  "exp": "Kurallara uymama eğilimindeki sürücüler sık ve gereksiz şerit değiştirme gibi riskli davranışlar gösterir. Hız sınırına uymak, yayaya yol vermek ve levhaları fark etmek kurallara uyan sürücünün davranışlarıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e113": {
+  "a": "C",
+  "topic": "tc-kavramlar",
+  "exp": "Kara Yolları Genel Müdürlüğü, yapım ve bakımından sorumlu olduğu yollarda İçişleri Bakanlığının uygun görüşünü alarak yönetmelikteki sınırların üstünde veya altında hız sınırı belirleyip işaretleyebilir.",
+  "fixq": "Yapım ve bakımından sorumlu olduğu kara yollarında, İçişleri Bakanlığının uygun görüşü alınmak suretiyle, Kara Yolları Trafik Yönetmeliği'nde belirlenen hız sınırlarının üstünde veya altında hız sınırları belirlemek ve işaretlemek hangi kurumun görev ve yetkisidir?",
+  "fixo": null
+ },
+ "e114": {
+  "a": "A",
+  "topic": "tc-isikli",
+  "exp": "Aralıklı yanıp sönen kırmızı ışık, kırmızı sekizgen DUR levhasıyla aynı anlamdadır: sürücü tam durur, yolu kontrol eder ve geçiş hakkı olanlara yol verdikten sonra geçer.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e115": {
+  "a": "B",
+  "topic": "tc-sollama",
+  "exp": "Mavi levha, soldaki şeridin sona erip sağdaki şeritle birleştiğini bildirir. Bu şeritteki sürücü yavaşlar, sağ şeritteki araçların geçişini gözeterek güvenle sağ şeride geçer.",
+  "fixq": null,
+  "fixo": [
+   "En sol şeride geçmeli",
+   "Yavaşlayarak sağ şeride girmeli",
+   "Hızlanarak bulunduğu şeritte devam etmeli",
+   "Kırmızı renkli aracı uyararak yavaşlamasını sağlamalı"
+  ]
+ },
+ "e116": {
+  "a": "D",
+  "topic": "tc-uyari",
+  "exp": "Köprü yaklaşımı levhası, beyaz zemin üzerinde siyah eğik şeritler bulunan dikey dikdörtgen bir levhadır; köprü başlarına konarak sürücüyü daralan köprü girişine karşı uyarır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e117": {
+  "a": "D",
+  "topic": "tc-uyari",
+  "exp": "Görseldeki levha kasisli yolu bildirir. Fark edilmeden hızla geçilirse araç sert sarsılır; yük zarar görebilir, direksiyon hâkimiyeti kaybolabilir, aks kırılabilir veya amortisörler arızalanabilir.",
+  "fixq": "I. Yükün hasar görmesi\nII. Direksiyon hâkimiyetinin kaybolması\nIII. Araç aksının kırılması veya amortisörlerin arızalanması\nGörseldeki sürücü trafik işaretini fark etmeden yoluna devam ederse numaralanmış ifadelerden hangilerinin olma ihtimali vardır?",
+  "fixo": null
+ },
+ "e118": {
+  "a": "C",
+  "topic": "tc-sollama",
+  "exp": "Sürücüler geçme, dönme gibi zorunlu hâller dışında şerit değiştiremez. Üç şeritli iki yönlü yolda sağ şeridi izlemek ve şerit değiştirmeden önce gireceği şeritteki araçları beklemek kurala uygundur.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e119": {
+  "a": "B",
+  "topic": "tc-ozel",
+  "exp": "Hemzemin demir yolu geçitlerinde ve yaklaşımında öndeki aracı geçmek yasaktır. Arkadaki sürücü öndeki aracın durup kontrol ederek geçmesini bekler, ardından kendisi de durup kontrol ederek geçer.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e120": {
+  "a": "A",
+  "topic": "tc-ceza",
+  "exp": "Bir yıl içinde 100 ceza puanını ilk kez dolduran sürücünün belgesi 2 ay geri alınır ve eğitime gönderilir; aynı yıl ikinci kez doldurursa 4 ay, üçüncüsünde belge süresiz iptal edilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e122": {
+  "a": "A",
+  "topic": "tc-kaza",
+  "exp": "Arkadan çarpmalı kazaların başlıca nedeni takip mesafesine uyulmamasıdır. Yeterli mesafe bırakan sürücü, öndeki araç aniden yavaşlasa ya da dursa bile güvenle durabilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e124": {
+  "a": "A",
+  "topic": "tc-yatay",
+  "exp": "Bu yolda iki şerit görseldeki araçların yönüne, en soldaki şerit karşı yöne ayrılmıştır. Çift çizginin sürekli tarafındaki sürücü çizgiyi geçemez; karşı yön şeridine girerek sollayan 1 ve 2 numaralı araçlar hatalıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e127": {
+  "a": "D",
+  "topic": "tc-gecis",
+  "exp": "Geçiş üstünlüğünde öncelik; yaralı ve acil hasta taşıyan ambulanslar, organ ve doku nakli yapan araçlar, itfaiye ve benzeri acil müdahale araçları, ardından güvenlik güçlerine ait araçlar şeklindedir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e128": {
+  "a": "B",
+  "topic": "tc-park",
+  "exp": "Duraklanan veya park edilen yerden çıkarken sürücü ışıkla ya da kolla işaret verir, aracını ve çevresini kontrol eder, görüş alanı dışında yer varsa gözcü bulundurur. Yoldaki araçları durdurmaz, onlara yol verir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e130": {
+  "a": "C",
+  "topic": "tc-yukleme",
+  "exp": "Kamyon, kamyonet ve römorklarda yükle birlikte yolcu taşınırken yükler sağlamca yerleştirilip bağlanmalı, kasanın yan ve arka kapakları kapalı olmalıdır; aksi hâlde yük kayar ve yolcular düşebilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e131": {
+  "a": "D",
+  "topic": "tc-yukleme",
+  "exp": "Emniyet kemeri kazayı önlemez; kaza anında kişiyi koltukta tutarak araç içinde savrulmasını ve dışarı fırlamasını engeller, böylece ölüm ve ağır yaralanmaları en aza indirir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e133": {
+  "a": "C",
+  "topic": "tc-belge",
+  "exp": "Muayene süresi dolmamış olsa bile kazaya karışan ve trafik zabıtasınca muayenesi gerekli görülen araçlar ile üzerinde değişiklik yapılan araçların özel muayeneden geçirilmesi zorunludur.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e134": {
+  "a": "A",
+  "topic": "tc-hiz",
+  "exp": "Viraja girmeden önce hız azaltılmalıdır; virajda yüksek hız merkezkaç etkisini artırarak aracın savrulmasına ya da yoldan çıkmasına yol açar. Viraj içinde hız sabit tutulur, çıkışta artırılır.",
+  "fixq": "Sürüş güvenliğini hangisi olumsuz yönde etkiler?",
+  "fixo": null
+ },
+ "e135": {
+  "a": "D",
+  "topic": "tc-cevre",
+  "exp": "Atıklar kötü koku, çirkin görüntü ve hastalık taşıyan zararlıların üremesiyle çevreye zarar verir. Toplanıp işlenerek yeniden kullanılabilir hâle getirilmeleri (geri dönüşüm) ise zarar değil, faydadır.",
+  "fixq": "Hangisi atıkların çevreye verdiği zararlardan biri değildir?",
+  "fixo": null
+ },
+ "e136": {
+  "a": "A",
+  "topic": "at-motor",
+  "exp": "Silindir kapak contası, silindir kapağı ile motor bloğu arasını sızdırmaz yapar. Doğru görsel dört silindir delikli ince conta parçasıdır; conta işlevini yitirirse soğutma suyu silindirlere ve yağa karışır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e137": {
+  "a": "D",
+  "topic": "at-gosterge",
+  "exp": "Daire içinde ABS yazan sarı ikaz lambası, fren sistemindeki ABS (kilitlenme önleyici fren) arızasını gösterir. Normal frenler çalışsa da ani frenlemede tekerlekler kilitlenebilir; araç servise götürülmelidir.",
+  "fixq": "Şekildeki uyarı ışığının araç gösterge panelinde yanması aracın hangi sisteminde arıza olduğunu belirtir?",
+  "fixo": null
+ },
+ "e138": {
+  "a": "C",
+  "topic": "at-gosterge",
+  "exp": "Ön camı ve üzerine püskürtülen suyu gösteren bu ikaz lambası, cam silecek suyu deposundaki suyun azaldığını bildirir. Sürücü depoya su veya cam suyu eklemelidir.",
+  "fixq": "Şekildeki uyarı ışığı araç gösterge panelinde yandığında sürücü ne yapmalıdır?",
+  "fixo": null
+ },
+ "e139": {
+  "a": "A",
+  "topic": "at-bakim",
+  "exp": "Koltuk ve aynaların sürüşten önce sürücüye göre ayarlanması, pedallara ve direksiyona rahat ulaşmayı ve araç çevresini iyi görmeyi sağlar; böylece sürüş hem konforlu hem güvenli olur.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e140": {
+  "a": "C",
+  "topic": "at-bakim",
+  "exp": "Uzun süre kullanılmayan araçta akü kendiliğinden boşalır ve motor yağı zamanla oksitlenip özelliğini kaybeder. Fren balataları ise sürtünmeyle aşındığından kullanılmayan araçta azalmaz.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e141": {
+  "a": "B",
+  "topic": "at-yakit",
+  "exp": "Dizel araca yanlışlıkla benzin konulursa motor çalıştırılmamalı, yakıt deposu boşaltılıp sistem temizlenmelidir. Benzin, dizel yakıt sisteminin yağlanmasını bozarak pompa ve enjektörlere ciddi zarar verir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e142": {
+  "a": "C",
+  "topic": "at-gosterge",
+  "exp": "Yağ basıncı lambası motorun yağsız kaldığını, şarj lambası akünün şarj edilmediğini (ör. kayış kopması) gösterir; ikisinde de araç uygun yerde hemen durdurulup kontak kapatılır. ABS arızasında normal frenler çalışır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e143": {
+  "a": "D",
+  "topic": "at-gosterge",
+  "exp": "Motor yağlama yapmadığında ağzından damla düşen kırmızı yağdanlık şeklindeki yağ basıncı ikaz lambası yanar. Bu durumda araç hemen durdurulup motor kapatılmalı ve yağ seviyesi kontrol edilmelidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e144": {
+  "a": "D",
+  "topic": "at-bakim",
+  "exp": "Ani duruş ve kalkışlardan kaçınmak, önerilen lastikleri kullanmak ve bakımları zamanında yaptırmak motorun ve lastiklerin verimli çalışmasını sağlar; böylece araç daha az yakıt tüketir.",
+  "fixq": "Ani duruş ve hızlanmalardan kaçınılması\nTavsiye edilen tip ve ebatlarda araç lastiği kullanılması\nAraçta yapılması gerekli bakım ve ayarların zamanında yapılması\nVerilenlerin yapılması durumunda hangisinin gerçekleşmesi beklenir?",
+  "fixo": null
+ },
+ "e145": {
+  "a": "B",
+  "topic": "ta-adab",
+  "exp": "Trafik adabına sahip sürücü kuralların nedenini öğrenir ve bir ihlalin kendisinin ve sevdiklerinin canını tehlikeye atabileceğinin farkındadır. İhlalin sonucunu yalnızca para cezası olarak görmez.",
+  "fixq": "I. Trafikteki bütün kuralların nedenini öğrenir.\nII. Araç kullanırken yapacağı bir kural ihlalinin sonucunda sadece maddi ceza olduğunu düşünür.\nIII. Trafik içinde yapacağı bir kural ihlalinde, kendisinin ya da sevdiklerinin canını tehlikeye attığının farkındadır.\nNumaralanmış ifadelerden hangileri trafik adabına sahip olan bir sürücü için söylenebilir?",
+  "fixo": null
+ },
+ "e146": {
+  "a": "B",
+  "topic": "ta-surucu",
+  "exp": "Sürekli ve ani şerit değiştirmek diğer sürücülerin beklemediği bir davranıştır; dikkatlerini dağıtır, paniğe ve ani manevralara yol açarak kaza riskini artırır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e148": {
+  "a": "A",
+  "topic": "ta-iletisim",
+  "exp": "Başarılı iletişim için insanların değişebileceğine inanmak, dinlerken hemen yargılamamak, sevmediği kişilere de iletişime açık olmak ve tek bir olaydan genelleme yapmamak gerekir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e150": {
+  "a": "D",
+  "topic": "ta-adab",
+  "exp": "Trafik kazaları can kaybının yanında ağaçlara zarar, köprü ve tünellerde ulaşımın aksaması, elektrik kesintileri ve tehlikeli yük döküldüğünde büyük çevre felaketleri gibi toplumsal zararlara da yol açar.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e201": {
+  "a": "C",
+  "topic": "iy-vucut",
+  "exp": "Omurilik, omurga kanalı içinde boyundan kuyruk sokumuna kadar uzanır; beyin ile vücut arasındaki sinir iletimini sağlar ve reflekslerin merkezidir. Omurilik soğanı ise beyin sapında yer alır, solunum ve dolaşımı yönetir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e202": {
+  "a": "B",
+  "topic": "iy-degerlendirme",
+  "exp": "Bilinci kapalı yaralıda dil geriye kayıp hava yolunu tıkayabilir. Yaralı düz zeminde sırtüstü yatırılır, baş geriye itilip çene yukarı kaldırılır. Başın altına yastık koymak boynu öne büker ve hava yolunu daraltır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e203": {
+  "a": "A",
+  "topic": "iy-tyd",
+  "exp": "Ağız ve çevresinde yaralanma olan, ağzı açılamayan ya da ağızdan hava verilemeyen kazazedeye suni solunum ağızdan buruna yapılır. Bacak kırığı, göz-kulak çevresi bulguları veya karın yarası bu yöntemi gerektirmez.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e204": {
+  "a": "B",
+  "topic": "iy-tyd",
+  "exp": "Bebek önce yüzüstü, başı gövdeden aşağıda olacak şekilde ön kola yatırılır ve kürek kemikleri arasına 5 kez vurulur; ardından sırtüstü çevrilip göğüs kemiği üzerine iki parmakla 5 kez bastırılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e205": {
+  "a": "C",
+  "topic": "iy-kanama",
+  "exp": "Solukluk, donuk bakış, soğuk ve nemli deri şok belirtisidir. Şoktaki yaralının üzeri örtülerek vücut ısısı korunur; ağızdan bir şey verilmez, gereksiz yere hareket ettirilmez, uygunsa bacakları 30 cm kadar yükseltilir.",
+  "fixq": "Meydana gelen trafik kazasına tanık olan ilk yardımcı, gerekli güvenlik önlemlerini alarak hemen 112'yi aramıştır. Yaralanan araç sürücüsünün durumunu değerlendirdiğinde; bilincinin kapalı, parmak uçlarında ve dudaklarında solukluk, gözlerinde donukluk, derisinin nemli ve soğuk olduğunu tespit etmiştir.\nBu değerlendirmeye göre, ilk yardımcının yaralı için hangisini yapması doğrudur?",
+  "fixo": null
+ },
+ "e206": {
+  "a": "B",
+  "topic": "iy-kirik",
+  "exp": "Kulak ve burundan kanama, göz çevresinde morluk kafatası kırığı belirtisidir; omurga da yaralanmış olabilir. Bilinç ve yaşam bulguları değerlendirilir, boyun tespit edilir; baş-boyun-gövde ekseni bozulmamalı, yaralı oturtulmamalıdır.",
+  "fixq": "Görseldeki yaralıya ilk yardımcının, hangi uygulamayı yapması uygun değildir ?",
+  "fixo": null
+ },
+ "e207": {
+  "a": "B",
+  "topic": "iy-kirik",
+  "exp": "Kalça ve uyluk kırıklarında açık kırık varsa yara temiz bir bezle kapatılır. Bacaklar arasına yumuşak destek konur, sargılar kırık bölgenin üzerine gelmeyecek şekilde bağlanır, yaralı sırtüstü yatar hâlde tespit edilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e208": {
+  "a": "C",
+  "topic": "iy-kirik",
+  "exp": "Üst kol kırığında kola atel konup kol askısı uygulanır; köprücük kırığında omuzlar sırt çantası (8) bandajıyla geriye çekilir. Ön kol kırığında önce atel yapılmalı, sonra kol askıya alınmalıdır; atelsiz tespit yanlıştır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e209": {
+  "a": "B",
+  "topic": "iy-bilinc",
+  "exp": "Bayılma, beyne giden kanın geçici olarak azalmasıyla oluşan kısa süreli, yüzeysel ve geçici bilinç kaybıdır. Koma ise uzun süreli ve derin bilinç kaybıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e210": {
+  "a": "B",
+  "topic": "iy-bilinc",
+  "exp": "Göğüs ortasında (kravat bölgesinde) başlayıp sol kola, omuza, boyna ve çeneye yayılan, dinlenmekle geçmeyen şiddetli ağrı, yoğun sıkıntı ve ölüm korkusu kalp krizinin tipik belirtileridir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e211": {
+  "a": "A",
+  "topic": "iy-tasima",
+  "exp": "Teskereci yönteminde iki ilk yardımcı görev alır: biri arkadan kollarını yaralının koltuk altlarından geçirip ön kollarını kavrar, diğeri yaralının bacakları arasında durup dizlerinin altından tutarak taşır.",
+  "fixq": "Yaralı taşımada kullanılan \"teskereci yöntemi\"nin uygulanış biçimi hangisinde gösterilmiştir?",
+  "fixo": null
+ },
+ "e212": {
+  "a": "D",
+  "topic": "iy-tasima",
+  "exp": "Yaralı sedyeye kaşık yöntemiyle (yan yana diz çöken ilk yardımcıların kolları üzerinde) ya da köprü yöntemiyle (yaralının üzerinde bacaklarını açan ilk yardımcılarla) yerleştirilir. Tek kişinin yaralıyı arkadan kavraması bu yöntemlerden değildir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e213": {
+  "a": "A",
+  "topic": "tc-kavramlar",
+  "exp": "Belediyeler, sınırları ve mücavir alanları içinde kazaların yol yapısı ve işaretleme yetersizliğinden doğan nedenleriyle ilgili yetkililerce teklif edilen tedbirleri almakla görevlidir. Şehir dışındaki yollarda bu görev Karayolları Genel Müdürlüğünündür.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e214": {
+  "a": "C",
+  "topic": "tc-tanzim",
+  "exp": "Dingil simgesi üzerinde ok ve ton değeri bulunan levha, dingil başına düşen ağırlığı belirtilen değeri aşan araçların geçişini yasaklayarak yük taşıma kapasitesini sınırlar. Metre değerli levhalar genişlik, yükseklik ve uzunluk sınırıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e217": {
+  "a": "B",
+  "topic": "tc-yatay",
+  "exp": "Zıt yönlü oklar yolun iki şeritli ve iki yönlü olduğunu gösterir. Düz ve kesik çizginin yan yana olduğu birleşik çizgide kesik çizgi tarafındaki araç geçme yapabilir, düz çizgi tarafındaki araç çizgiyi geçemez.",
+  "fixq": "I. Yolun, iki şeritli ve iki yönlü olduğunu\nII. 1 numaralı aracın gerektiğinde geçme yapabileceğini\nIII. 2 numaralı aracın gerektiğinde geçme yapabileceğini\nGörseldeki yol çizgileri ve yer işaretlemeleri, numaralanmış ifadelerden hangilerini belirtir?",
+  "fixo": null
+ },
+ "e218": {
+  "a": "C",
+  "topic": "tc-sollama",
+  "exp": "Şerit azalması levhası sağ şeridin kapandığını bildirir. Kapanan şeritteki sürücü, devam eden şeritteki araçlara yol vermeli ve onlar geçtikten sonra güvenle sol şeride geçmelidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e220": {
+  "a": "A",
+  "topic": "tc-hiz",
+  "exp": "Virajlı yolda görüş kısıtlıdır ve geçme yasaktır. Sürücü hızını azaltıp öndeki araçla arasındaki mesafeyi artırmalı, şeridinin sağında kalmalıdır; sola yanaşmak karşıdan gelen araçla çarpışma tehlikesi doğurur.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e221": {
+  "a": "B",
+  "topic": "tc-hiz",
+  "exp": "Ortalama hız tespit levhası otomobiller için 70, minibüs-otobüs ile kamyonet-kamyon için 60 km/saat sınırı gösterir. Otomobil olan 1 ve 2 numaralı araçlar en fazla 70, kamyon olan 3 ve 4 en fazla 60 km/saat hızla gidebilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e222": {
+  "a": "B",
+  "topic": "tc-sollama",
+  "exp": "Şerit levhası en sol şeridin karşı yöne, diğer iki şeridin bizim yöne ait olduğunu gösterir. Düz çizgiyi aşıp karşı yön şeridinden geçme yapan 3 numaralı araç hatalıdır; kendi yönündeki sol şeritten geçmek ise kurala uygundur.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e223": {
+  "a": "B",
+  "topic": "tc-gecis",
+  "exp": "Tali yoldan gelen araç ana yoldaki araçlara yol verir. Ana yoldaki araçlardan sola dönecek olan, karşıdan düz gelen araca yol verir. Bu nedenle önce düz giden 1, sonra sola dönen 3, en son tali yoldaki 2 geçer.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e225": {
+  "a": "B",
+  "topic": "tc-gecis",
+  "exp": "Geçiş üstünlüğüne sahip aracın sireni duyulunca önce sesin hangi yönden geldiği belirlenir; böylece aracın nereden geleceği anlaşılır ve ona yol vermek için doğru, güvenli manevra yapılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e227": {
+  "a": "A",
+  "topic": "tc-park",
+  "exp": "Karayolları Trafik Kanunu'na göre işaret levhalarına yaklaşım yönünde, park izni verilen yerler dışında, yerleşim yeri içinde 15 metre, yerleşim yeri dışında 100 metre mesafede duraklamak yasaktır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e228": {
+  "a": "D",
+  "topic": "tc-sollama",
+  "exp": "Viraj öncesinde hız azaltılır, şeridin sağında kalarak dar kavisle dönülür. Virajda hızlanmak, geniş kavisle karşı şeride taşmak ve görüşün kısıtlı olduğu yerde geçme yapmak kaza riskini artırır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e229": {
+  "a": "B",
+  "topic": "tc-isik",
+  "exp": "Uzun hüzmeli farlar karşıdaki ve öndeki sürücüleri kamaştırır. Yeterince aydınlatılmış yollarda, karşılaşmalarda, bir aracı takip ederken ve geçerken yanına gelinceye kadar kısa hüzmeli far kullanılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e230": {
+  "a": "C",
+  "topic": "tc-bilgi",
+  "exp": "HGS (Hızlı Geçiş Sistemi) levhası, ücreti elektronik olarak ödenen otoyol gişesine yaklaşıldığını ve HGS'li araçların kullanacağı şeridi bildirir; yani ücretli otoyola girileceğini gösterir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e231": {
+  "a": "D",
+  "topic": "tc-kaza",
+  "exp": "Aracın aşırı ya da dengesiz yüklenmesi, bakımlarının aksatılması ve kural ihlalleri kaza riskini doğrudan artırır. Motorun beygir gücü tek başına kaza nedeni değildir; belirleyici olan aracın nasıl kullanıldığıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e234": {
+  "a": "D",
+  "topic": "tc-hiz",
+  "exp": "Durma mesafesi; aracın hızına, yolun eğimine, kaplamanın cinsi ve durumuna, lastik ve frenlerin durumuna ve sürücünün reaksiyon süresine bağlıdır. Hidrolik direksiyon yalnızca direksiyonu çevirmeyi kolaylaştırır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e235": {
+  "a": "D",
+  "topic": "tc-cevre",
+  "exp": "Bakımı zamanında yapılan araç daha az yakıt tüketir, daha az zararlı egzoz gazı ve gürültü üretir. Gereksiz korna çalmak, yol kenarına atık bırakmak ve emisyon ölçümünü geciktirmek çevreyi kirletir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e236": {
+  "a": "B",
+  "topic": "at-elektrik",
+  "exp": "Kısa farlarla görüş yaklaşık 25 metreye düştüğü için hız, görülen mesafe içinde durulabilecek düzeye indirilmelidir. Uzun farla devam etmek ya da sürekli selektör yapmak karşıdaki sürücüyü kamaştırır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e237": {
+  "a": "A",
+  "topic": "at-sogutma",
+  "exp": "Su pompası, radyatör ve termostat soğutma sisteminin elemanlarıdır. Balata ise fren sisteminin parçasıdır; sürtünme yoluyla tekerleklerin yavaşlamasını sağlar.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e238": {
+  "a": "B",
+  "topic": "at-bakim",
+  "exp": "Silecek lastikleri, lastik basıncı ve motor yağı seviyesi sürücünün kendi yapabileceği günlük kontrollerdir. Antifrizin yoğunluğu, yani donmaya karşı koruma derecesi, özel ölçü aletiyle serviste ölçülür.",
+  "fixq": null,
+  "fixo": [
+   "Silecek lastiklerinin kontrolü",
+   "Antifriz yoğunluk derecesi kontrolü",
+   "Lastik hava basınç kontrolü",
+   "Motor yağı seviyesinin kontrolü"
+  ]
+ },
+ "e239": {
+  "a": "D",
+  "topic": "at-yaglama",
+  "exp": "Yağ kontrolü için araç düz zeminde durdurulup kaput açılır, yağ çubuğu çekilip silinir, yeniden yerine daldırılıp çekilir ve yağ izinin min ile max işaretleri arasında olup olmadığına bakılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e240": {
+  "a": "B",
+  "topic": "at-gosterge",
+  "exp": "Ünlem işaretli lastik kesiti biçimindeki ikaz ışığı lastik basıncı izleme sistemine aittir; basınç düştüğünde, lastik patladığında ya da sensör arızalandığında yanar. Lastiğin ısınması basıncı düşürmediğinden ışığı yakmaz.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e243": {
+  "a": "A",
+  "topic": "at-elektrik",
+  "exp": "Alternatör, motor tarafından V kayışıyla döndürülür. Kayış gevşer, kayar ya da koparsa alternatör aküyü şarj edemez ve şarj ikaz lambası yanar.",
+  "fixq": "Hangi parçanın düzgün çalışmaması, şarj ikaz lambasının yanmasına sebep olur?",
+  "fixo": null
+ },
+ "e244": {
+  "a": "D",
+  "topic": "at-bakim",
+  "exp": "Vitese uygun olmayan düşük ya da yüksek devirde sürmek ve ilk çalıştırmada soğuk motora tam güç vermek yakıt tüketimini artırır. Gereksiz frenden kaçınarak akıcı sürmek ise yakıt tasarrufu sağlar.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e245": {
+  "a": "B",
+  "topic": "ta-adab",
+  "exp": "Kaza, deprem ve sel gibi felaketleri fırsata çevirip çıkar sağlamaya çalışmak toplum adabına aykırıdır. Yardımlaşmak, engelli alanlarına saygı göstermek ve yaşlılara yer vermek adaba uygun davranışlardır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e246": {
+  "a": "D",
+  "topic": "ta-adab",
+  "exp": "Aracını kaldırım üzerine, görme engellilerin yönlendirme yolunu ve tekerlekli sandalye geçişini kapatacak şekilde park eden sürücü, başkalarının haklarını önemsemeyen, sorumluluk bilinci zayıf biridir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e247": {
+  "a": "D",
+  "topic": "ta-adab",
+  "exp": "Afetzedelere yardım götüren araçlara kolaylık sağlayan sürücü kendi işinden feragat eder, başkalarını kendinden önce düşünür (diğerkâmlık) ve kendini onların yerine koyar (empati). Acelecilik ise bu davranışla bağdaşmaz.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e248": {
+  "a": "A",
+  "topic": "ta-surucu",
+  "exp": "Trafikte yaşanan stres kaygıyı artırır, kalp atışlarını hızlandırır ve sürücüleri öfkeli, saldırgan davranışlara yöneltebilir. Bu nedenle saldırgan tutum sergilemedikleri ifadesi yanlıştır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e249": {
+  "a": "C",
+  "topic": "ta-iletisim",
+  "exp": "Yaya geçidinde yayaya öncelik tanınır ve güvenle geçmesi beklenir. Yayayı hızlanması için el, kol ve sözle uyaran sürücü sabırsız davranır; yayaya saygı göstermediği gibi onu tedirgin edip tehlikeye de sokar.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e250": {
+  "a": "D",
+  "topic": "ta-adab",
+  "exp": "Yüksek emisyonlu egzoz dumanı havayı kirleterek doğa ve çevreye, toplumun ortak hakkı olan temiz havaya (kamu hakkı) ve diğer canlılara zarar verir. Belirli bir kişiye yönelik olmadığından bireylere karşı hak ihlali sayılmaz.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e301": {
+  "a": "A",
+  "topic": "tc-tanzim",
+  "exp": "Beyaz zeminli, ortasından siyah çapraz bant geçen yuvarlak levha, daha önce konmuş bütün yasaklama ve kısıtlamaların sona erdiğini bildirir. Kırmızı çerçeveli boş levha taşıt trafiğine kapalı yolu, kırmızı zeminli beyaz bantlı levha girilmez yolu gösterir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e302": {
+  "a": "C",
+  "topic": "tc-sollama",
+  "exp": "Şerit düzenleme levhası her şeridi hangi araçların kullanabileceğini gösterir. Sol iki şeritte kamyon simgesinin üzeri çizilidir; bu şeritlerden birinde seyreden 3 numaralı kamyon kuralı ihlal etmiştir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e303": {
+  "a": "A",
+  "topic": "tc-park",
+  "exp": "Yerleşim yeri içinde ışıklı trafik işaret cihazlarına ve trafik işaret levhalarına yaklaşım yönünde 15 metre mesafe içinde duraklamak yasaktır; böylece işaretlerin diğer sürücülerce görülmesi engellenmez.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e304": {
+  "a": "B",
+  "topic": "tc-ozel",
+  "exp": "Yolcular, güvenlik için aracın kaldırım tarafından, yani sağından indirilip bindirilir. Böylece yolcular taşıt trafiğine çıkmadan inip biner; araç da kapılar kapanmadan hareket ettirilmez.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e305": {
+  "a": "C",
+  "topic": "tc-gecis",
+  "exp": "Dönel kavşakta, kavşak içinde dönen araç kavşağa girmek isteyenlere göre ilk geçiş hakkına sahiptir; bu yüzden önce 2 geçer. Kavşağa girecek araçlardan sağdan gelen 3 önce, 1 en son geçer.",
+  "fixq": null,
+  "fixo": [
+   "1 – 2 – 3",
+   "1 – 3 – 2",
+   "2 – 3 – 1",
+   "3 – 1 – 2"
+  ]
+ },
+ "e306": {
+  "a": "B",
+  "topic": "tc-isik",
+  "exp": "Geceleyin karşı yönden araç geldiğinde uzağı gösteren (uzun hüzmeli) farlar karşıdaki sürücünün gözünü kamaştırır; bu nedenle karşılaşmalarda yakını gösteren farların yakılması zorunludur.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e307": {
+  "a": "A",
+  "topic": "tc-sollama",
+  "exp": "Karşı yönden gelenlerin geçişi zorlaşıyorsa sürücü sağa yanaşmalı, varsa sığınma cebine girmeli, gerekirse durmalıdır. Bu durumda ilk geçiş hakkında ısrar etmek kurala ve trafik adabına aykırıdır.",
+  "fixq": "İki yönlü trafiğin kullanıldığı yollarda, karşı yönden gelen araçların hareketini zorlaştıran bir durum varsa sürücülerin geçişi kolaylaştırmak için hangisini yapması yanlıştır?",
+  "fixo": null
+ },
+ "e308": {
+  "a": "D",
+  "topic": "tc-isik",
+  "exp": "Geceleyin karşılaşmalarda, karşıdan gelen sürücünün gözünü kamaştırmamak için uzağı gösteren ışıklar söndürülüp yakını gösteren (kısa hüzmeli) ışıklar yakılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e309": {
+  "a": "B",
+  "topic": "tc-sollama",
+  "exp": "Görüşün yetersiz olduğu tepe üstleri ve dönemeçlerde karşıdan gelen araç görülemediği için öndeki aracı geçmek yasaktır; hız azaltılmalı ve şeridin sağından gidilmelidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e310": {
+  "a": "C",
+  "topic": "tc-sollama",
+  "exp": "Yol kenarındaki kırmızı çerçeveli, kamyon simgeli levha kamyonların öndeki taşıtı geçmesini yasaklar. Bu yüzden 3 numaralı kamyon önündeki araçları geçemez; diğer araçlar kurala uygun şekilde geçebilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e311": {
+  "a": "B",
+  "topic": "tc-gecis",
+  "exp": "Kavşakta dönüş yapan sürücü, girdiği yolda karşıya geçmekte olan yayalara yol vermek zorundadır. Sola dönüşler ayrıca hız azaltılarak ve geniş bir kavisle yapılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e312": {
+  "a": "B",
+  "topic": "tc-kaza",
+  "exp": "Hatalı sollama ve uykusuz araç kullanma, sürücünün kendi davranışından kaynaklanan kişiye bağlı kaza nedenleridir. Sis ve gizli buzlanma ise yol ve hava koşullarına bağlı çevresel etkenlerdir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e313": {
+  "a": "C",
+  "topic": "tc-kaza",
+  "exp": "Kavşaklarda geçiş önceliğine uymamak, Karayolları Trafik Yönetmeliği'nde sayılan asli kusurlardandır. Asli kusur, kazanın oluşmasında sürücüyü doğrudan sorumlu kılan kural ihlalidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e314": {
+  "a": "A",
+  "topic": "tc-belge",
+  "exp": "Araçların tescil belgeleri, muayene süresi geçirildiğinde geçersiz sayılır. Bu nedenle araç zamanında muayeneye götürülmelidir; muayenesi yapılmamış araçlar trafikten men edilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e315": {
+  "a": "C",
+  "topic": "tc-bilgi",
+  "exp": "Park yasağı levhasının altına eklenen çekici resimli levha, kurala aykırı park eden araçların çekici ile çekileceğini bildirir. Bu bilgi yalnız arızalı araçlar için değil, park eden bütün araçlar için geçerlidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e316": {
+  "a": "D",
+  "topic": "tc-hiz",
+  "exp": "Konvoy hâlinde yavaş giden araçlar, aralarında kendilerini geçmek isteyen araçların güvenle girebileceği kadar mesafe bırakmalıdır. Böylece geçiş yapan araç tehlikeye düşmeden konvoyun arasına girebilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e317": {
+  "a": "D",
+  "topic": "tc-yukleme",
+  "exp": "Emniyet kemeri kazayı önlemez; ancak kaza anında kişiyi koltukta tutarak araç içinde savrulmasını ve dışarı fırlamasını engeller. Bu sayede ölüm ve ağır yaralanmalar önemli ölçüde azalır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e318": {
+  "a": "B",
+  "topic": "tc-yatay",
+  "exp": "Şerit içine yazılan rakam, o yol kesiminde uyulması gereken azami hızı km/saat cinsinden gösteren bir yatay işarettir. Burada otomobil en fazla 50 km/saat hızla gidebilir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e319": {
+  "a": "D",
+  "topic": "tc-kaza",
+  "exp": "Araçlarda ve yolda oluşan maddi hasarlar, tedavi giderleri ve iş gücü kaybı trafik kazalarının ekonomik sonuçlarıdır. Depresyon, içe kapanma ve zararlı alışkanlıklar ise psikolojik ve sosyal sonuçlardır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e321": {
+  "a": "A",
+  "topic": "tc-isikli",
+  "exp": "Görevli geceleyin bir kolunu yana açarak gidilecek yönü gösterir, diğer elindeki ışıklı çubuğu aşağıdan yarım daire çizerek o yöne doğru hareket ettirirse sürücülerin yön değiştirmesi gerektiğini bildirir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e322": {
+  "a": "D",
+  "topic": "tc-cevre",
+  "exp": "Bakım ve onarımda çıkan eski yağ, akü, lastik gibi parçaların çevreye bırakılmayıp toplama noktalarına verilmesi toprak ve su kirliliğini önler. İnişte motoru durdurmak ise güvenliği tehlikeye atar.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e323": {
+  "a": "A",
+  "topic": "tc-kavramlar",
+  "exp": "Taşıt yolunun her iki yöndeki trafik için kullanıldığı kara yoluna iki yönlü kara yolu denir. Tek yönlü yolda taşıtlar yalnız bir yönde gider; bölünmüş yolda ise iki yön fiziki olarak ayrılmıştır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e324": {
+  "a": "A",
+  "topic": "iy-kanama",
+  "exp": "Baş dönmesi, hava açlığı, huzursuzluk, solukluk ve soğuk, nemli deri şok belirtileridir. Bilinci açık kazazede sırtüstü yatırılıp ayakları yaklaşık 30 cm yükseltilir, üstü örtülür ve ağızdan bir şey verilmez.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e325": {
+  "a": "A",
+  "topic": "iy-kirik",
+  "exp": "Köprücük kemiği kırığında kol, askı ile vücuda tespit edilir ve kazazede oturur pozisyonda hastaneye sevk edilir. Bu pozisyon kırık bölgedeki hareketi ve ağrıyı azaltır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e326": {
+  "a": "D",
+  "topic": "iy-kanama",
+  "exp": "Atardamar kanamasında kan, kalpten yüksek basınçla geldiği için açık kırmızı renktedir ve kalp atımlarıyla uyumlu olarak fışkırır. Koyu renkli taşma tarzı kanama toplardamar, sızıntı tarzı kanama kılcal damar kanamasıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e327": {
+  "a": "B",
+  "topic": "iy-tyd",
+  "exp": "Temel yaşam desteğine; tıbbi yardım ekibi gelip kazazedeyi devralıncaya, kazazede kendiliğinden solumaya başlayıncaya veya ilk yardımcı tükeninceye kadar devam edilir. İlk yardımcı ölüm kararı veremez.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e328": {
+  "a": "A",
+  "topic": "iy-tasima",
+  "exp": "Rentek manevrası; solunum durması, yangın veya patlama tehlikesi gibi acil durumlarda kazazedeyi baş-boyun-gövde ekseni korunarak, omuriliğe zarar vermeden araçtan hızla çıkarmak için kullanılır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e329": {
+  "a": "C",
+  "topic": "iy-tyd",
+  "exp": "Yetişkinlerde temel yaşam desteği 30 kalp masajının ardından 2 suni solunum yapılarak döngüler hâlinde uygulanır. Göğüs kemiğine yaklaşık 5-6 cm derinlikte, dakikada 100-120 hızında bası yapılır.",
+  "fixq": null,
+  "fixo": [
+   "Kalp masajı: 10 – Suni solunum: 1",
+   "Kalp masajı: 20 – Suni solunum: 1",
+   "Kalp masajı: 30 – Suni solunum: 2",
+   "Kalp masajı: 40 – Suni solunum: 2"
+  ]
+ },
+ "e330": {
+  "a": "C",
+  "topic": "iy-bilinc",
+  "exp": "Bayılma, beyne giden kan akışının geçici olarak azalması sonucu oluşan kısa süreli ve yüzeysel bilinç kaybıdır. Koma ise uzun süreli ve derin bir bilinç kaybıdır; bayılan kişi genellikle kısa sürede kendine gelir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e331": {
+  "a": "B",
+  "topic": "iy-bilinc",
+  "exp": "Komadaki kişi dış uyaranlara tepki vermez; yutkunma ve öksürük gibi refleksler kaybolur, idrar ve dışkı kaçırma görülebilir. Sinirli ve olağan dışı davranışlar ise bilinci açık kişide görülür.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e332": {
+  "a": "D",
+  "topic": "iy-temel",
+  "exp": "İlk yardımcı insan vücudu ile ilgili temel bilgilere sahip olmalı; sakin, kendine güvenen, pratik ve iletişim becerisi güçlü olmalıdır. Telaşlı ve tedirgin olmak doğru müdahaleyi engeller.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e333": {
+  "a": "D",
+  "topic": "iy-kanama",
+  "exp": "Basınç noktaları atardamarların kemik üzerinden geçtiği yerlerdir: şakak, çene altı, boyun (şah damarı), köprücük kemiği üstü, koltuk altı, kol içi, kasık ve diz arkası. Bu noktalara bası, kanayan yere giden kanı azaltır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e334": {
+  "a": "B",
+  "topic": "iy-temel",
+  "exp": "İlk yardımın amaçları yaşamsal fonksiyonları sürdürmek, durumun kötüleşmesini önlemek ve iyileşmeyi kolaylaştırmaktır. Tıbbi yardım ve tedavi ise sağlık personelinin işidir; ilk yardım ilaçsız uygulamalardır.",
+  "fixq": "Hangisi ilk yardımın amaçlarından biri değildir?",
+  "fixo": null
+ },
+ "e335": {
+  "a": "C",
+  "topic": "iy-temel",
+  "exp": "İlk yardımın öncelikli amaçları hayati tehlikeyi ortadan kaldırmak ve yaşamsal fonksiyonların sürdürülmesini sağlamaktır. Tedavi etmek ilk yardımcının değil, sağlık personelinin görevidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e336": {
+  "a": "C",
+  "topic": "at-yaglama",
+  "exp": "Contalardan oluşan kaçaklar yağın dışarı sızmasına, üreticinin önerdiği özellikte olmayan yağ kullanılması ise yağın yanma odasına geçip yanmasına yol açar. Bu iki durum motor yağının eksilmesine neden olur.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e337": {
+  "a": "A",
+  "topic": "at-lastik",
+  "exp": "195/55 R16 87V yazısında 195 taban genişliğini milimetre olarak, 55 yanak yüksekliğinin genişliğe oranını (%), 16 jant çapını inç olarak, 87 yük indeksini, V ise hız sembolünü gösterir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e338": {
+  "a": "A",
+  "topic": "at-yaglama",
+  "exp": "Yağ seviyesi; araç düz zemindeyken, motor durdurulup yağın kartere inmesi için biraz beklendikten sonra, çubuk silinip yeniden takılarak kontrol edilir. Motor çalışırken ölçüm yanlış sonuç verir ve tehlikelidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e339": {
+  "a": "D",
+  "topic": "at-gosterge",
+  "exp": "Akü simgeli şarj ikaz lambası; V kayışı gevşediğinde veya koptuğunda, alternatör arızalandığında ya da akü şarj olmadığında yanar. Fren hidroliğinin azalması ise ayrı bir uyarı olan fren ikaz lambasını yakar.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e340": {
+  "a": "B",
+  "topic": "at-gosterge",
+  "exp": "Hararet (soğutma suyu sıcaklığı) göstergesinin ibresi kırmızı bölgeye ulaşmışsa motor aşırı ısınmıştır. Sürücü güvenli bir yerde durup motoru soğumaya bırakmalı ve soğutma sistemini kontrol ettirmelidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e341": {
+  "a": "B",
+  "topic": "at-bakim",
+  "exp": "Kirli hava filtresi yanma için gereken havayı azaltır; yüksek rölanti devri ile bozuk yakıt pompası ve enjektör ayarları gereğinden fazla yakıt harcanmasına neden olur. Bu durumların hepsi yakıt tüketimini artırır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e342": {
+  "a": "B",
+  "topic": "at-gosterge",
+  "exp": "Fren balatası aşınma uyarısı, iki yanında kesik kesik yay çizgileri bulunan sarı daire simgesidir; yandığında balatalar en kısa sürede değiştirilmelidir. Ünlemli kırmızı simge ise fren sistemi uyarısıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e343": {
+  "a": "D",
+  "topic": "at-gosterge",
+  "exp": "Kırmızı renkli hararet, motor arıza ve yağ basıncı uyarıları, motorun zarar görmemesi için aracın derhal durdurulmasını gerektirir. Sarı renkli balata aşınma uyarısı ise ilk fırsatta servise gidilmesi gerektiğini bildirir.",
+  "fixq": "Araç gösterge panelinde hangi uyarı ışığının yanması aracın derhal durdurulmasını gerektirmez?",
+  "fixo": null
+ },
+ "e344": {
+  "a": "C",
+  "topic": "at-fren",
+  "exp": "Amortisör, yayların salınımını sönümleyerek yol darbelerini emer ve tekerleklerin yolla temasını korur; süspansiyon sisteminin parçasıdır. Şaft, debriyaj ve diferansiyel ise güç aktarma organlarıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e345": {
+  "a": "A",
+  "topic": "ta-iletisim",
+  "exp": "Öndeki araçtan yaşlı bir yolcu inmektedir. Arkadaki sürücünün korna çalmadan ve öfkelenmeden sabırla beklemesi hem yolcunun güvenliğini sağlar hem de trafikte saygı ve hoşgörünün gereğidir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e346": {
+  "a": "C",
+  "topic": "ta-adab",
+  "exp": "Sorumluluk, sürücünün kendisinin, yolcularının ve diğer yol kullanıcılarının can güvenliğini gözeterek davranmasıdır. Hız sınırını aşarak ailesini tehlikeye atan sürücü bu değeri yerine getirmemiştir.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e347": {
+  "a": "D",
+  "topic": "ta-adab",
+  "exp": "Önündeki sürücüyü korna çalarak sıkıştıran sürücü sabırsız davranmaktadır. Korna yalnızca bir tehlikeyi önlemek için kullanılmalı, diğer sürücülere hareket etmeleri için zaman tanınmalıdır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e348": {
+  "a": "A",
+  "topic": "ta-adab",
+  "exp": "Yağışlı havada yavaşlayarak yayalara su sıçratmamak, diğer yol kullanıcılarına gösterilen inceliğin, yani nezaketin göstergesidir. Nazik sürücü davranışının başkalarını nasıl etkileyeceğini düşünür.",
+  "fixq": null,
+  "fixo": [
+   "Nezaket",
+   "Fedakârlık",
+   "Uyarma",
+   "Sabır"
+  ]
+ },
+ "e349": {
+  "a": "C",
+  "topic": "ta-iletisim",
+  "exp": "Eliyle veya yüz ifadesiyle özür dilemek, sözsüz iletişimin yani beden dilinin olumlu kullanımıdır. Bu tür davranışlar trafikte gerginliği azaltır ve karşılıklı anlayışı artırır.",
+  "fixq": null,
+  "fixo": null
+ },
+ "e350": {
+  "a": "B",
+  "topic": "ta-adab",
+  "exp": "Damperi kalkık hâlde yola çıkan kamyon, herkesin ortak kullandığı yön levhası direğine zarar vermiştir. Kamu malına zarar vermek kamu hakkının ihlalidir; öfke veya sabırsızlık görselden kesin olarak çıkarılamaz.",
+  "fixq": null,
+  "fixo": null
+ }
+}

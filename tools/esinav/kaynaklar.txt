@@ -1,0 +1,14 @@
+# MEB sınav kitapçıkları (B sertifikası / yeni müfredat / MTSKS) — her oturumdan K kitapçığı kullanıldı
+https://www.meb.gov.tr/sinavlar/dokumanlar/2012/sorular/MTSAS/{Subat,Nisan,Haziran,Eylul,Ekim,Aralik}_B.zip
+https://www.meb.gov.tr/sinavlar/dokumanlar/2013/soru/MTSAS/{Subat,Mart,Nisan,Agustos,Kasim,Aralik}_B.zip
+https://www.meb.gov.tr/sinavlar/dokumanlar/2014/soru/MTSAS/{Ocak,Subat,Haziran,Temmuz,Agustos,Eylul,Ekim,Aralik}_B.zip
+https://www.meb.gov.tr/sinavlar/dokumanlar/2014/soru/MTSAS/Mart_B.pdf
+https://www.meb.gov.tr/sinavlar/dokumanlar/2014/soru/MTSAS/Mart_YN_MFRDT.zip
+https://www.meb.gov.tr/sinavlar/dokumanlar/2015/soru/MTSAS/{Ocak,Mart}_B.zip
+https://www.meb.gov.tr/sinavlar/dokumanlar/2015/soru/MTSAS/{Ocak,Mart,Haziran,Agustos,Ekim,Aralik}_YM.zip
+https://www.meb.gov.tr/sinavlar/dokumanlar/2015/soru/MTSAS/{Haziran,Agustos,Ekim,Aralik}_EM.zip
+https://www.meb.gov.tr/sinavlar/dokumanlar/2016/soru/MTSK/{1,2}.rar
+# Duyuru sayfaları: https://www.meb.gov.tr/x/duyuru/<id> (ör. 6032, 7783, 8307, 9073, 9423, 9699, 10070, 10630)
+
+# MEB e-Sınav deneme sitesi (güncel sorular; cevap anahtarı yayımlanmadı)
+https://esinavdeneme.meb.gov.tr/  (MTSK ESINAV SORULARI 1, 2 ve İşitme Engelli Adaylar kitapçığı)
