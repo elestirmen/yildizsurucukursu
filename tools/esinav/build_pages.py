@@ -1,12 +1,14 @@
-"""e-sinav.html ve konu-anlatimi.html sayfalarını ve konular.js verisini üretir.
+"""e-sinav.html, konu-anlatimi.html ve trafik-akademisi.html sayfalarını ve konular.js verisini üretir.
 Kullanım: python3 build_pages.py <scratchpad> <site_dizini>
+Varlık sürümleri (?v=) <scratchpad>/versions.json'dan, yoksa bu dizindeki versions.json'dan okunur.
 """
 import html, json, os, re, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from partials import topbar, nav, footer, quickbar, FONTS
+from partials import nav, footer, quickbar, FONTS
 
 SP, SITE = sys.argv[1], sys.argv[2]
-V = json.load(open(os.path.join(SP, 'versions.json'))) if os.path.exists(os.path.join(SP, 'versions.json')) else {}
+_vp = next((x for x in (os.path.join(SP, 'versions.json'), os.path.join(os.path.dirname(__file__), 'versions.json')) if os.path.exists(x)), None)
+V = json.load(open(_vp)) if _vp else {}
 ver = lambda k: V.get(k, 1)
 index = open(os.path.join(SITE, 'index.html'), encoding='utf-8').read()
 sprite = re.search(r'  <svg class="sprite" aria-hidden="true" focusable="false">.*?\n  </svg>\n', index, re.S).group(0)
@@ -46,7 +48,8 @@ count = {k: sum(1 for q in live if q['k'] == k) for k in titles}
 dcount = {d: sum(1 for q in live if q['d'] == d) for d in DORDER}
 
 
-def head(title, desc, canonical, extra_css=''):
+def head(title, desc, canonical, sinav=True):
+    css_sinav = f'''  <link rel="stylesheet" href="assets/sinav.css?v={ver('sinav.css')}">\n''' if sinav else ''
     return f'''<!doctype html>
 <html lang="tr" data-theme="light">
 <head>
@@ -81,8 +84,7 @@ def head(title, desc, canonical, extra_css=''):
   {FONTS}
   <link rel="stylesheet" href="assets/site.css?v={ver('site.css')}">
   <link rel="stylesheet" href="assets/kurumsal.css?v={ver('kurumsal.css')}">
-  <link rel="stylesheet" href="assets/sinav.css?v={ver('sinav.css')}">
-</head>
+{css_sinav}</head>
 <body>
   <a class="skip" href="#icerik">İçeriğe geç</a>
 {sprite}
@@ -107,7 +109,7 @@ n_live = fmt(stats['guncel'])
 esinav = head(f'e-Sınav Merkezi: {n_live} Çıkmış Ehliyet Sorusu, Deneme Sınavı | Ürgüp Yıldız Sürücü Kursu',
               f"MEB ehliyet sınavlarında çıkmış {n_live} gerçek soru: e-Sınav düzeninde deneme sınavı, konu konu çalışma modu, çıkmış sınavlar ve konu anlatımı. Ürgüp Yıldız Sürücü Kursu.",
               'e-sinav.html')
-esinav += topbar() + nav(False, 'sinav')
+esinav += nav(False, 'sinav')
 esinav += f'''
   <main id="icerik">
     <section class="page-head">
@@ -329,7 +331,7 @@ for i, k in enumerate(order):
 konu = head('Konu Anlatımı: Ehliyet Sınavı Dersleri | Ürgüp Yıldız Sürücü Kursu',
             f"Ehliyet e-Sınavı için {stats['konu']} başlıkta konu anlatımı: İlk Yardım, Trafik ve Çevre, Araç Tekniği ve Trafik Adabı. Her konuda çıkmış sorular ve açıklamalar.",
             'konu-anlatimi.html')
-konu += topbar() + nav(False, 'konu')
+konu += nav(False, 'konu')
 konu += f'''
   <main id="icerik">
     <section class="page-head">
@@ -360,4 +362,18 @@ konu += f'''
 konu += footer(False)
 konu += tail([f"assets/site.js?v={ver('site.js')}", f"assets/kit.js?v={ver('kit.js')}", f"assets/konu.js?v={ver('konu.js')}"])
 open(os.path.join(SITE, 'konu-anlatimi.html'), 'w', encoding='utf-8').write(konu)
-print('ok', len(esinav), len(konu))
+
+
+# =========================================================
+# trafik-akademisi.html: gövde sayfanın kendisinden alınır; baş, menü, alt bilgi ve betikler yenilenir
+# =========================================================
+ap = os.path.join(SITE, 'trafik-akademisi.html')
+body = re.search(r'\n  <main id="icerik">.*?\n  </main>\n', open(ap, encoding='utf-8').read(), re.S).group(0)
+aka = head("Trafik Akademisi: 10 Etkileşimli Trafik Dersi | Ürgüp Yıldız Sürücü Kursu",
+           "Trafik kurallarını uygulayarak öğrenin: 3B sürüş, kavşak ve park senaryoları, levhalar, ayna görüntüsü, gösterge ışıkları ve ilk yardım ritmiyle 10 etkileşimli ders. Ürgüp Yıldız Sürücü Kursu.",
+           'trafik-akademisi.html', sinav=False)
+aka += nav(False, 'aka') + body + footer(False)
+aka += tail([f"assets/site.js?v={ver('site.js')}", f"assets/kit.js?v={ver('kit.js')}"] +
+            [f"assets/{x}.js?v={ver('academy')}" for x in ('academy-gfx', 'academy-3d', 'academy-top', 'academy')])
+open(ap, 'w', encoding='utf-8').write(aka)
+print('ok', len(esinav), len(konu), len(aka))

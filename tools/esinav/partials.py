@@ -1,18 +1,6 @@
 # Ortak üst/alt bölüm parçaları (ana sayfa ve alt sayfalar)
 WA_URL = "https://wa.me/905324527722?text=Merhaba%2C%20ehliyet%20kursu%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."
 
-def topbar():
-    return '''  <div class="topbar">
-    <div class="topbar-inner">
-      <span class="tb-meb"><svg class="ic"><use href="#i-shield"/></svg>MEB'e bağlı özel sürücü kursu<span class="tb-long">&nbsp;· Ürgüp / Nevşehir</span></span>
-      <a class="tb-tel" href="tel:+903843413673"><svg class="ic"><use href="#i-phone"/></svg>0384 341 36 73</a>
-      <a class="tb-wa" href="''' + WA_URL + '''" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>0532 452 77 22</a>
-      <a class="tb-mail" href="mailto:yildizmtsk50@hotmail.com"><svg class="ic"><use href="#i-mail"/></svg>yildizmtsk50@hotmail.com</a>
-      <span class="tb-hours status-pill" data-status="short"><i></i><span>Pzt – Cmt 08:30 – 17:30</span></span>
-    </div>
-  </div>
-'''
-
 def nav(home, active=''):
     h = '' if home else 'index.html'
     def a(href, label, key):
@@ -20,7 +8,7 @@ def nav(home, active=''):
         return f'        <a href="{href}"{cur}>{label}</a>\n'
     links = (a(f'{h}#hakkimizda', 'Hakkımızda', 'hak') + a(f'{h}#kurslar', 'Kurslar', 'kurs') +
              a('e-sinav.html', 'e-Sınav', 'sinav') + a('konu-anlatimi.html', 'Konu Anlatımı', 'konu') +
-             a(f'{h}#egitim', 'Trafik Akademisi', 'aka') + a(f'{h}#sss', 'SSS', 'sss') + a(f'{h}#iletisim', 'İletişim', 'ilet'))
+             a('trafik-akademisi.html', 'Trafik Akademisi', 'aka') + a(f'{h}#sss', 'SSS', 'sss') + a(f'{h}#iletisim', 'İletişim', 'ilet'))
     return f'''  <header class="nav" id="nav">
     <div class="nav-inner">
       <a class="brand" href="{h or '#top'}" aria-label="Ürgüp Yıldız Sürücü Kursu, ana sayfa">
@@ -30,7 +18,7 @@ def nav(home, active=''):
       <nav class="nav-links" id="menu" aria-label="Ana menü">
 {links}        <div class="menu-extra">
           <a class="btn btn-red" href="tel:+903843413673"><svg class="ic"><use href="#i-phone"/></svg>0384 341 36 73</a>
-          <a class="btn btn-wa" href="{WA_URL}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
+          <a class="btn btn-line" href="{WA_URL}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
         </div>
       </nav>
       <div class="nav-cta">
@@ -78,7 +66,7 @@ def footer(home):
             <li><a href="e-sinav.html#calis">Çalışma modu</a></li>
             <li><a href="e-sinav.html#cikmis">Çıkmış sınavlar</a></li>
             <li><a href="konu-anlatimi.html">Konu anlatımı</a></li>
-            <li><a href="{h}#egitim">Trafik Akademisi</a></li>
+            <li><a href="trafik-akademisi.html">Trafik Akademisi</a></li>
             <li><a href="{h}#yas">Yaş hesaplayıcı</a></li>
           </ul>
         </div>

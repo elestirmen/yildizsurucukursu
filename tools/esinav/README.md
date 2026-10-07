@@ -14,7 +14,10 @@
 6. **Güncel e-Sınav soruları** — `esinav_scrape.js` (puppeteer) deneme sitesindeki üç kitapçığı kaydeder, `parse_esinav.py` yapılandırır.
    Cevaplar iki bağımsız çözümle belirlendi (`data/es-sinav/`); yalnızca örtüşenler ve video gerektirmeyenler alındı (`es_final.json`).
 7. **Derleme** — `python -I build_bank.py <çalışma_dizini> <site>` → `sorular.js` + WebP görseller (magenta → kırmızı).
-8. **Sayfalar** — `python3 build_pages.py <çalışma_dizini> <site>` → `konular.js`, `e-sinav.html`, `konu-anlatimi.html`.
+8. **Sayfalar** — `python3 build_pages.py <çalışma_dizini> <site>` → `konular.js`, `e-sinav.html`, `konu-anlatimi.html` ve
+   `trafik-akademisi.html` (Akademi'nin gövdesi sayfanın kendisinden alınır; yalnız baş, menü, alt bilgi ve betikler yenilenir).
+   Varlık sürümleri (`?v=`) `versions.json`'dan okunur: bir CSS/JS dosyası değişince oradaki sayıyı ve `index.html`'deki
+   aynı bağlantıyı artırın.
    Konu anlatımlarının kaynağı `data/konular/<konu>.json` (çalışma dizininde `konu_out/`).
 
-Üst menü ve alt bilgi `partials.py`'de tanımlıdır; ana sayfadaki kopyasıyla aynı tutulmalıdır.
+Üst menü, alt bilgi ve mobil alt çubuk `partials.py`'de tanımlıdır; ana sayfadaki kopyasıyla aynı tutulmalıdır.

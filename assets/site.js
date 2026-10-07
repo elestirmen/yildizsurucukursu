@@ -14,6 +14,9 @@
   const waLink = (text) => `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
+  /* Trafik Akademisi ayrı sayfaya taşındı; eski #egitim bağlantıları oraya gitsin. */
+  if (location.hash === '#egitim' && !document.getElementById('egitim')) { location.replace('trafik-akademisi.html'); return; }
+
   /* ---------------- Üst menü ---------------- */
   const nav = $('#nav');
   const burger = $('.burger');
@@ -223,19 +226,12 @@
 
   /* ---------------- Yaş hesaplayıcı ---------------- */
   if ($('#age-board')) {
+  // Yalnız kursumuzda verilen sınıflar; diğer sınıflar dipnotta.
   const CLASSES = [
-    { k: 'M', name: 'Moped', age: 16, desc: '50 cm³ ve 45 km/s\'e kadar motorlu bisiklet' },
-    { k: 'A1', name: 'Hafif motosiklet', age: 16, desc: '125 cm³ ve 11 kW\'a kadar', ours: true },
-    { k: 'B1', name: 'Dört tekerlekli motosiklet', age: 16, desc: 'ATV / quad tipi araçlar' },
-    { k: 'A2', name: 'Orta sınıf motosiklet', age: 18, desc: '35 kW\'a kadar motosiklet', ours: true },
-    { k: 'B', name: 'Otomobil', age: 18, desc: 'Otomobil ve kamyonet', ours: true },
-    { k: 'BE', name: 'Otomobil + römork', age: 18, desc: 'B sınıfı araç ve römork' },
-    { k: 'C1', name: 'Hafif kamyon', age: 18, desc: '3.500–7.500 kg kamyon' },
-    { k: 'F', name: 'Traktör', age: 18, desc: 'Lastik tekerlekli traktör' },
-    { k: 'A', name: 'Tüm motosikletler', age: 20, alt: 24, desc: '20: 2 yıllık A2 ile · 24: deneyimsiz', ours: true },
-    { k: 'C', name: 'Kamyon', age: 21, desc: 'Kamyon ve çekici' },
-    { k: 'D1', name: 'Minibüs', age: 21, desc: 'Minibüs' },
-    { k: 'D', name: 'Otobüs', age: 24, desc: 'Otobüs' }
+    { k: 'B', name: 'Otomobil', age: 18 },
+    { k: 'A1', name: 'Hafif motosiklet', age: 16 },
+    { k: 'A2', name: 'Orta sınıf motosiklet', age: 18 },
+    { k: 'A', name: 'Tüm motosikletler', age: 20, alt: 24 }
   ];
   const board = $('#age-board'), birthInput = $('#birth'), summary = $('#age-summary');
   const addYears = (d, n) => new Date(d.getFullYear() + n, d.getMonth(), d.getDate());
@@ -261,29 +257,27 @@
     const age = birth ? diffYMD(birth, today).y : null;
     let okCount = 0, next = null;
     board.innerHTML = CLASSES.map((c) => {
-      let cls = 'idle', st = `<span>${c.desc}</span>`;
+      let cls = '', st = '';
       if (birth) {
-        const need = c.age;
-        if (c.alt && age >= c.alt) { cls = 'ok'; st = `${ICON('i-check')}<span>Alabilirsiniz</span>`; okCount++; }
-        else if (c.alt && age >= need) { cls = 'soft'; st = `${ICON('i-check')}<span>2 yıllık A2 belgesiyle alınabilir</span>`; okCount++; }
-        else if (age >= need) { cls = 'ok'; st = `${ICON('i-check')}<span>Alabilirsiniz</span>`; okCount++; }
+        if (c.alt && age >= c.alt) { cls = 'ok'; st = `${ICON('i-check')}Alabilirsiniz`; okCount++; }
+        else if (c.alt && age >= c.age) { cls = 'ok'; st = `${ICON('i-check')}2 yıllık A2 belgesiyle`; okCount++; }
+        else if (age >= c.age) { cls = 'ok'; st = `${ICON('i-check')}Alabilirsiniz`; okCount++; }
         else {
-          const when = addYears(birth, need);
+          const when = addYears(birth, c.age);
           cls = 'wait';
-          st = `${ICON('i-clock')}<span>${fmtDiff(diffYMD(today, when))} sonra · ${fmtDate(when)}</span>`;
+          st = `${fmtDiff(diffYMD(today, when))} sonra<small>${fmtDate(when)}</small>`;
           if (!next || when < next.when) next = { k: c.k, when };
         }
       }
-      return `<div class="cls ${cls}">${c.ours ? '<span class="ours">Kursumuzda</span>' : ''}` +
-        `<div class="cls-k">${c.k}</div><div class="cls-n">${c.name}</div>` +
-        `<div class="cls-age">${c.alt ? `${c.age} / ${c.alt} yaş` : `${c.age} yaş`}</div>` +
-        `<div class="cls-st">${st}</div></div>`;
+      return `<div class="ag-row ${cls}"><span class="ag-k">${c.k}</span>` +
+        `<span class="ag-n">${c.name}<small>${c.alt ? `${c.age} yaş (2 yıllık A2 ile) · ${c.alt} yaş` : `${c.age} yaş`}</small></span>` +
+        `<span class="ag-st">${st}</span></div>`;
     }).join('');
 
     if (!birthInput.value) summary.textContent = 'Tarih girdiğinizde sonuçlar burada görünecek.';
     else if (!birth) summary.textContent = 'Lütfen geçerli bir doğum tarihi girin.';
-    else if (okCount === 0) summary.innerHTML = `<b>${age} yaşındasınız.</b> 16 yaşını doldurduğunuzda M, A1 ve B1 sınıfları için başvurabilirsiniz — ${next ? `yani ${fmtDate(next.when)} tarihinde.` : ''}`;
-    else if (!next) summary.innerHTML = `<b>${age} yaşındasınız.</b> Listedeki tüm sınıflar için yaş şartını karşılıyorsunuz.`;
+    else if (okCount === 0) summary.innerHTML = `<b>${age} yaşındasınız.</b> 16 yaşını doldurduğunuzda A1 sınıfı için başvurabilirsiniz${next ? `: ${fmtDate(next.when)}.` : '.'}`;
+    else if (!next) summary.innerHTML = `<b>${age} yaşındasınız.</b> Kursumuzdaki tüm sınıflar için yaş şartını karşılıyorsunuz.`;
     else summary.innerHTML = `<b>${age} yaşındasınız.</b> Şu an ${okCount} sınıf için yaş şartını karşılıyorsunuz. Sıradaki: <b>${next.k}</b> sınıfı, ${fmtDate(next.when)}.`;
   }
   birthInput.addEventListener('input', renderAge);
@@ -324,98 +318,6 @@
   const burstFrom = (el) => { const r = el.getBoundingClientRect(); confetti(r.left + r.width / 2, r.top + r.height / 2); };
   window.YildizFX = { confetti, burstFrom, focusForm: (c) => focusForm(c) };
 
-  /* ---------------- Süreç: kaydırmayla ilerleyen araç ---------------- */
-  if ($('#journey')) {
-  const J = $('#journey');
-  const roadSvg = $('.road-svg', J);
-  const roadPaths = $$('path', roadSvg);
-  const mainPath = $('.r-asphalt', roadSvg), donePath = $('.r-done', roadSvg);
-  const marksG = $('.r-marks', roadSvg), carG = $('.r-car', roadSvg);
-  const stepsEl = $$('.step', J);
-  let total = 0, stepLens = [], built = false, carL = 0, targetL = 0, rafJ = 0, finished = false, jVisible = false, marks = [];
-
-  function lenAtY(y) {
-    let lo = 0, hi = total;
-    for (let i = 0; i < 24; i++) {
-      const mid = (lo + hi) / 2;
-      if (mainPath.getPointAtLength(mid).y < y) lo = mid; else hi = mid;
-    }
-    return (lo + hi) / 2;
-  }
-  function buildRoad() {
-    const W = J.clientWidth, H = J.offsetHeight;
-    if (!W || !H) return;
-    roadSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    const mobile = W < 700;
-    const cx = mobile ? 29 : W / 2, amp = mobile ? 7 : Math.min(72, W * 0.06);
-    const top = J.getBoundingClientRect().top;
-    const pts = [{ x: cx, y: 0 }];
-    stepsEl.forEach((s, i) => {
-      const r = s.getBoundingClientRect();
-      pts.push({ x: cx + (i % 2 ? amp : -amp), y: r.top - top + Math.min(r.height / 2, 90) });
-    });
-    pts.push({ x: cx, y: H });
-    let d = `M${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
-    for (let i = 1; i < pts.length; i++) {
-      const a = pts[i - 1], b = pts[i], k = (b.y - a.y) * 0.5;
-      d += ` C${a.x.toFixed(1)} ${(a.y + k).toFixed(1)} ${b.x.toFixed(1)} ${(b.y - k).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
-    }
-    roadPaths.forEach((p) => p.setAttribute('d', d));
-    total = mainPath.getTotalLength();
-    const stops = pts.slice(1, -1);
-    stepLens = stops.map((p) => lenAtY(p.y));
-    const rr = mobile ? 13 : 18;
-    marksG.innerHTML = stops.map((p, i) => `<g class="r-mark" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"><circle class="bg" r="${rr}"/><text>${i + 1}</text></g>`).join('');
-    marks = $$('.r-mark', marksG);
-    // Bitiş çizgisi: son duraktan biraz sonra, yola dik damalı şerit
-    const fl = Math.min(total - 2, stepLens[stepLens.length - 1] + (mobile ? 30 : 44));
-    const f1 = mainPath.getPointAtLength(fl), f2 = mainPath.getPointAtLength(fl + 1);
-    const fa = (Math.atan2(f2.y - f1.y, f2.x - f1.x) * 180) / Math.PI + 90, fw = mobile ? 33 : 57;
-    $('.r-finish', roadSvg).innerHTML = `<rect x="${-fw / 2}" y="-7" width="${fw}" height="14" fill="url(#checker)" transform="translate(${f1.x.toFixed(1)} ${f1.y.toFixed(1)}) rotate(${fa.toFixed(1)})"/>`;
-    built = true;
-    updateRoad(true);
-  }
-  function updateRoad(instant) {
-    if (!built) return;
-    const rect = J.getBoundingClientRect();
-    const y = Math.max(0, Math.min(J.offsetHeight, innerHeight * 0.62 - rect.top));
-    targetL = lenAtY(y);
-    if (instant === true || reduced) carL = targetL;
-    if (!rafJ) rafJ = requestAnimationFrame(driveCar);
-  }
-  function driveCar() {
-    rafJ = 0;
-    carL += (targetL - carL) * 0.16;
-    if (Math.abs(targetL - carL) < 0.4) carL = targetL;
-    const L = Math.max(0.01, Math.min(total - 1, carL));
-    const p = mainPath.getPointAtLength(L), q = mainPath.getPointAtLength(L + 1);
-    const ang = (Math.atan2(q.y - p.y, q.x - p.x) * 180) / Math.PI + 90;
-    const sc = J.clientWidth < 700 ? 0.72 : 1;
-    carG.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${ang.toFixed(1)}) scale(${sc})`);
-    donePath.style.strokeDasharray = `${Math.max(0, carL).toFixed(1)} ${(total + 50).toFixed(0)}`;
-    stepLens.forEach((len, i) => {
-      const on = carL >= len - 6;
-      if (marks[i]) marks[i].classList.toggle('done', on);
-      stepsEl[i].classList.toggle('active', on);
-    });
-    if (!finished && stepLens.length && carL >= stepLens[stepLens.length - 1] - 6) {
-      finished = true;
-      const fc = $('.step-final .step-card'), fr = fc.getBoundingClientRect();
-      if (fr.top < innerHeight && fr.bottom > 0) burstFrom(fc);
-    }
-    if (carL !== targetL) rafJ = requestAnimationFrame(driveCar);
-  }
-  new IntersectionObserver(([e]) => { jVisible = e.isIntersecting; if (jVisible) updateRoad(); }, { rootMargin: '200px 0px' }).observe(J);
-  addEventListener('scroll', () => { if (jVisible) updateRoad(); }, { passive: true });
-  let rbT = 0;
-  const rebuild = () => { clearTimeout(rbT); rbT = setTimeout(buildRoad, 120); };
-  addEventListener('resize', rebuild);
-  if ('ResizeObserver' in window) new ResizeObserver(rebuild).observe(J);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildRoad);
-  addEventListener('load', buildRoad);
-  buildRoad();
-
-  }
   /* ---------------- Evrak listesi ---------------- */
   if ($('#checklist')) {
   const KEY = 'yildiz-evrak-v1';

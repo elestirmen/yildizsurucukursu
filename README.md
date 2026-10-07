@@ -7,7 +7,8 @@ Canlı adres: <https://www.urgupyildizsurucu.com/>
 
 | Sayfa | İçerik |
 |---|---|
-| `index.html` | Kurumsal ana sayfa: hakkımızda, kurslar (B, A1, A2, A, özel direksiyon), Trafik Akademisi (10 etkileşimli ders), yaş hesaplayıcı, ehliyet süreci, gerekli belgeler, SSS, iletişim ve ön kayıt |
+| `index.html` | Kurumsal ana sayfa: hakkımızda, kurslar (B, A1, A2, A, özel direksiyon), yaş hesaplayıcı, ehliyet süreci, gerekli belgeler, e-Sınav ve Trafik Akademisi tanıtımı, SSS, iletişim ve ön kayıt |
+| `trafik-akademisi.html` | Trafik Akademisi: e-Sınav'ın dört dersine göre 10 etkileşimli ders (3B sürüş, kavşak, park, ayna, gösterge, ilk yardım ritmi) |
 | `e-sinav.html` | e-Sınav Merkezi: deneme sınavı (e-Sınav düzeninde 50 soru / 45 dk), çalışma modu (ders/konu seçimi, anında geri bildirim, açıklama, konu çekmecesi), çıkmış sınavlar, gelişim takibi |
 | `konu-anlatimi.html` | 40 başlıkta konu anlatımı (İlk Yardım, Trafik ve Çevre, Araç Tekniği, Trafik Adabı); her konuda çıkmış soru örnekleri |
 
@@ -25,7 +26,7 @@ Soru görselleri `assets/q/` altındadır (kitapçıklardan kırpıldı; iki ren
 ## Yapı
 
 ```
-index.html, e-sinav.html, konu-anlatimi.html
+index.html, trafik-akademisi.html, e-sinav.html, konu-anlatimi.html
 assets/
   site.css, site.js          temel stiller ve ortak etkileşimler (menü, tema, form, yaş hesaplayıcı…)
   kurumsal.css               kurumsal tasarım katmanı (renkler, tipografi, üst bilgi, hero, kartlar)
