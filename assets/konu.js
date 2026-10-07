@@ -4,7 +4,18 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const DERS = { iy: 'İlk Yardım', tc: 'Trafik ve Çevre', at: 'Araç Tekniği', ta: 'Trafik Adabı' };
-  const FA = { cpr: 'Kalp masajı', koma: 'Koma (yarı yüzükoyun yan) pozisyonu', sok: 'Şok pozisyonu', basgeri: 'Baş geri – çene yukarı', heimlich: 'Heimlich manevrası', burun: 'Burun kanamasında ilk yardım', yanik: 'Yanığı su ile soğutma', tel112: '112 Acil Çağrı' };
+  const FA = { cpr: 'Kalp masajında ellerin yeri', koma: 'Koma (yarı yüzükoyun yan) pozisyonu', sok: 'Şok pozisyonu', basgeri: 'Baş geri – çene yukarı', heimlich: 'Heimlich manevrası', burun: 'Burun kanamasında ilk yardım', yanik: 'Yanığı su ile soğutma', tel112: '112 Acil Çağrı' };
+  // İlk yardım uygulamaları fotoğrafla gösterilir (çizimler anlaşılmıyordu); 112 simgesi çizim olarak kalır.
+  // 0: gösterilmez (yanık soğutma, konu sayfasının başlık fotoğrafında zaten var).
+  const FA_PHOTO = {
+    basgeri: 'Bir el alında, diğer elin parmak uçları çenenin altında; baş geriye eğilerek hava yolu açılıyor',
+    burun: 'Burnu kanayan genç, başını hafifçe öne eğmiş, burnunun yumuşak kısmını sıkıyor',
+    cpr: 'Eğitim mankeninde göğüs ortasına yerleştirilmiş, parmakları kenetli eller ve dik inen kollar',
+    heimlich: 'Arkasından sarılan kişi yumruğunu boğulan kişinin göbeğinin hemen üstüne yerleştirmiş',
+    koma: 'Yan yatırılmış bilinçsiz kişi: üstteki el yanağın altında, üstteki diz bükülü, ağız yere doğru',
+    sok: 'Sırtüstü yatan kişinin bacakları çantanın üstünde yükseltilmiş, üzeri battaniyeyle örtülü',
+    yanik: 0
+  };
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const ICON = (id) => `<svg class="ic" aria-hidden="true"><use href="#${id}"/></svg>`;
 
@@ -17,6 +28,8 @@
       el.dataset.done = '1';
       el.innerHTML = el.dataset.kit.trim().split(/\s+/).map((key) => {
         const [t, id] = key.split(':');
+        if (t === 'fa' && FA_PHOTO[id] === 0) return '';
+        if (t === 'fa' && FA_PHOTO[id]) return `<figure class="kn-photo"><img src="assets/img/ilkyardim/${id}.webp" width="800" height="600" alt="${esc(FA_PHOTO[id])}" loading="lazy"><figcaption>${esc(FA[id])}</figcaption></figure>`;
         let svg = '', name = '', cls = '';
         if (t === 'sign' && KIT.SIGNS[id]) { svg = KIT.sign(id); name = KIT.SIGNS[id].name; }
         else if (t === 'lamp' && KIT.LAMPS && KIT.LAMPS[id]) { svg = KIT.lamp(id); name = KIT.LAMPS[id].name; cls = 'kn-lamp'; }
@@ -24,6 +37,7 @@
         if (!svg) return '';
         return `<figure class="${cls}"><div role="img" aria-label="${esc(name)}">${svg}</div><figcaption>${esc(name)}</figcaption></figure>`;
       }).join('');
+      el.hidden = !el.innerHTML;
     });
   }
 

@@ -303,6 +303,9 @@ html.exam-open { overflow: hidden; }
 .kn-vis figure > div { width: 92px; height: 92px; margin: 0 auto 6px; display: grid; place-items: center; }
 .kn-vis figure svg { width: 100%; height: 100%; }
 .kn-vis figure.kn-lamp > div { border-radius: 14px; background: #111418; padding: 8px; }
+.kn-vis figure.kn-photo { width: min(330px, 100%); text-align: left; font-size: 13.5px; color: var(--muted); }
+.kn-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; margin-bottom: 8px; border-radius: 12px; background: var(--surface-3); }
+.kn-vis[hidden] { display: none; }
 .kn-sum { margin: 18px 0 24px; padding: 18px 20px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
 .kn-sum h3 { margin: 0 0 10px !important; font-size: 16px !important; display: flex; align-items: center; gap: 8px; }
 .kn-sum ul { margin: 0; padding-left: 20px; }

@@ -33,6 +33,8 @@ DERS_TXT = {
     'ta': 'Trafikte saygı, sabır, empati ve sorumluluk; sürücü davranışları, risk algısı ve yol kullanıcılarıyla iletişim.',
 }
 DORDER = ['iy', 'tc', 'at', 'ta']
+# Hazırlık sayfasındaki ders başlıklarında o dersin bir konu fotoğrafı
+DERS_IMG = {'iy': 'iy-tyd', 'tc': 'tc-isikli', 'at': 'at-motor', 'ta': 'ta-adab'}
 fmt = lambda n: f'{n:,}'.replace(',', '.')
 e = html.escape
 jdump = lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
@@ -323,7 +325,7 @@ def row(k):
 
 ders_html = ''.join(f'''
           <section class="hz-ders" data-d="{d}" id="ders-{d}" aria-labelledby="hd-{d}">
-            <header class="hd"><img src="assets/img/subj-{d}.webp" width="800" height="600" alt="" loading="lazy">
+            <header class="hd"><img src="{img_path(DERS_IMG[d]) if has_img(DERS_IMG[d]) else f'assets/img/subj-{d}.webp'}" width="800" height="600" alt="" loading="lazy">
               <div><h3 id="hd-{d}">{DERS[d]}</h3><p>{DERS_TXT[d]}</p><div class="hd-prog"><span>{len([k for k in order if k.startswith(d + '-')])} konu</span><span>{fmt(dcount[d])} soru</span></div></div></header>
             <ol class="hr-list">{''.join(row(k) for k in order if k.startswith(d + '-'))}</ol>
           </section>''' for d in DORDER)
