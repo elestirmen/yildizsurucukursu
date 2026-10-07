@@ -18,6 +18,8 @@
    `e-sinav.html` ve eski adresleri yönlendiren `konu-anlatimi.html` / `trafik-akademisi.html`. Etkileşimli uygulamalar
    `data/akademi-dersler.html`'den alınıp `APP` eşlemesine göre ilgili konu sayfasına yerleştirilir; konu görselleri
    `assets/img/konu/<id>.webp` (yoksa ders görseli), levha/ikaz lambası konularında `KIT_HEAD` çizimleri kullanılır.
+   Park simülatörünün paneli `data/park-simulatoru.html`'dedir; `SIM` eşlemesindeki konu sayfasına (`tc-park`) ayrı bir
+   bölüm (`#simulator`) olarak eklenir ve `assets/park-sim.js` ile çalışır.
    `SITEMAP_DATE=YYYY-AA-GG` verilirse `sitemap.xml` de yeniden yazılır.
    Varlık sürümleri (`?v=`) `versions.json`'dan okunur: bir CSS/JS dosyası değişince oradaki sayıyı ve `index.html`'deki
    aynı bağlantıyı artırın.

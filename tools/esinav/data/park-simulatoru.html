@@ -1,0 +1,24 @@
+<!-- Park simülatörü paneli. build_pages.py bunu SIM eşlemesindeki konu sayfasına (konu-tc-park.html) yerleştirir; davranışı assets/park-sim.js. -->
+          <article class="lesson is-active" id="ders-parksim" data-lesson="parksim" data-s="tc">
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <div class="lesson-meta"><span class="lesson-no">Etkileşimli uygulama · 2B / 3B sürüş</span></div>
+                <h3 class="lesson-h">Park simülatörü</h3>
+                <p>Direksiyon sende. Aracı yeşil çerçeveli yere sok, durunca el frenini çek. Kuşbakışı (2B) ile arkadan takip kamerası (3B) arasında istediğin an geçebilirsin; park sensörü ve yörünge çizgileri yardım eder. <b>Hedef:</b> ileri, geri geri ve paralel park.</p>
+              </div>
+              <div class="sim sim-3d ps-sim" data-sim="parksim"><canvas class="sim-cv" role="img" aria-label="Arkadan takip kamerasıyla park simülatörü (3B)"></canvas></div>
+              <div class="sim-bar">
+                <div class="seg ps-view" role="group" aria-label="Görünüm"><button type="button" data-view="3d" aria-pressed="true">3B</button><button type="button" data-view="2d" aria-pressed="false">2B kuşbakışı</button></div>
+                <button class="sim-ghost" type="button" data-act="full"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>Tam ekran</span></button>
+                <button class="sim-ghost" type="button" data-act="retry"><svg class="ic"><use href="#i-car"/></svg><span>Aracı başa al</span></button>
+                <button class="sim-ghost" type="button" data-act="reset"><svg class="ic"><use href="#i-refresh"/></svg><span>Baştan</span></button>
+                <div class="sim-goal" data-k="goal" aria-live="polite"></div>
+              </div>
+              <p class="sim-feedback" data-k="fb" aria-live="polite"></p>
+            </div>
+            <aside class="rule-card">
+              <h4><svg class="ic"><use href="#i-book"/></svg>Eğitmen notu · <span data-k="tips-h">İleri park</span></h4>
+              <ol class="rule-steps" data-k="tips"></ol>
+              <p class="rule-note">Gerçek araçta manevradan önce sinyal ver; aynalardan ve omzunun üstünden çevreyi kontrol et. Park bitince el frenini çek ve motoru durdur.</p>
+            </aside>
+          </article>

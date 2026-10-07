@@ -135,3 +135,45 @@
 .pr-end { text-align: center; }
 .pr-end .q-actions { justify-content: center; }
 .pr-big { margin: 14px 0 4px; font-family: var(--f-display); font-size: 44px; font-weight: 800; }
+
+/* Park simülatörü (konu-tc-park): tuval üstünde direksiyon, el freni, ileri/geri pedalları; tam ekran kipi */
+.ps-sim .sim-cv { touch-action: pan-y; }
+.ps-sim.sim-3d .sim-cv { cursor: grab; }
+.ps-sim.is-full { position: fixed; inset: 0; z-index: 2000; border: 0; border-radius: 0; }
+.ps-sim.is-full .sim-cv { touch-action: none; }
+html.ps-lock, html.ps-lock body { overflow: hidden; overscroll-behavior: none; }
+.ps-ctl { position: absolute; inset: 0; pointer-events: none; }
+.ps-wheel { position: absolute; left: 14px; bottom: 14px; width: 132px; height: 132px; border-radius: 50%; pointer-events: auto; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+.ps-wheel::before { content: ""; position: absolute; inset: 5px; border-radius: 50%; background: rgba(13, 15, 21, .26); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ps-wheel svg { position: relative; display: block; width: 100%; height: 100%; filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .45)); will-change: transform; }
+.ps-wheel.is-held { cursor: grabbing; }
+.ps-pedals { position: absolute; right: 14px; bottom: 14px; display: grid; gap: 8px; pointer-events: auto; }
+.ps-ped, .ps-hb, .ps-exit { border: 1px solid rgba(255, 255, 255, .16); background: rgba(13, 15, 21, .62); color: #fff; -webkit-tap-highlight-color: transparent; -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4); box-shadow: 0 12px 28px -14px rgba(0, 0, 0, .7); }
+.ps-ped, .ps-hb { display: grid; place-items: center; align-content: center; gap: 1px; padding: 0; font-weight: 800; touch-action: none; -webkit-user-select: none; user-select: none; transition: background-color .15s, transform .15s; }
+.ps-ped { width: 78px; height: 62px; border-radius: 18px; font-size: 12px; }
+.ps-ped svg { width: 24px; height: 24px; fill: currentColor; }
+.ps-ped.is-held { background: rgba(255, 255, 255, .92); color: #14161b; transform: scale(.96); }
+.ps-hb { position: absolute; right: 104px; bottom: 14px; width: 64px; height: 64px; border-radius: 50%; pointer-events: auto; }
+.ps-hb b { font-family: var(--f-display); font-size: 22px; line-height: 1; }
+.ps-hb small { font-size: 9.5px; font-weight: 700; opacity: .8; }
+.ps-hb:active { transform: scale(.95); }
+.ps-hb.ready { background: rgba(17, 128, 70, .94); border-color: rgba(255, 255, 255, .5); animation: psReady 1.2s ease-in-out infinite; }
+@keyframes psReady { 50% { box-shadow: 0 0 0 7px rgba(31, 191, 106, .3); } }
+.ps-exit { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); display: none; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; pointer-events: auto; }
+.ps-sim.is-full .ps-exit { display: inline-flex; }
+.ps-sim.is-full .ps-wheel { left: calc(14px + env(safe-area-inset-left)); bottom: calc(14px + env(safe-area-inset-bottom)); }
+.ps-sim.is-full .ps-pedals { right: calc(14px + env(safe-area-inset-right)); bottom: calc(14px + env(safe-area-inset-bottom)); }
+.ps-sim.is-full .ps-hb { right: calc(104px + env(safe-area-inset-right)); bottom: calc(14px + env(safe-area-inset-bottom)); }
+.ps-sim.has-card .ps-ctl { opacity: .3; }
+.ps-sim .sim-toast { top: 18%; bottom: auto; }
+.ps-view button { min-width: 3.4em; }
+@media (max-width: 760px) {
+  .ps-wheel, .ps-sim.is-full .ps-wheel { left: 8px; bottom: 8px; width: 108px; height: 108px; }
+  .ps-pedals, .ps-sim.is-full .ps-pedals { right: 8px; bottom: 8px; gap: 6px; }
+  .ps-ped { width: 64px; height: 54px; border-radius: 15px; }
+  .ps-hb, .ps-sim.is-full .ps-hb { right: 80px; bottom: 8px; width: 54px; height: 54px; }
+  .ps-hb b { font-size: 19px; }
+  .ps-exit { padding: 8px; }
+  .ps-exit span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .ps-hb.ready { animation: none; } }

@@ -42,6 +42,8 @@ jdump = lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':')).repla
 # Konu → etkileşimli uygulama (eski Trafik Akademisi dersleri)
 APP = {'tc-isikli': 'isik', 'tc-gecis': 'gecis', 'tc-uyari': 'levha', 'tc-yatay': 'serit', 'tc-park': 'park',
        'tc-hiz': 'durus', 'tc-sollama': 'ayna', 'iy-tyd': 'tyd', 'at-gosterge': 'gosterge', 'ta-adab': 'adab'}
+# Konu → park simülatörü (2B/3B sürüş; paneli data/park-simulatoru.html, davranışı assets/park-sim.js)
+SIM = {'tc-park': 'parksim'}
 # Levha ve ikaz lambası konularında yapay zekâ görseli yerine doğru çizimler
 KIT_HEAD = {
     'tc-uyari': 'sign:virajsag sign:kaygan sign:yayauyari sign:okul sign:yolcalisma sign:daralan',
@@ -204,6 +206,7 @@ def lesson_html(lid):
 
 
 app_names = {lid: re.search(r'<h3>([^<]+)</h3>', LESSON[lid]).group(1) for lid in LESSON}
+SIM_HTML = re.search(r'          <article .*?\n          </article>\n', open(os.path.join(HERE, 'data', 'park-simulatoru.html'), encoding='utf-8').read(), re.S).group(0)
 
 for i, k in enumerate(order):
     d = k.split('-')[0]
@@ -213,6 +216,7 @@ for i, k in enumerate(order):
     prev_k = order[i - 1] if i else None
     next_k = order[i + 1] if i + 1 < len(order) else None
     app = APP.get(k)
+    sim = SIM.get(k)
     qs = []
     for q in live:
         if q['k'] != k:
@@ -230,10 +234,12 @@ for i, k in enumerate(order):
         alt = ALT.get(k, '') if has_img(k) else ''
         media = f'<figure class="kp-media"><img src="{src_img}" width="800" height="600" alt="{e(alt)}" fetchpriority="high"></figure>'
 
-    steps = [('anlatim', 'Anlatım', 'Okunmadı')] + ([('uygulama', 'Uygulama', 'Yapılmadı')] if app else []) + [('sorular', 'Sorular', f'0/{n}')]
-    steps_html = ''.join(f'<a href="#{sid}"><span class="kp-no">{j + 1}</span><span class="kp-st-t"><b>{lab}</b><small data-st="{sid}">{st}</small></span></a>' for j, (sid, lab, st) in enumerate(steps))
+    steps = [('anlatim', 'Anlatım', 'Okunmadı', None)] + ([('uygulama', 'Uygulama', 'Yapılmadı', app)] if app else []) + \
+            ([('simulator', 'Simülatör', 'Yapılmadı', sim)] if sim else []) + [('sorular', 'Sorular', f'0/{n}', None)]
+    steps_html = ''.join(f'<a href="#{sid}"><span class="kp-no">{j + 1}</span><span class="kp-st-t"><b>{lab}</b><small data-st="{sid}"{f' data-app="{aid}"' if aid else ''}>{st}</small></span></a>'
+                         for j, (sid, lab, st, aid) in enumerate(steps))
     sik = ''.join(f'<li>{e(x)}</li>' for x in v.get('sik', []))
-    sec_no = {sid: j + 1 for j, (sid, _, _) in enumerate(steps)}
+    sec_no = {sid: j + 1 for j, (sid, _, _, _) in enumerate(steps)}
 
     app_html = ''
     if app:
@@ -244,6 +250,15 @@ for i, k in enumerate(order):
             <p class="kp-sec-sub">Okuduğunuz kuralı ekranda uygulayın. Hedefi tamamlayınca uygulama biter; hatasız bitirirseniz 3 yıldız alırsınız.</p>
             <div class="academy-shell kp-app" data-after="sorular" data-after-label="Sorulara geç">
 {lesson_html(app)}            </div>
+          </section>'''
+    if sim:
+        app_html += f'''
+          <section class="kp-sec" id="simulator" aria-labelledby="h-simulator">
+            <div class="kp-sec-head"><h2 class="kp-h" id="h-simulator"><span class="kp-no">{sec_no['simulator']}</span>Park simülatörü</h2>
+              <button class="ap-sound" id="ps-sound" type="button" aria-pressed="true">{ICON('i-sound')}<span>Ses açık</span></button></div>
+            <p class="kp-sec-sub">Direksiyonu kendin çevir: aracı ileri, geri geri ve paralel park et. Bilgisayarda ok tuşları, telefonda ekrandaki direksiyon ve pedallar. Çarpmadan bitirirsen 3 yıldız alırsın.</p>
+            <div class="academy-shell kp-app ps-shell" data-after="sorular" data-after-label="Sorulara geç">
+{SIM_HTML}            </div>
           </section>'''
 
     pager = (f'<a class="prev" href="{konu_url(prev_k)}"><small>← Önceki konu</small>{e(titles[prev_k])}</a>' if prev_k else '<span></span>') + \
@@ -296,11 +311,13 @@ for i, k in enumerate(order):
 '''
     page += footer(False)
     page += DIALOG
-    kp_data = {'k': k, 'd': d, 't': titles[k], 'app': app, 'next': {'k': next_k, 't': titles[next_k]} if next_k else None}
+    kp_data = {'k': k, 'd': d, 't': titles[k], 'app': app, **({'sim': sim} if sim else {}), 'next': {'k': next_k, 't': titles[next_k]} if next_k else None}
     extra = f'  <script type="application/json" id="kp-data">{jdump(kp_data)}</script>\n  <script type="application/json" id="kp-sorular">{jdump(qs)}</script>\n'
     scripts = [f"assets/site.js?v={ver('site.js')}", f"assets/kit.js?v={ver('kit.js')}", soru_js, f"assets/konu.js?v={ver('konu.js')}"]
-    if app:
-        scripts += [f"assets/{x}.js?v={ver('academy')}" for x in ('academy-gfx', 'academy-3d', 'academy-top', 'academy')]
+    if app or sim:
+        scripts += [f"assets/{x}.js?v={ver('academy')}" for x in ('academy-gfx', 'academy-3d', 'academy-top') + (('academy',) if app else ())]
+    if sim:
+        scripts.append(f"assets/park-sim.js?v={ver('park-sim.js')}")
     scripts.append(f"assets/hazirlik.js?v={ver('hazirlik.js')}")
     page += tail(scripts, extra)
     write(konu_url(k), page)
@@ -309,16 +326,16 @@ for i, k in enumerate(order):
 # =========================================================
 # hazirlik.html
 # =========================================================
-APP_TAG = ' · <span class="hr-app">' + ICON('i-play') + 'Uygulama</span><span class="hr-stars"></span>'
+APP_TAG = lambda lid: f' · <span class="hr-app">{ICON("i-play")}Uygulama</span><span class="hr-stars" data-app="{lid}"></span>'
+SIM_TAG = lambda lid: f' · <span class="hr-app">{ICON("i-wheel")}Park simülatörü</span><span class="hr-stars" data-app="{lid}"></span>'
 
 
 def row(k):
-    app = APP.get(k)
-    app_tag = APP_TAG
+    app_tag = (APP_TAG(APP[k]) if k in APP else '') + (SIM_TAG(SIM[k]) if k in SIM else '')
     ks_d = [x for x in order if x[:2] == k[:2]]
     return (f'<li class="hr" data-k="{k}"><a class="hr-a" href="{konu_url(k)}">'
             f'<span class="hr-n">{ks_d.index(k) + 1}</span>'
-            f'<span class="hr-t"><b>{e(titles[k])}</b><small>{count[k]} soru{app_tag if app else ""}</small></span>'
+            f'<span class="hr-t"><b>{e(titles[k])}</b><small>{count[k]} soru{app_tag}</small></span>'
             f'<span class="hr-st"><span class="hr-read" hidden>{ICON("i-check")}Okundu</span><span class="hr-q">0/{count[k]}</span><span class="hr-bar" aria-hidden="true"><i></i></span><span class="hr-acc"></span></span>'
             f'{ICON("i-right")}</a></li>')
 
@@ -350,7 +367,7 @@ hz += f'''
         <ol class="hz-steps">
           <li class="hz-step" id="ogren"><span class="hz-no">1</span>
             <h2>Öğren</h2>
-            <p>{stats["konu"]} konu anlatımı; {n_app} konuda etkileşimli uygulama. Konuyu okuyun, sonra sorularına geçin.</p>
+            <p>{stats["konu"]} konu anlatımı; {n_app} konuda etkileşimli uygulama ve 2B/3B <a href="{konu_url('tc-park')}#simulator">park simülatörü</a>. Konuyu okuyun, sonra sorularına geçin.</p>
             <p class="hz-meta" id="hz-next-t">İlk konu: <b>{e(titles[order[0]])}</b></p>
             <a class="btn btn-red" id="hz-next" href="{konu_url(order[0])}">İlk konuyla başla{ICON('i-arrow')}</a>
           </li>
@@ -529,8 +546,11 @@ inv = {lid: k for k, lid in APP.items()}
 aka_map = {}
 for lid, k in inv.items():
     aka_map[lid] = aka_map['ders-' + lid] = aka_map['tab-' + lid] = konu_url(k) + '#uygulama'
+for k, lid in SIM.items():
+    aka_map[lid] = konu_url(k) + '#simulator'
 write('trafik-akademisi.html', stub('trafik-akademisi.html', 'Trafik Akademisi', aka_map, 'hazirlik.html#ogren',
-                                    ''.join(f'<li><a href="{konu_url(k)}#uygulama">{e(app_names[lid])} ({e(titles[k])})</a></li>' for lid, k in inv.items())))
+                                    ''.join(f'<li><a href="{konu_url(k)}#uygulama">{e(app_names[lid])} ({e(titles[k])})</a></li>' for lid, k in inv.items()) +
+                                    ''.join(f'<li><a href="{konu_url(k)}#simulator">Park simülatörü, 2B/3B ({e(titles[k])})</a></li>' for k in SIM)))
 
 # --- site haritası ---
 sm = os.path.join(SITE, 'sitemap.xml')

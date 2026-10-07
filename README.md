@@ -9,7 +9,7 @@ Canlı adres: <https://www.urgupyildizsurucu.com/>
 |---|---|
 | `index.html` | Kurumsal ana sayfa: hakkımızda, kurslar (B manuel/otomatik, BE, D, A1, A2, A, özel direksiyon), yaş hesaplayıcı, ehliyet süreci, gerekli belgeler, Sınava Hazırlık tanıtımı, SSS, iletişim ve ön kayıt |
 | `hazirlik.html` | **Sınava Hazırlık**: üç adım (1 Öğren · 2 Çalış · 3 Sınav ol), 4 ders altında 40 konunun listesi ve her konuda ilerleme (okundu, çözülen soru, doğru oranı, uygulama yıldızı), dersler arası karışık çalışma, yanlışlar ve işaretli sorular |
-| `konu-<id>.html` | Her konu için tek sayfa (40 adet): konu anlatımı → (10 konuda) etkileşimli uygulama → o konunun çıkmış soruları |
+| `konu-<id>.html` | Her konu için tek sayfa (40 adet): konu anlatımı → (10 konuda) etkileşimli uygulama → o konunun çıkmış soruları. `konu-tc-park.html`'de ayrıca 2B/3B **park simülatörü** (ileri, geri geri ve paralel park) |
 | `e-sinav.html` | **Sınav ol**: deneme sınavı (e-Sınav düzeninde 50 soru / 45 dk) ve çıkmış sınavlar; sonuçta tekrar edilecek konulara bağlantı |
 | `konu-anlatimi.html`, `trafik-akademisi.html` | Eski adresler; yeni yerlerine yönlendirir |
 
@@ -38,6 +38,7 @@ assets/
   sinav.js                   deneme sınavı ve çıkmış sınavlar
   konu.js                    levha/ikaz lambası/ilk yardım çizimleri ve sınav sayfasındaki konu çekmecesi
   kit.js, academy*.js        etkileşimli uygulamalar (konu sayfalarında tek ders kipinde çalışır)
+  park-sim.js                park simülatörü: araç fiziği, çarpışma, park sensörü; 2B kuşbakışı ve 3B takip kamerası
   data/sorular.js            soru bankası (üretilir)
   data/konular.js            konu anlatımları (üretilir)
   img/                       kurumsal görseller (WebP)

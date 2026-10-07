@@ -26,8 +26,7 @@
       const read = S.read.has(D.k);
       const a = $('[data-st="anlatim"]');
       if (a) { a.innerHTML = read ? `${ICON('i-check')}Okundu` : 'Okunmadı'; a.classList.toggle('done', read); }
-      const u = $('[data-st="uygulama"]');
-      if (u && D.app) { const n = Y.akaStars()[D.app] || 0; u.innerHTML = n ? `<span class="kp-stars" role="img" aria-label="${n} yıldız">${starSVG(n)}</span>` : 'Yapılmadı'; u.classList.toggle('done', n > 0); }
+      $$('[data-st][data-app]').forEach((u) => { const n = Y.akaStars()[u.dataset.app] || 0; u.innerHTML = n ? `<span class="kp-stars" role="img" aria-label="${n} yıldız">${starSVG(n)}</span>` : 'Yapılmadı'; u.classList.toggle('done', n > 0); });
       const p = progress(ids);
       const s = $('[data-st="sorular"]');
       if (s) { s.textContent = p.seen ? `${p.seen}/${p.n} · %${pct(p.ok, p.seen)}` : `0/${p.n}`; s.classList.toggle('done', p.seen === p.n && p.n > 0); }
@@ -134,8 +133,7 @@
         const acc = $('.hr-acc', row);
         acc.textContent = p.seen ? `%${pct(p.ok, p.seen)}` : '';
         acc.className = 'hr-acc' + (p.seen >= 3 ? (pct(p.ok, p.seen) >= 70 ? ' good' : ' weak') : '');
-        const st = $('.hr-stars', row);
-        if (st && H.k[k].app) { const n = Y.akaStars()[H.k[k].app] || 0; st.innerHTML = n ? starSVG(n) : ''; }
+        $$('.hr-stars[data-app]', row).forEach((st) => { const n = Y.akaStars()[st.dataset.app] || 0; st.innerHTML = n ? starSVG(n) : ''; });
       });
       // ders başlıkları
       DORDER.forEach((d) => {
