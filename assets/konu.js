@@ -1,4 +1,4 @@
-/* Ürgüp Yıldız Sürücü Kursu — Konu anlatımı: ortak çizim/çekmece yardımcıları ve konu sayfası */
+/* Ürgüp Yıldız Sürücü Kursu — Konu anlatımı: kit çizimleri (levha, ikaz lambası, ilk yardım) ve sınav sayfasındaki konu çekmecesi */
 (() => {
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
@@ -91,81 +91,13 @@
     body.scrollTop = 0;
     renderKit(body);
     const foot = $('.drawer-foot', d);
-    foot.innerHTML = `<a class="btn btn-line" href="konu-anlatimi.html#${id}">${ICON('i-book')}Konu sayfasında aç</a>` +
-      (opts.onStudy ? `<button class="btn btn-red" type="button" data-dr-study>${ICON('i-check')}Bu konudan soru çöz</button>` : `<a class="btn btn-red" href="e-sinav.html#calis=${id}">${ICON('i-check')}Bu konudan soru çöz</a>`);
-    const sb = $('[data-dr-study]', foot);
-    if (sb) sb.addEventListener('click', () => { closeDrawer(); opts.onStudy(id); });
+    foot.innerHTML = `<a class="btn btn-line" href="konu-${id}.html">${ICON('i-book')}Konu sayfasına git</a>` +
+      `<a class="btn btn-red" href="konu-${id}.html#sorular">${ICON('i-check')}Bu konunun sorularını çöz</a>`;
     $('.drawer-close', d).focus();
   }
 
   window.YildizKonu = { renderKit, load, openDrawer, closeDrawer, DERS };
 
-  /* =========================================================
-     Konu anlatımı sayfası
-     ========================================================= */
-  const page = $('#kn-page');
-  if (!page) return;
-  const arts = $$('.kn-main > article[data-konu]');
-  const overview = $('#kn-overview');
-  const links = $$('.kn-nav a[data-konu]');
-  page.addEventListener('click', (e) => {
-    const b = e.target.closest('.kn-examples .opt');
-    if (!b) return;
-    const card = b.closest('[data-a]');
-    if (!card || card.dataset.answered) return;
-    card.dataset.answered = '1';
-    const ans = Number(card.dataset.a), pick = Number(b.dataset.i);
-    $$('.opt', card).forEach((o, i) => {
-      o.disabled = true;
-      if (i === ans) o.classList.add('is-ok');
-      else if (i === pick) o.classList.add('is-no');
-    });
-    const fb = $('.feedback', card);
-    fb.hidden = false;
-    fb.classList.add(pick === ans ? 'ok' : 'no');
-    $('.fb-h', fb).innerHTML = pick === ans ? `${ICON('i-check')}Doğru` : `${ICON('i-x')}Yanlış — doğru cevap ${'ABCD'[ans]}`;
-  });
-
-  function show(id) {
-    const art = id && arts.find((a) => a.dataset.konu === id);
-    arts.forEach((a) => { a.hidden = a !== art; });
-    overview.hidden = !!art;
-    links.forEach((l) => l.setAttribute('aria-current', String(l.dataset.konu === id)));
-    if (art) {
-      renderKit(art);
-      document.title = `${$('h2', art).textContent} | Konu Anlatımı | Ürgüp Yıldız Sürücü Kursu`;
-      const cur = links.find((l) => l.dataset.konu === id);
-      if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest' });
-    } else {
-      document.title = 'Konu Anlatımı | e-Sınav Dersleri | Ürgüp Yıldız Sürücü Kursu';
-    }
-  }
-  const route = () => {
-    const id = decodeURIComponent(location.hash.slice(1));
-    show(arts.some((a) => a.dataset.konu === id) ? id : null);
-  };
-  addEventListener('hashchange', () => { route(); const top = $('.kn-layout'); if (top) scrollTo({ top: top.getBoundingClientRect().top + scrollY - 100 }); });
-  route();
-
-  // arama
-  const search = $('#kn-search');
-  if (search) {
-    const norm = (s) => s.toLocaleLowerCase('tr').normalize('NFD').replace(/[̀-ͯ]/g, '');
-    search.addEventListener('input', () => {
-      const t = norm(search.value.trim());
-      $$('.kn-nav li').forEach((li) => { li.hidden = t && !norm(li.dataset.search || li.textContent).includes(t); });
-      $$('.kn-nav h3').forEach((h) => {
-        const ul = h.nextElementSibling;
-        h.hidden = ul && !$$('li', ul).some((li) => !li.hidden);
-      });
-      $('.kn-side').classList.toggle('show-nav', !!t);
-    });
-  }
-  const navToggle = $('#kn-nav-toggle');
-  if (navToggle) navToggle.addEventListener('click', () => {
-    const s = $('.kn-side');
-    s.classList.toggle('show-nav');
-    navToggle.setAttribute('aria-expanded', String(s.classList.contains('show-nav')));
-  });
-  $$('.kn-nav a').forEach((a) => a.addEventListener('click', () => { if (innerWidth <= 1000) $('.kn-side').classList.remove('show-nav'); }));
+  /* Konu sayfaları: levha, ikaz lambası ve ilk yardım çizimleri */
+  if (document.getElementById('kp-page')) renderKit(document);
 })();

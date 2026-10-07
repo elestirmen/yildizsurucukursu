@@ -7,10 +7,11 @@ Canlı adres: <https://www.urgupyildizsurucu.com/>
 
 | Sayfa | İçerik |
 |---|---|
-| `index.html` | Kurumsal ana sayfa: hakkımızda, kurslar (B manuel/otomatik, BE, D, A1, A2, A, özel direksiyon), yaş hesaplayıcı, ehliyet süreci, gerekli belgeler, e-Sınav ve Trafik Akademisi tanıtımı, SSS, iletişim ve ön kayıt |
-| `trafik-akademisi.html` | Trafik Akademisi: e-Sınav'ın dört dersine göre 10 etkileşimli ders (3B sürüş, kavşak, park, ayna, gösterge, ilk yardım ritmi) |
-| `e-sinav.html` | e-Sınav Merkezi: deneme sınavı (e-Sınav düzeninde 50 soru / 45 dk), çalışma modu (ders/konu seçimi, anında geri bildirim, açıklama, konu çekmecesi), çıkmış sınavlar, gelişim takibi |
-| `konu-anlatimi.html` | 40 başlıkta konu anlatımı (İlk Yardım, Trafik ve Çevre, Araç Tekniği, Trafik Adabı); her konuda çıkmış soru örnekleri |
+| `index.html` | Kurumsal ana sayfa: hakkımızda, kurslar (B manuel/otomatik, BE, D, A1, A2, A, özel direksiyon), yaş hesaplayıcı, ehliyet süreci, gerekli belgeler, Sınava Hazırlık tanıtımı, SSS, iletişim ve ön kayıt |
+| `hazirlik.html` | **Sınava Hazırlık**: üç adım (1 Öğren · 2 Çalış · 3 Sınav ol), 4 ders altında 40 konunun listesi ve her konuda ilerleme (okundu, çözülen soru, doğru oranı, uygulama yıldızı), dersler arası karışık çalışma, yanlışlar ve işaretli sorular |
+| `konu-<id>.html` | Her konu için tek sayfa (40 adet): konu anlatımı → (10 konuda) etkileşimli uygulama → o konunun çıkmış soruları |
+| `e-sinav.html` | **Sınav ol**: deneme sınavı (e-Sınav düzeninde 50 soru / 45 dk) ve çıkmış sınavlar; sonuçta tekrar edilecek konulara bağlantı |
+| `konu-anlatimi.html`, `trafik-akademisi.html` | Eski adresler; yeni yerlerine yönlendirir |
 
 ## Soru bankası
 
@@ -26,33 +27,42 @@ Soru görselleri `assets/q/` altındadır (kitapçıklardan kırpıldı; iki ren
 ## Yapı
 
 ```
-index.html, trafik-akademisi.html, e-sinav.html, konu-anlatimi.html
+index.html, hazirlik.html, konu-<id>.html, e-sinav.html
 assets/
   site.css, site.js          temel stiller ve ortak etkileşimler (menü, tema, form, yaş hesaplayıcı…)
   kurumsal.css               kurumsal tasarım katmanı (renkler, tipografi, üst bilgi, hero, kartlar)
-  sinav.css, sinav.js        e-Sınav Merkezi
-  konu.js                    konu anlatımı sayfası ve konu çekmecesi
-  kit.js, academy*.js        Trafik Akademisi (levha/ikaz lambası çizimleri, oyunlar)
+  sinav.css                  soru, sınav ve konu anlatımı bileşenleri
+  hazirlik.css               hazırlık ana sayfası ve konu sayfaları
+  soru.js                    ortak soru çekirdeği: soru gösterimi, ilerleme, soru çözme ekranı
+  hazirlik.js                hazırlık ana sayfası ve konu sayfası etkileşimleri
+  sinav.js                   deneme sınavı ve çıkmış sınavlar
+  konu.js                    levha/ikaz lambası/ilk yardım çizimleri ve sınav sayfasındaki konu çekmecesi
+  kit.js, academy*.js        etkileşimli uygulamalar (konu sayfalarında tek ders kipinde çalışır)
   data/sorular.js            soru bankası (üretilir)
   data/konular.js            konu anlatımları (üretilir)
   img/                       kurumsal görseller (WebP)
+  img/konu/                  konu sayfası görselleri (WebP)
   q/                         soru görselleri (WebP)
 tools/
   generate-layers.mjs        eski hero katmanlarının üreticisi
   esinav/                    soru bankası ve sayfa üretim betikleri (bkz. tools/esinav/README.md)
 ```
 
-Site tamamen statiktir; derleme adımı gerektirmez. Sunucuda `yildiz-web` (nginx:alpine) konteyneri bu dizini doğrudan yayınlar.
-Cloudflare statik dosyaları önbelleğe aldığından CSS/JS/görsel değiştiğinde HTML'deki `?v=` sürüm numarası artırılmalıdır.
+Site tamamen statiktir; derleme adımı gerektirmez. Hazırlık, konu ve sınav sayfaları
+`tools/esinav/build_pages.py` ile üretilir (ortak üst/alt bilgi `tools/esinav/partials.py`, etkileşimli
+uygulamaların kaynağı `tools/esinav/data/akademi-dersler.html`). Sunucuda `yildiz-web` (nginx:alpine)
+konteyneri bu dizini doğrudan yayınlar.
+Cloudflare statik dosyaları önbelleğe aldığından CSS/JS/görsel değiştiğinde `tools/esinav/versions.json`
+ve `index.html`'deki `?v=` sürüm numarası artırılmalıdır.
 
 ## Gizlilik
 
 Site çerez kullanmaz ve ziyaretçi verisi toplamaz. Ön kayıt formu yalnızca ziyaretçinin kendi WhatsApp uygulamasında hazır bir mesaj açar.
-e-Sınav ilerlemesi, evrak listesi ve tema tercihi yalnızca ziyaretçinin tarayıcısında (`localStorage`) saklanır.
+Okunan konular, çözüm ilerlemesi, sınav sonuçları, evrak listesi ve tema tercihi yalnızca ziyaretçinin tarayıcısında (`localStorage`) saklanır.
 
 ## Görseller
 
-Kurumsal fotoğraf ve illüstrasyonlar yapay zekâ ile üretilmiştir (Codex görsel üretimi); kursun gerçek araçlarını veya personelini göstermez.
+Kurumsal fotoğraf ve illüstrasyonlar ile konu sayfası görselleri yapay zekâ ile üretilmiştir (Codex görsel üretimi); kursun gerçek araçlarını veya personelini göstermez. Levha ve ikaz lambası konularında yapay zekâ görseli kullanılmaz; doğru çizimler `kit.js`'ten gelir.
 
 ## İletişim
 

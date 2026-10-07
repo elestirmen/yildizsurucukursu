@@ -1,17 +1,10 @@
-/* Ürgüp Yıldız Sürücü Kursu — e-Sınav Merkezi
-   Deneme sınavı (e-Sınav düzeni), çalışma modu, çıkmış sınavlar ve gelişim takibi.
-   Soru bankası: assets/data/sorular.js (MEB çıkmış soruları). İlerleme yalnızca bu cihazda (localStorage) saklanır. */
+/* Ürgüp Yıldız Sürücü Kursu — Sınav ol: deneme sınavı (e-Sınav düzeni) ve çıkmış sınavlar.
+   Ortak soru çekirdeği: assets/soru.js (YildizSoru). Soru bankası: assets/data/sorular.js. */
 (() => {
   'use strict';
-  const DATA = window.YildizSorular;
-  if (!DATA) return;
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const ICON = (id) => `<svg class="ic" aria-hidden="true"><use href="#${id}"/></svg>`;
-  const L = 'ABCD';
-  const DERS = { iy: 'İlk Yardım', tc: 'Trafik ve Çevre', at: 'Araç Tekniği', ta: 'Trafik Adabı' };
-  const DORDER = ['iy', 'tc', 'at', 'ta'];
+  const DATA = window.YildizSorular, Y = window.YildizSoru;
+  if (!DATA || !Y) return;
+  const { $, $$, esc, ICON, L, DERS, DORDER, store, K, record, saveStat, saveHist, stemHTML, optsHTML, srcText, noteHTML, shuffle, pct, dialog, reduced } = Y;
   const MODES = {
     tam: { ad: 'Tam deneme', n: 50, dk: 45, dist: { iy: 12, tc: 23, at: 9, ta: 6 } },
     mini: { ad: 'Kısa deneme', n: 20, dk: 18, dist: { iy: 5, tc: 9, at: 4, ta: 2 } }
@@ -20,63 +13,12 @@
   const byId = new Map(Q.map((q) => [q.i, q]));
   const live = Q.filter((q) => !q.old);
   const SESS = new Map(DATA.oturumlar.map((o) => [o.c, o]));
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------------- Depolama ---------------- */
-  const store = {
-    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* depolama kapalı */ } },
-    del(k) { try { localStorage.removeItem(k); } catch (e) { /* */ } }
-  };
-  const K_STAT = 'yildiz-es-istat-v1', K_HIST = 'yildiz-es-gecmis-v1', K_MARK = 'yildiz-es-isaret-v1', K_RUN = 'yildiz-es-aktif-v1';
-  let stat = store.get(K_STAT, {});            // id -> [görülme, doğru, son (1/0), zaman]
-  let marks = new Set(store.get(K_MARK, []));
-  let hist = store.get(K_HIST, []);
-  const record = (id, ok) => {
-    const s = stat[id] || [0, 0, 0, 0];
-    s[0]++; if (ok) s[1]++; s[2] = ok ? 1 : 0; s[3] = Date.now();
-    stat[id] = s;
-  };
-  const saveStat = () => store.set(K_STAT, stat);
-  const toggleMark = (id) => { marks.has(id) ? marks.delete(id) : marks.add(id); store.set(K_MARK, [...marks]); return marks.has(id); };
-
-  /* ---------------- Soru gösterimi ---------------- */
-  const ITEM = /^((I{1,3}|IV|V|VI{1,3})\s*[-.)]|[1-9]\s*[-.)]|•)/;
-  function stemHTML(q) {
-    const lines = q.q.split('\n').map((s) => s.trim()).filter(Boolean);
-    const anyItem = lines.some((l) => ITEM.test(l));
-    let html = lines.map((l, i) => {
-      const item = ITEM.test(l);
-      const ask = anyItem && !item && i === lines.length - 1;
-      return `<p class="${item ? 'q-item' : ask ? 'q-ask' : ''}">${esc(l)}</p>`;
-    }).join('');
-    if (q.g) html += `<figure class="q-fig"><img src="assets/q/${q.g}" alt="Sorunun şekli" loading="lazy"></figure>`;
-    return `<div class="q-stem">${html}</div>`;
-  }
-  function optsHTML(q, cls = '') {
-    const img = !!(q.og && q.og.some(Boolean));
-    return `<div class="opts${img ? ' img-opts' : ''}">` + q.o.map((o, i) => {
-      const body = q.og && q.og[i] ? `<span class="o-img"><img src="assets/q/${q.og[i]}" alt="${L[i]} şıkkı" loading="lazy"></span>` : `<span>${esc(o)}</span>`;
-      return `<button class="opt ${cls}" type="button" data-i="${i}"><span class="L">${L[i]}</span>${body}<span class="o-mark"></span></button>`;
-    }).join('') + '</div>';
-  }
-  function srcText(q) {
-    if (q.es) return 'MEB e-Sınav örnek sorusu · cevap anahtarı yayımlanmadı, kursumuzca belirlendi';
-    const o = SESS.get(q.src[0]);
-    const first = o ? `${o.tarih} · ${o.tur}` : q.src[0];
-    return q.src.length > 1 ? `${first} · toplam ${q.src.length} sınavda çıktı` : first;
-  }
-  window.YildizSoruHTML = { stem: stemHTML, opts: optsHTML, src: srcText };
-  const topicBtn = (q, label = 'Konu anlatımı') => q.k ? `<button class="btn btn-line btn-sm btn-topic" type="button" data-topic="${q.k}">${ICON('i-book')}${label}</button>` : '';
-  const noteHTML = (q) => (q.old ? `<p class="q-old"><b>Güncel değil:</b> ${esc(q.old)} Bu soru puanlamaya katılmaz.</p>` : '') +
-    (q.es ? `<p class="q-es">${ICON('i-monitor')} MEB'in e-Sınav deneme sitesinde yayımlanan güncel bir sorudur; resmî cevap anahtarı yayımlanmadığından cevap, kursumuz eğitmenlerince belirlenmiştir.</p>` : '');
-
-  const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-  const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
+  const K_RUN = K.run;
   const fmtDate = (ts) => new Date(ts).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' }) + ' ' + new Date(ts).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+  const topicBtn = (q, label = 'Konu anlatımı') => q.k ? `<button class="btn btn-line btn-sm btn-topic" type="button" data-topic="${q.k}">${ICON('i-book')}${label}</button>` : '';
 
   /* ---------------- Konu çekmecesi ---------------- */
-  const openTopic = (id) => window.YildizKonu && window.YildizKonu.openDrawer(id, { onStudy: (k) => { location.hash = 'calis=' + k; } });
+  const openTopic = (id) => window.YildizKonu && window.YildizKonu.openDrawer(id);
   document.addEventListener('click', (e) => {
     const t = e.target.closest('[data-topic]');
     if (t) { e.preventDefault(); openTopic(t.dataset.topic); }
@@ -88,23 +30,17 @@
   function showTab(name) {
     tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === name)));
     panels.forEach((p) => { p.hidden = p.id !== 'p-' + name; });
-    if (name === 'gelisim') renderProgress();
     if (name === 'cikmis') renderSessions();
     if (name === 'deneme') renderHistory();
   }
+  // Eski e-Sınav Merkezi adresleri yeni yerlerine
   function route() {
     const h = decodeURIComponent(location.hash.slice(1));
     const [name, arg] = h.split('=');
-    if (name === 'calis') {
-      showTab('calis');
-      if (arg && DATA.konular[arg]) startStudy({ topics: [arg], filter: 'all', order: 'freq' });
-      else if (arg === 'yanlis') startStudy({ topics: [], filter: 'wrong', order: 'mix' });
-      else showStudySetup();
-    } else if (name === 'konu' && arg) {
-      openTopic(arg);
-    } else if (['deneme', 'cikmis', 'gelisim'].includes(name)) {
-      showTab(name);
-    } else showTab('deneme');
+    if (name === 'calis') { location.replace(arg && DATA.konular[arg] ? Y.konuURL(arg, 'sorular') : arg === 'yanlis' ? 'hazirlik.html#coz=yanlis' : 'hazirlik.html#calis'); return; }
+    if (name === 'gelisim') { location.replace('hazirlik.html'); return; }
+    if (name === 'konu' && arg && DATA.konular[arg]) { location.replace(Y.konuURL(arg)); return; }
+    showTab(name === 'cikmis' ? 'cikmis' : 'deneme');
   }
   tabs.forEach((t) => t.addEventListener('click', (e) => {
     e.preventDefault();
@@ -112,7 +48,6 @@
     if (location.hash === target) route(); else location.hash = target;
   }));
   addEventListener('hashchange', route);
-
   /* =========================================================
      DENEME SINAVI: başlangıç kartı
      ========================================================= */
@@ -134,7 +69,7 @@
     DORDER.forEach((d) => {
       let pool = live.filter((q) => q.d === d);
       shuffle(pool);
-      if (preferNew) pool.sort((a, b) => (stat[a.i] ? 1 : 0) - (stat[b.i] ? 1 : 0));
+      if (preferNew) pool.sort((a, b) => (Y.S.stat[a.i] ? 1 : 0) - (Y.S.stat[b.i] ? 1 : 0));
       // aynı konudan art arda çok soru gelmesin: konulara dengeli dağıt
       const byTopic = new Map();
       pool.forEach((q) => { if (!byTopic.has(q.k)) byTopic.set(q.k, []); byTopic.get(q.k).push(q); });
@@ -154,7 +89,7 @@
 
   function renderHistory() {
     const box = $('#d-hist');
-    const rows = hist.slice(0, 8);
+    const rows = Y.S.hist.slice(0, 8);
     box.innerHTML = rows.length ? `<table class="hist"><thead><tr><th>Tarih</th><th>Sınav</th><th>Puan</th><th>Sonuç</th></tr></thead><tbody>${rows.map((h) =>
       `<tr><td>${fmtDate(h.ts)}</td><td>${esc(h.title)}</td><td><b>${h.puan}</b> <small>(${h.dogru}/${h.n})</small></td><td><span class="pill-res ${h.gecti ? 'ok' : 'no'}">${h.gecti ? 'Geçti' : 'Kaldı'}</span></td></tr>`).join('')}</tbody></table>`
       : '<p class="empty">Henüz sınav çözmediniz. İlk denemenizi başlatın; sonuçlarınız burada listelenecek.</p>';
@@ -281,9 +216,9 @@
       saveStat();
       const puan = pct(ok, scored);
       const gecti = S.kural === 'ders' ? Object.values(per).every(([a, b]) => pct(a, b) >= 70) : puan >= 70;
-      hist.unshift({ ts: Date.now(), title: S.title, kind: S.kind, code: S.code || null, n: scored, dogru: ok, puan, gecti, per });
-      hist = hist.slice(0, 40);
-      store.set(K_HIST, hist);
+      Y.S.hist.unshift({ ts: Date.now(), title: S.title, kind: S.kind, code: S.code || null, n: scored, dogru: ok, puan, gecti, per });
+      Y.S.hist = Y.S.hist.slice(0, 40);
+      saveHist();
       S.result = { per, ok, scored, puan, gecti, timeout };
       showResult();
       if (gecti && window.YildizFX && !reduced) setTimeout(() => window.YildizFX.confetti(innerWidth / 2, innerHeight / 3, 140), 400);
@@ -309,7 +244,7 @@
           const [ok, n] = r.per[d];
           return `<tr><td><span class="chip-d" data-d="${d}">${DERS[d]}</span></td><td class="num">${n}</td><td class="num">${ok}</td><td class="num">${n - ok - bos}</td><td class="num">${bos}</td><td class="num"><b>${pct(ok, n)}</b></td></tr>`;
         }).join('')}</tbody></table>
-        ${weak.length ? `<div class="card card-pad"><h3 class="es-h2" style="font-size:19px">Tekrar etmeniz önerilen konular</h3><ul class="weak-list">${weak.map((w) => `<li><span class="chip-d" data-d="${w.d}">${DERS[w.d]}</span><span class="w-name">${esc(DATA.konular[w.k])}</span><span class="w-pct">${w.no} yanlış</span><button class="btn btn-line btn-sm" type="button" data-topic="${w.k}">${ICON('i-book')}Konu</button></li>`).join('')}</ul></div>` : ''}
+        ${weak.length ? `<div class="card card-pad"><h3 class="es-h2" style="font-size:19px">Tekrar etmeniz önerilen konular</h3><ul class="weak-list">${weak.map((w) => `<li><span class="chip-d" data-d="${w.d}">${DERS[w.d]}</span><span class="w-name">${esc(DATA.konular[w.k])}</span><span class="w-pct">${w.no} yanlış</span><a class="btn btn-line btn-sm" href="${Y.konuURL(w.k)}">${ICON('i-book')}Konuya git</a></li>`).join('')}</ul></div>` : ''}
         <div class="res-filter"><b>Cevaplarınız:</b> <div class="seg" role="group" aria-label="Filtre"><button type="button" data-f="all" aria-pressed="true">Tümü</button><button type="button" data-f="no" aria-pressed="false">Yanlışlar</button><button type="button" data-f="empty" aria-pressed="false">Boşlar</button><button type="button" data-f="ok" aria-pressed="false">Doğrular</button></div></div>
         <div class="rev-list" id="rev-list"></div>
         <div class="q-actions" style="margin-top:28px"><button class="btn btn-red" type="button" data-x="again">${ICON('i-refresh')}Yeni deneme sınavı</button><button class="btn btn-line" type="button" data-x="close2">Sınav ekranını kapat</button></div></div>`;
@@ -384,189 +319,12 @@
     return [...m.values()].sort((a, b) => b.no - a.no).slice(0, 6);
   }
 
-  /* ---------------- Onay penceresi ---------------- */
-  function dialog(title, text, okLabel, onOk, danger) {
-    const d = $('#dlg');
-    $('h3', d).textContent = title;
-    $('p', d).textContent = text;
-    const ok = $('[data-ok]', d);
-    ok.textContent = okLabel;
-    ok.className = 'btn ' + (danger ? 'btn-red' : 'btn-navy');
-    d.hidden = false;
-    ok.focus();
-    const done = (run) => { d.hidden = true; ok.onclick = null; $('[data-cancel]', d).onclick = null; if (run) onOk(); };
-    ok.onclick = () => done(true);
-    $('[data-cancel]', d).onclick = () => done(false);
-    d.onkeydown = (e) => { if (e.key === 'Escape') done(false); };
-  }
-
-  /* =========================================================
-     ÇALIŞMA MODU
-     ========================================================= */
-  const setupEl = $('#study-setup'), runEl = $('#study-run');
-  let sFilter = 'all', sOrder = 'mix';
-  const topicsBySubj = {};
-  Object.keys(DATA.konular).forEach((k) => { const d = k.split('-')[0]; (topicsBySubj[d] = topicsBySubj[d] || []).push(k); });
-  const countIn = (k) => live.filter((q) => q.k === k).length;
-  function topicProgress(k) {
-    const qs = live.filter((q) => q.k === k);
-    let seen = 0, ok = 0;
-    qs.forEach((q) => { const s = stat[q.i]; if (s) { seen++; if (s[2]) ok++; } });
-    return { n: qs.length, seen, ok };
-  }
-  function buildSetup() {
-    $('#subj-list').innerHTML = DORDER.map((d) => {
-      const n = live.filter((q) => q.d === d).length;
-      return `<div class="subj-block${d === 'iy' ? ' open' : ''}" data-d="${d}">
-        <button class="subj-head" type="button" aria-expanded="${d === 'iy'}"><img src="assets/img/subj-${d}.webp" alt="" width="54" height="40" loading="lazy"><span class="sh-txt"><b>${DERS[d]}</b><small>${topicsBySubj[d].length} konu · ${n} soru</small></span>${ICON('i-down').replace('class="ic"', 'class="ic ic-down"')}</button>
-        <ul class="topic-list"><li><label class="topic-row"><input type="checkbox" data-all="${d}"><span class="tr-name"><b>Tüm ${DERS[d]} konuları</b></span><span class="tr-meta">${n} soru</span></label></li>
-        ${topicsBySubj[d].map((k) => {
-          const p = topicProgress(k);
-          const w = pct(p.seen, p.n);
-          return `<li><div class="topic-row"><input type="checkbox" value="${k}" id="t-${k}" aria-label="${esc(DATA.konular[k])}"><label class="tr-name" for="t-${k}">${esc(DATA.konular[k])}</label><span class="tr-meta"><span title="Çözülen: ${p.seen}/${p.n}, son denemede doğru: ${p.ok}">${p.seen}/${p.n}</span><span class="mini-bar" aria-hidden="true"><i style="width:${w}%"></i></span><button class="tr-link" type="button" data-topic="${k}" title="Konu anlatımı" aria-label="${esc(DATA.konular[k])} konu anlatımı">${ICON('i-book')}</button></span></div></li>`;
-        }).join('')}</ul></div>`;
-    }).join('');
-    paintSel();
-  }
-  function selectedTopics() { return $$('#subj-list input[value]:checked').map((i) => i.value); }
-  function poolFor(topics, filter) {
-    let qs = topics.length ? live.filter((q) => topics.includes(q.k)) : live.slice();
-    if (filter === 'new') qs = qs.filter((q) => !stat[q.i]);
-    else if (filter === 'wrong') qs = (topics.length ? Q.filter((q) => topics.includes(q.k)) : Q).filter((q) => !q.old && stat[q.i] && !stat[q.i][2]);
-    else if (filter === 'mark') qs = qs.filter((q) => marks.has(q.i));
-    return qs;
-  }
-  function paintSel() {
-    const t = selectedTopics();
-    const n = poolFor(t, sFilter).length;
-    $('#sel-count').innerHTML = `<b>${n}</b> soru ${t.length ? `· ${t.length} konu seçili` : '· tüm konular'}`;
-    $('#s-start').disabled = !n;
-  }
-  $('#subj-list').addEventListener('click', (e) => {
-    const h = e.target.closest('.subj-head');
-    if (h) { const b = h.parentElement; b.classList.toggle('open'); h.setAttribute('aria-expanded', String(b.classList.contains('open'))); }
-  });
-  $('#subj-list').addEventListener('change', (e) => {
-    const all = e.target.closest('[data-all]');
-    if (all) $$(`.subj-block[data-d="${all.dataset.all}"] input[value]`).forEach((i) => { i.checked = all.checked; });
-    paintSel();
-  });
-  $$('#s-filter button').forEach((b) => b.addEventListener('click', () => { sFilter = b.dataset.v; $$('#s-filter button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); paintSel(); }));
-  $$('#s-order button').forEach((b) => b.addEventListener('click', () => { sOrder = b.dataset.v; $$('#s-order button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); }));
-  $('#s-clear').addEventListener('click', () => { $$('#subj-list input').forEach((i) => { i.checked = false; }); paintSel(); });
-  $('#s-start').addEventListener('click', () => startStudy({ topics: selectedTopics(), filter: sFilter, order: sOrder }));
-  $('#s-wrong').addEventListener('click', () => startStudy({ topics: [], filter: 'wrong', order: 'mix' }));
-
-  let ST = null;
-  function showStudySetup() {
-    ST = null;
-    buildSetup();
-    setupEl.hidden = false;
-    runEl.hidden = true;
-  }
-  function startStudy({ topics, filter, order }) {
-    let qs = poolFor(topics, filter);
-    if (!qs.length) {
-      showStudySetup();
-      $('#sel-count').innerHTML = filter === 'wrong' ? '<b>0</b> soru · henüz yanlış cevapladığınız soru yok' : '<b>0</b> soru';
-      return;
-    }
-    qs = order === 'freq' ? shuffle(qs).sort((a, b) => b.src.length - a.src.length) : shuffle(qs);
-    const label = topics.length === 1 ? DATA.konular[topics[0]] : topics.length ? `${topics.length} konu` : 'Tüm konular';
-    ST = { ids: qs.map((q) => q.i), i: 0, res: {}, label: label + (filter === 'wrong' ? ' · yanlışlarım' : filter === 'new' ? ' · çözmediklerim' : filter === 'mark' ? ' · işaretlediklerim' : ''), topics };
-    setupEl.hidden = true;
-    runEl.hidden = false;
-    renderStudy();
-    const p = $('#p-calis');
-    if (p.getBoundingClientRect().top < 0) scrollTo({ top: p.getBoundingClientRect().top + scrollY - 130, behavior: reduced ? 'auto' : 'smooth' });
-  }
-  function studyScore() {
-    const v = Object.values(ST.res);
-    return { ok: v.filter((x) => x.ok).length, no: v.filter((x) => !x.ok).length };
-  }
-  function renderStudy() {
-    if (ST.i >= ST.ids.length) return renderStudyEnd();
-    const q = byId.get(ST.ids[ST.i]);
-    const r = ST.res[q.i];
-    const sc = studyScore();
-    runEl.innerHTML = `<div class="card qcard">
-      <div class="q-top"><div class="q-progress"><button class="btn btn-line btn-sm" type="button" data-s="back">${ICON('i-left2')}Konular</button><span><b>${ST.i + 1}</b> / ${ST.ids.length}</span><span class="bar"><i style="width:${pct(ST.i, ST.ids.length)}%"></i></span><span class="chip-d" data-d="${q.d}">${DERS[q.d]}</span></div>
-      <div class="score-chips"><span class="s-ok">${sc.ok} doğru</span><span class="s-no">${sc.no} yanlış</span></div></div>
-      <p class="es-sub" style="font-size:13.5px;margin:-4px 0 14px">${ST.label.startsWith(DATA.konular[q.k]) ? '' : esc(ST.label) + ' · '}<a href="#konu=${q.k}" data-topic="${q.k}">${esc(DATA.konular[q.k])}</a>${ST.label.startsWith(DATA.konular[q.k]) ? esc(ST.label.slice(DATA.konular[q.k].length)) : ''}</p>
-      ${noteHTML(q)}${stemHTML(q)}${optsHTML(q)}
-      <div class="feedback" hidden></div>
-      <div class="q-actions"><button class="btn btn-line btn-sm" type="button" data-s="prev" ${ST.i ? '' : 'disabled'}>${ICON('i-left')}Önceki</button>
-      ${topicBtn(q)}<button class="btn btn-line btn-sm bm" type="button" data-s="mark" aria-pressed="${marks.has(q.i)}">${ICON('i-star')}${marks.has(q.i) ? 'İşaretlendi' : 'İşaretle'}</button>
-      <span class="spacer"></span><span class="kbd-hint"><kbd>A</kbd>–<kbd>D</kbd> cevapla · <kbd>Enter</kbd> sonraki</span>
-      <button class="btn btn-red" type="button" data-s="next" ${r ? '' : 'disabled'}>${ST.i === ST.ids.length - 1 ? 'Bitir' : 'Sonraki soru'}${ICON('i-right')}</button></div></div>`;
-    if (r) reveal(q, r.pick, false);
-  }
-  function reveal(q, pick, fresh) {
-    $$('.opt', runEl).forEach((b) => {
-      const i = Number(b.dataset.i);
-      b.disabled = true;
-      if (i === q.a) { b.classList.add('is-ok'); $('.o-mark', b).textContent = 'Doğru cevap'; }
-      else if (i === pick) { b.classList.add('is-no'); $('.o-mark', b).textContent = 'Sizin cevabınız'; }
-    });
-    const ok = pick === q.a;
-    const fb = $('.feedback', runEl);
-    fb.hidden = false;
-    fb.className = 'feedback ' + (ok ? 'ok' : 'no');
-    fb.innerHTML = `<p class="fb-h">${ok ? ICON('i-check') + 'Doğru!' : ICON('i-x') + 'Yanlış — doğru cevap ' + L[q.a]}</p><p>${esc(q.e || '')}</p>
-      <div class="fb-meta"><span>${ICON('i-cal')}${esc(srcText(q))}</span>${stat[q.i] && stat[q.i][0] > 1 ? `<span>${ICON('i-refresh')}Bu soruyu ${stat[q.i][0]} kez çözdünüz</span>` : ''}</div>`;
-    $('[data-s="next"]', runEl).disabled = false;
-    if (fresh) $('[data-s="next"]', runEl).focus({ preventScroll: true });
-  }
-  function answerStudy(pick) {
-    const q = byId.get(ST.ids[ST.i]);
-    if (ST.res[q.i]) return;
-    const ok = pick === q.a;
-    ST.res[q.i] = { pick, ok };
-    record(q.i, ok); saveStat();
-    const sc = studyScore();
-    $('.score-chips', runEl).innerHTML = `<span class="s-ok">${sc.ok} doğru</span><span class="s-no">${sc.no} yanlış</span>`;
-    reveal(q, pick, true);
-  }
-  function renderStudyEnd() {
-    const sc = studyScore();
-    const wrong = Object.entries(ST.res).filter(([, r]) => !r.ok).map(([id]) => id);
-    runEl.innerHTML = `<div class="card card-pad" style="text-align:center"><h2 class="es-h2">Çalışma tamamlandı</h2>
-      <p class="es-sub">${esc(ST.label)} · ${ST.ids.length} soru</p>
-      <p style="font-family:var(--f-display);font-size:44px;font-weight:800;margin:14px 0 4px">%${pct(sc.ok, sc.ok + sc.no)}</p>
-      <p class="es-sub">${sc.ok} doğru, ${sc.no} yanlış</p>
-      <div class="q-actions" style="justify-content:center">${wrong.length ? `<button class="btn btn-red" type="button" data-s="redo">${ICON('i-refresh')}Yanlışları tekrar çöz (${wrong.length})</button>` : ''}
-      ${ST.topics.length === 1 ? `<button class="btn btn-line" type="button" data-topic="${ST.topics[0]}">${ICON('i-book')}Konu anlatımı</button>` : ''}
-      <button class="btn btn-line" type="button" data-s="back">Konu seçimine dön</button></div></div>`;
-    ST.wrong = wrong;
-  }
-  runEl.addEventListener('click', (e) => {
-    const o = e.target.closest('.opt');
-    if (o && ST && !o.disabled) { answerStudy(Number(o.dataset.i)); return; }
-    const s = e.target.closest('[data-s]');
-    if (!s || !ST) return;
-    const act = s.dataset.s;
-    if (act === 'next') { ST.i++; renderStudy(); }
-    else if (act === 'prev') { ST.i = Math.max(0, ST.i - 1); renderStudy(); }
-    else if (act === 'mark') { const on = toggleMark(ST.ids[ST.i]); s.setAttribute('aria-pressed', String(on)); s.innerHTML = `${ICON('i-star')}${on ? 'İşaretlendi' : 'İşaretle'}`; }
-    else if (act === 'back') { if (location.hash !== '#calis') location.hash = '#calis'; else showStudySetup(); }
-    else if (act === 'redo') { ST = { ids: shuffle(ST.wrong.slice()), i: 0, res: {}, label: ST.label + ' · tekrar', topics: ST.topics }; renderStudy(); }
-  });
-  addEventListener('keydown', (e) => {
-    if (!ST || runEl.hidden || $('#p-calis').hidden || !$('#xm').hidden || !$('#dlg').hidden || document.documentElement.classList.contains('drawer-open')) return;
-    if (e.altKey || e.ctrlKey || e.metaKey || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
-    const k = e.key.toLocaleLowerCase('tr');
-    const map = { a: 0, b: 1, c: 2, d: 3, 1: 0, 2: 1, 3: 2, 4: 3 };
-    if (k in map && ST.i < ST.ids.length) { e.preventDefault(); answerStudy(map[k]); }
-    else if ((e.key === 'Enter' || e.key === 'ArrowRight') && ST.i < ST.ids.length && ST.res[ST.ids[ST.i]]) { e.preventDefault(); ST.i++; renderStudy(); }
-    else if (e.key === 'ArrowLeft' && ST.i > 0) { e.preventDefault(); ST.i--; renderStudy(); }
-  });
-
   /* =========================================================
      ÇIKMIŞ SINAVLAR
      ========================================================= */
   function renderSessions() {
     const best = {};
-    hist.forEach((h) => { if (h.code) best[h.code] = Math.max(best[h.code] || 0, h.puan); });
+    Y.S.hist.forEach((h) => { if (h.code) best[h.code] = Math.max(best[h.code] || 0, h.puan); });
     const years = {};
     const ES = 'Güncel e-Sınav örnekleri (MEB)';
     DATA.oturumlar.forEach((o) => { const y = o.c.startsWith('es') ? ES : o.c.slice(0, 4); (years[y] = years[y] || []).push(o); });
@@ -584,46 +342,6 @@
       Exam.start({ kind: 'oturum', code: o.c, title: `${o.tarih} · ${o.tur}`, sub: 'MEB çıkmış sınav', ids: o.l.slice(), dk: o.dk, kural: o.kural });
     });
   });
-
-  /* =========================================================
-     GELİŞİM
-     ========================================================= */
-  function renderProgress() {
-    const ids = Object.keys(stat).filter((id) => byId.has(id));
-    const solved = ids.length;
-    const lastOk = ids.filter((id) => stat[id][2]).length;
-    const tries = ids.reduce((a, id) => a + stat[id][0], 0);
-    const okAll = ids.reduce((a, id) => a + stat[id][1], 0);
-    const exams = hist.length;
-    const bestP = hist.reduce((m, h) => Math.max(m, h.puan), 0);
-    $('#g-kpis').innerHTML = [
-      [solved, `farklı soru çözüldü <br><small>havuz: ${live.length}</small>`],
-      [`%${pct(okAll, tries)}`, 'genel doğruluk'],
-      [exams, 'sınav tamamlandı'],
-      [exams ? bestP : '–', 'en yüksek puan']
-    ].map(([b, s]) => `<div class="card kpi"><b>${b}</b><span>${s}</span></div>`).join('');
-    $('#g-subj').innerHTML = DORDER.map((d) => {
-      const di = ids.filter((id) => byId.get(id).d === d);
-      const n = live.filter((q) => q.d === d).length;
-      const ok = di.filter((id) => stat[id][2]).length;
-      return `<div class="sb-row" data-d="${d}"><span>${DERS[d]} <small style="color:var(--faint)">${di.length}/${n}</small></span><span class="track"><i style="width:${pct(ok, di.length || 1)}%"></i></span><em>${di.length ? '%' + pct(ok, di.length) : '–'}</em></div>`;
-    }).join('');
-    const tw = Object.keys(DATA.konular).map((k) => {
-      const qs = ids.filter((id) => byId.get(id).k === k);
-      const ok = qs.filter((id) => stat[id][2]).length;
-      return { k, d: k.split('-')[0], n: qs.length, p: pct(ok, qs.length) };
-    }).filter((t) => t.n >= 3).sort((a, b) => a.p - b.p).slice(0, 8);
-    $('#g-weak').innerHTML = tw.length ? `<ul class="weak-list">${tw.map((t) => `<li><span class="chip-d" data-d="${t.d}">${DERS[t.d]}</span><span class="w-name">${esc(DATA.konular[t.k])} <small style="color:var(--faint)">(${t.n} soru)</small></span><span class="w-pct" style="color:${t.p >= 70 ? 'var(--ok)' : 'var(--bad)'}">%${t.p}</span><button class="btn btn-line btn-sm" type="button" data-topic="${t.k}">${ICON('i-book')}</button><a class="btn btn-line btn-sm" href="#calis=${t.k}">Çalış</a></li>`).join('')}</ul>`
-      : '<p class="empty">Konu bazında değerlendirme için her konudan en az 3 soru çözün.</p>';
-    const wrongN = ids.filter((id) => !stat[id][2] && !byId.get(id).old).length;
-    $('#g-wrong').innerHTML = wrongN ? `<a class="btn btn-red" href="#calis=yanlis">${ICON('i-refresh')}Yanlışlarımı çöz (${wrongN})</a>` : '';
-    $('#g-hist').innerHTML = hist.length ? `<table class="hist"><thead><tr><th>Tarih</th><th>Sınav</th><th>Puan</th><th>Sonuç</th></tr></thead><tbody>${hist.slice(0, 20).map((h) => `<tr><td>${fmtDate(h.ts)}</td><td>${esc(h.title)}</td><td><b>${h.puan}</b> <small>(${h.dogru}/${h.n})</small></td><td><span class="pill-res ${h.gecti ? 'ok' : 'no'}">${h.gecti ? 'Geçti' : 'Kaldı'}</span></td></tr>`).join('')}</tbody></table>` : '<p class="empty">Henüz tamamlanmış sınavınız yok.</p>';
-  }
-  $('#g-reset').addEventListener('click', () => dialog('İlerleme sıfırlansın mı?', 'Bu cihazdaki tüm çözüm geçmişiniz, sınav sonuçlarınız ve işaretli sorularınız silinecek.', 'Sıfırla', () => {
-    stat = {}; hist = []; marks = new Set();
-    [K_STAT, K_HIST, K_MARK, K_RUN].forEach(store.del);
-    renderProgress();
-  }, true));
 
   /* ---------------- Başlangıç ---------------- */
   route();

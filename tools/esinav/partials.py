@@ -7,8 +7,7 @@ def nav(home, active=''):
         cur = ' aria-current="page"' if key == active else ''
         return f'        <a href="{href}"{cur}>{label}</a>\n'
     links = (a(f'{h}#hakkimizda', 'Hakkımızda', 'hak') + a(f'{h}#kurslar', 'Kurslar', 'kurs') +
-             a('e-sinav.html', 'e-Sınav', 'sinav') + a('konu-anlatimi.html', 'Konu Anlatımı', 'konu') +
-             a('trafik-akademisi.html', 'Trafik Akademisi', 'aka') + a(f'{h}#sss', 'SSS', 'sss') + a(f'{h}#iletisim', 'İletişim', 'ilet'))
+             a('hazirlik.html', 'Sınava Hazırlık', 'hazirlik') + a(f'{h}#sss', 'SSS', 'sss') + a(f'{h}#iletisim', 'İletişim', 'ilet'))
     return f'''  <header class="nav" id="nav">
     <div class="nav-inner">
       <a class="brand" href="{h or '#top'}" aria-label="Ürgüp Yıldız Sürücü Kursu, ana sayfa">
@@ -60,13 +59,12 @@ def footer(home):
           </ul>
         </div>
         <div>
-          <h4>e-Sınav Merkezi</h4>
+          <h4>Sınava Hazırlık</h4>
           <ul>
+            <li><a href="hazirlik.html#konular">Konular</a></li>
+            <li><a href="hazirlik.html#calis">Soru çöz</a></li>
             <li><a href="e-sinav.html#deneme">Deneme sınavı</a></li>
-            <li><a href="e-sinav.html#calis">Çalışma modu</a></li>
             <li><a href="e-sinav.html#cikmis">Çıkmış sınavlar</a></li>
-            <li><a href="konu-anlatimi.html">Konu anlatımı</a></li>
-            <li><a href="trafik-akademisi.html">Trafik Akademisi</a></li>
             <li><a href="{h}#yas">Yaş hesaplayıcı</a></li>
           </ul>
         </div>
@@ -83,7 +81,7 @@ def footer(home):
       </div>
       <div class="foot-bottom">
         <p>© <span id="year">2026</span> Ürgüp Yıldız Sürücü Kursu. Tüm hakları saklıdır.</p>
-        <p class="legal">Mevzuat bilgileri MEB Özel Motorlu Taşıt Sürücüleri Kursu Yönetmeliği ve 2026 MTSK e-Sınav Kılavuzu esas alınarak hazırlanmıştır. e-Sınav Merkezi'ndeki sorular MEB'in 2012–2016 yıllarında yayımladığı sınav kitapçıklarından ve resmî cevap anahtarlarından alınmıştır; açıklamalar ve konu anlatımları kursumuza aittir. Sitemiz çerez kullanmaz; çalışma ilerlemeniz yalnızca bu cihazda saklanır.</p>
+        <p class="legal">Mevzuat bilgileri MEB Özel Motorlu Taşıt Sürücüleri Kursu Yönetmeliği ve 2026 MTSK e-Sınav Kılavuzu esas alınarak hazırlanmıştır. Sınava Hazırlık bölümündeki sorular MEB'in 2012–2016 yıllarında yayımladığı sınav kitapçıklarından ve resmî cevap anahtarlarından alınmıştır; açıklamalar ve konu anlatımları kursumuza aittir. Sitemiz çerez kullanmaz; çalışma ilerlemeniz yalnızca bu cihazda saklanır.</p>
         <a class="to-top" href="#top">Yukarı <svg class="ic"><use href="#i-arrow"/></svg></a>
       </div>
     </div>

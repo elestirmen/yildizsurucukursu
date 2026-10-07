@@ -14,8 +14,8 @@
   const waLink = (text) => `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
-  /* Trafik Akademisi ayrı sayfaya taşındı; eski #egitim bağlantıları oraya gitsin. */
-  if (location.hash === '#egitim' && !document.getElementById('egitim')) { location.replace('trafik-akademisi.html'); return; }
+  /* Trafik Akademisi uygulamaları konu sayfalarına taşındı; eski #egitim bağlantıları Sınava Hazırlık'a gitsin. */
+  if (location.hash === '#egitim' && !document.getElementById('egitim')) { location.replace('hazirlik.html#ogren'); return; }
 
   /* Kuruluş 1989: "N yıl" sayıları her yıl kendiliğinden artar (HTML'de 2026'nın değeri yazılı). */
   $$('[data-yil]').forEach((el) => { el.textContent = String(Math.max(37, new Date().getFullYear() - 1989)); });

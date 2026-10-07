@@ -214,6 +214,11 @@ main > .trust { padding: 0; background: var(--bg); position: relative; z-index: 
 .esp-feats b { display: block; font-size: 15.5px; margin-bottom: 2px; }
 .esp-feats span { display: block; font-size: 13.8px; color: var(--muted); line-height: 1.5; }
 .esp-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.esp-steps { display: grid; gap: 16px; margin: 26px 0 30px; padding: 0; list-style: none; }
+.esp-steps li { display: grid; grid-template-columns: 38px 1fr; gap: 14px; align-items: start; }
+.esp-steps li > span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: var(--text); color: var(--bg); font-family: var(--f-display); font-weight: 800; font-size: 17px; }
+.esp-steps b { display: block; font-size: 16.5px; }
+.esp-steps p { margin: 2px 0 0; font-size: 15px; color: var(--muted); }
 .esp-media { position: relative; margin: 0; }
 .esp-media img { display: block; width: 100%; border-radius: var(--radius); aspect-ratio: 16 / 10.5; object-fit: cover; }
 .esp-card { position: absolute; left: -22px; bottom: -26px; display: flex; gap: 22px; padding: 18px 22px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); }

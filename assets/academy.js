@@ -18,8 +18,13 @@
   const tabs = $$('.lesson-tab', shell);
   const panels = $$('.lesson', shell);
   const panelOf = (id) => panels.find((p) => p.dataset.lesson === id);
-  const ORDER = tabs.map((t) => t.dataset.lesson);
-  const NAMES = Object.fromEntries(tabs.map((t) => [t.dataset.lesson, $('b', t).textContent]));
+  // Tek ders kipi: konu sayfasında sekme yoktur, yalnızca o konunun uygulaması bulunur.
+  const SINGLE = !tabs.length;
+  const ORDER = (SINGLE ? panels : tabs).map((t) => t.dataset.lesson);
+  const NAMES = Object.fromEntries(SINGLE ? panels.map((p) => [p.dataset.lesson, p.dataset.name || $('h3', p).textContent]) : tabs.map((t) => [t.dataset.lesson, $('b', t).textContent]));
+  const after = () => (shell.dataset.after ? document.getElementById(shell.dataset.after) : null);
+  const goAfter = () => { const el = after(); if (el) el.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' }); };
+  const AFTER_LABEL = shell.dataset.afterLabel || 'Sorulara geç';
 
   /* ---------- Ortak yardımcılar ---------- */
   const k = (panel, key) => $(`[data-k="${key}"]`, panel);
@@ -74,7 +79,7 @@
     box.hidden = !done.has(id);
     const nx = nextLesson(id), btn = $('[data-next]', box);
     btn.dataset.next = nx;
-    btn.innerHTML = `Sonraki ders: <b>${NAMES[nx]}</b><svg class="ic"><use href="#i-arrow"/></svg>`;
+    btn.innerHTML = SINGLE ? `${AFTER_LABEL}<svg class="ic"><use href="#i-arrow"/></svg>` : `Sonraki ders: <b>${NAMES[nx]}</b><svg class="ic"><use href="#i-arrow"/></svg>`;
     const st = $('.ln-stars', box);
     st.innerHTML = stars[id] ? starSVG(stars[id]) : '';
     st.setAttribute('aria-label', stars[id] ? `En iyi sonuç: ${stars[id]} yıldız` : '');
@@ -86,9 +91,9 @@
       const s = $('.lt-stars', t);
       if (s) s.innerHTML = stars[lid] ? starSVG(stars[lid]) : '';
     });
-    apFill.style.width = `${(done.size / tabs.length) * 100}%`;
-    apText.textContent = `${done.size}/${tabs.length} ders tamamlandı`;
-    grad.hidden = done.size < tabs.length;
+    if (apFill) apFill.style.width = `${(done.size / tabs.length) * 100}%`;
+    if (apText) apText.textContent = `${done.size}/${tabs.length} ders tamamlandı`;
+    if (grad) grad.hidden = done.size < tabs.length;
     ORDER.forEach(paintNext);
   }
   function complete(id, from) {
@@ -96,22 +101,24 @@
     done.add(id);
     store.set(DONE_KEY, [...done]);
     paintProgress();
-    const src = from || tabs.find((t) => t.dataset.lesson === id);
+    const src = from || tabs.find((t) => t.dataset.lesson === id) || $('.lesson-top', panelOf(id));
     if (src) FX().burstFrom(src);
-    if (done.size === tabs.length) setTimeout(() => FX().burstFrom(grad), 600);
+    if (grad && done.size === tabs.length) setTimeout(() => FX().burstFrom(grad), 600);
+    document.dispatchEvent(new CustomEvent('yildiz-akademi', { detail: { id } }));
   }
   // Sonuç kartı: hatalara göre 1–3 yıldız, en iyisi saklanır
   function finishCard(stage, id, bad, text, onContinue) {
     const n = bad === 0 ? 3 : bad <= 2 ? 2 : 1;
-    if (!stars[id] || n > stars[id]) { stars[id] = n; store.set(STAR_KEY, stars); paintProgress(); }
+    if (!stars[id] || n > stars[id]) { stars[id] = n; store.set(STAR_KEY, stars); paintProgress(); document.dispatchEvent(new CustomEvent('yildiz-akademi', { detail: { id } })); }
     G.Sfx.play('win');
     const nx = nextLesson(id);
     stage.card({
       stars: n,
-      title: n === 3 ? 'Kusursuz! Ders tamamlandı' : 'Ders tamamlandı!',
+      title: n === 3 ? 'Kusursuz! Uygulama tamamlandı' : 'Uygulama tamamlandı!',
       text: text + (n < 3 ? ' <span class="sc-hint">Hatasız bitirirsen 3 yıldız alırsın.</span>' : ''),
       buttons: [
-        { label: `Sonraki ders: ${NAMES[nx]} <svg class="ic"><use href="#i-arrow"/></svg>`, cls: 'btn-red', onClick: () => { stage.card(null); select(nx, { scroll: true, focus: true, into: true }); } },
+        SINGLE ? { label: `${AFTER_LABEL} <svg class="ic"><use href="#i-arrow"/></svg>`, cls: 'btn-red', onClick: () => { stage.card(null); goAfter(); } }
+          : { label: `Sonraki ders: ${NAMES[nx]} <svg class="ic"><use href="#i-arrow"/></svg>`, cls: 'btn-red', onClick: () => { stage.card(null); select(nx, { scroll: true, focus: true, into: true }); } },
         { label: 'Bu derste devam et', cls: 'btn-ghost', onClick: () => { stage.card(null); if (onContinue) onContinue(); } }
       ]
     });
@@ -120,9 +127,9 @@
     const d = document.createElement('div');
     d.className = 'lesson-next';
     d.hidden = true;
-    d.innerHTML = '<span class="ln-ok"><svg class="ic"><use href="#i-check"/></svg></span><b>Ders tamamlandı!</b><span class="ln-stars" role="img"></span><span class="ln-sub">İstersen denemeye devam edebilirsin.</span><button type="button" class="ln-btn" data-next></button>';
+    d.innerHTML = '<span class="ln-ok"><svg class="ic"><use href="#i-check"/></svg></span><b>' + (SINGLE ? 'Uygulama' : 'Ders') + ' tamamlandı!</b><span class="ln-stars" role="img"></span><span class="ln-sub">İstersen denemeye devam edebilirsin.</span><button type="button" class="ln-btn" data-next></button>';
     $('.lesson-main', p).appendChild(d);
-    $('[data-next]', d).addEventListener('click', (e) => select(e.currentTarget.dataset.next, { scroll: true, focus: true, into: true }));
+    $('[data-next]', d).addEventListener('click', (e) => (SINGLE ? goAfter() : select(e.currentTarget.dataset.next, { scroll: true, focus: true, into: true })));
   });
 
   /* =========================================================
@@ -131,7 +138,7 @@
      Her kavşakta ışığın ne zaman değişeceği aracın konumuna göre planlanır:
      yeşilde geç, erken sarıda dur, geç sarıda geç, kırmızıda bekle, kırmızı+sarıda kalkma.
      ========================================================= */
-  const lessonIsik = (() => {
+  const lessonIsik = panelOf('isik') && (() => {
     const id = 'isik', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(w * 1.04) : Math.round(clamp(w * 0.56, 330, 540))) });
     const v = new R.View3D();
@@ -477,7 +484,7 @@
      DERS 2 — Kim önce geçer? (kuşbakışı kavşak bulmacası)
      Araçlara geçiş sırasına göre dokunulur. Yanlış seçimde araçlar kıl payı fren yapar ve geri çekilir.
      ========================================================= */
-  const lessonGecis = (() => {
+  const lessonGecis = panelOf('gecis') && (() => {
     const id = 'gecis', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(w * 1.08) : Math.round(clamp(w * 0.64, 380, 580))) });
     const v = new T.View2D(), D = T.D;
@@ -733,7 +740,7 @@
      Kırsal yolda ilerlerken yol kenarındaki levhalar yaklaşır; levhayı geçmeden grubunu seç.
      Yanlış bildiğin ya da kaçırdığın levha birazdan yeniden karşına çıkar.
      ========================================================= */
-  const lessonLevha = (() => {
+  const lessonLevha = panelOf('levha') && (() => {
     const id = 'levha', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(w * 0.98) : Math.round(clamp(w * 0.5, 320, 480))) });
     const v = new R.View3D();
@@ -897,7 +904,7 @@
      Traktörün arkasında sür; orta çizgi ve karşı şerit uygunsa “Solla” ile sinyal verip çık,
      traktörü geçince “Sağa dön” ile güvenli mesafede şeridine dön.
      ========================================================= */
-  const lessonSerit = (() => {
+  const lessonSerit = panelOf('serit') && (() => {
     const id = 'serit', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(w * 1.02) : Math.round(clamp(w * 0.54, 330, 520))) });
     const v = new R.View3D();
@@ -1118,7 +1125,7 @@
      Numaralı yerlerden birine dokun: araç oraya geri geri park eder. Kurala aykırıysa ceza fişi kesilir.
      Yerin üstüne gelince en yakın yasak noktaya uzaklık ölçülür. Dar ekranda sokak sürüklenerek kaydırılır.
      ========================================================= */
-  const lessonPark = (() => {
+  const lessonPark = panelOf('park') && (() => {
     const id = 'park', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(clamp(w * 1.0, 330, 420)) : Math.round(clamp(w * 0.38, 290, 360))) });
     const v = new T.View2D(), D = T.D;
@@ -1532,7 +1539,7 @@
      Hızı, yol durumunu ve tepki türünü seç, “Sür”e bas: park etmiş araçların arasından yola top fırlar.
      Kendi tepkinle (ya da standart 1 sn) frene basılır; tepki + fren mesafesi ölçülüp çizelgeye işlenir.
      ========================================================= */
-  const lessonDurus = (() => {
+  const lessonDurus = panelOf('durus') && (() => {
     const id = 'durus', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(w * 0.96) : Math.round(clamp(w * 0.5, 320, 470))) });
     const v = new R.View3D();
@@ -1754,7 +1761,7 @@
      Üstte sol ayna, iç ayna ve sağ ayna görüntüsü (3B), altta kuşbakışı görüş konileri ve kör noktalar.
      Aynaları ayarla, sonra omuz kontrolüyle iki kez güvenli şerit değiştir.
      ========================================================= */
-  const lessonAyna = (() => {
+  const lessonAyna = panelOf('ayna') && (() => {
     const id = 'ayna', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(clamp(w * 1.36, 440, 580)) : Math.round(clamp(w * 0.7, 440, 610))) });
     const v = new T.View2D(), D = T.D;
@@ -2100,7 +2107,7 @@
      Yan görünüm sahne: kaza yeri, kazazede ve ilk yardımcı. Önce adımlar doğru sırayla seçilir,
      sonra ritim şeridindeki vuruşlara denk getirerek 30 göğüs basısı + 2 suni solunum (iki tur).
      ========================================================= */
-  const lessonTyd = (() => {
+  const lessonTyd = panelOf('tyd') && (() => {
     const id = 'tyd', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(w * 0.98) : Math.round(clamp(w * 0.5, 320, 460))) });
     const STEPS = [
@@ -2480,7 +2487,7 @@
      Üstte ön camdan yol, altta dijital gösterge paneli. Kontak açılınca lamba testi ve ibre taraması;
      sürüş sırasında bir uyarı ışığı yanar, ne yapacağını seç: araç duruma göre sağa çekip durur, yavaşlar ya da devam eder.
      ========================================================= */
-  const lessonGosterge = (() => {
+  const lessonGosterge = panelOf('gosterge') && (() => {
     const id = 'gosterge', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(clamp(w * 1.18, 380, 500)) : Math.round(clamp(w * 0.62, 400, 560))) });
     const v = new R.View3D();
@@ -2733,7 +2740,7 @@
      DERS 10 — Trafik adabı (kuşbakışı durum sahneleri)
      Her durumda üç davranıştan birini seç; seçiminin sonucu sahnede canlandırılır. Yanlış seçilen durum yeniden gelir.
      ========================================================= */
-  const lessonAdab = (() => {
+  const lessonAdab = panelOf('adab') && (() => {
     const id = 'adab', panel = panelOf(id), host = $('.sim', panel);
     const stage = new G.Stage(host, { height: (w) => (w < 560 ? Math.round(clamp(w * 1.0, 320, 400)) : Math.round(clamp(w * 0.42, 300, 380))) });
     const v = new T.View2D(), D = T.D;
@@ -3009,7 +3016,7 @@
 
 
   /* ---------- Sekmeler ---------- */
-  const LESSONS = { isik: lessonIsik, gecis: lessonGecis, levha: lessonLevha, serit: lessonSerit, park: lessonPark, durus: lessonDurus, ayna: lessonAyna, tyd: lessonTyd, gosterge: lessonGosterge, adab: lessonAdab };
+  const LESSONS = Object.fromEntries(Object.entries({ isik: lessonIsik, gecis: lessonGecis, levha: lessonLevha, serit: lessonSerit, park: lessonPark, durus: lessonDurus, ayna: lessonAyna, tyd: lessonTyd, gosterge: lessonGosterge, adab: lessonAdab }).filter(([, v]) => v));
   let current = ORDER[0], visible = false;
   function select(lid, opts = {}) {
     if (!LESSONS[lid]) return;
@@ -3029,7 +3036,7 @@
     if (opts.into) shell.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
   }
   tabs.forEach((t) => t.addEventListener('click', () => select(t.dataset.lesson, { scroll: true })));
-  $('.lesson-tabs', shell).addEventListener('keydown', (e) => {
+  if (!SINGLE) $('.lesson-tabs', shell).addEventListener('keydown', (e) => {
     const i = ORDER.indexOf(current);
     let n = null;
     if (e.key === 'ArrowRight') n = (i + 1) % tabs.length;

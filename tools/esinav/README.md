@@ -1,6 +1,6 @@
 # e-Sınav soru bankası üretim hattı
 
-`assets/data/sorular.js`, `assets/data/konular.js`, `assets/q/*.webp`, `e-sinav.html` ve `konu-anlatimi.html` bu betiklerle üretilir.
+`assets/data/sorular.js`, `assets/data/konular.js`, `assets/q/*.webp`, `hazirlik.html`, `konu-<id>.html` (40 sayfa) ve `e-sinav.html` bu betiklerle üretilir.
 
 ## Adımlar
 
@@ -14,8 +14,11 @@
 6. **Güncel e-Sınav soruları** — `esinav_scrape.js` (puppeteer) deneme sitesindeki üç kitapçığı kaydeder, `parse_esinav.py` yapılandırır.
    Cevaplar iki bağımsız çözümle belirlendi (`data/es-sinav/`); yalnızca örtüşenler ve video gerektirmeyenler alındı (`es_final.json`).
 7. **Derleme** — `python -I build_bank.py <çalışma_dizini> <site>` → `sorular.js` + WebP görseller (magenta → kırmızı).
-8. **Sayfalar** — `python3 build_pages.py <çalışma_dizini> <site>` → `konular.js`, `e-sinav.html`, `konu-anlatimi.html` ve
-   `trafik-akademisi.html` (Akademi'nin gövdesi sayfanın kendisinden alınır; yalnız baş, menü, alt bilgi ve betikler yenilenir).
+8. **Sayfalar** — `python3 build_pages.py <çalışma_dizini> <site>` → `konular.js`, `hazirlik.html`, `konu-<id>.html`,
+   `e-sinav.html` ve eski adresleri yönlendiren `konu-anlatimi.html` / `trafik-akademisi.html`. Etkileşimli uygulamalar
+   `data/akademi-dersler.html`'den alınıp `APP` eşlemesine göre ilgili konu sayfasına yerleştirilir; konu görselleri
+   `assets/img/konu/<id>.webp` (yoksa ders görseli), levha/ikaz lambası konularında `KIT_HEAD` çizimleri kullanılır.
+   `SITEMAP_DATE=YYYY-AA-GG` verilirse `sitemap.xml` de yeniden yazılır.
    Varlık sürümleri (`?v=`) `versions.json`'dan okunur: bir CSS/JS dosyası değişince oradaki sayıyı ve `index.html`'deki
    aynı bağlantıyı artırın.
    Konu anlatımlarının kaynağı `data/konular/<konu>.json` (çalışma dizininde `konu_out/`).
