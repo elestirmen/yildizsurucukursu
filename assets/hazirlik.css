@@ -165,10 +165,19 @@ html.ps-lock, html.ps-lock body { overflow: hidden; overscroll-behavior: none; }
 .ps-sim.is-full .ps-pedals { right: calc(14px + env(safe-area-inset-right)); bottom: calc(14px + env(safe-area-inset-bottom)); }
 .ps-sim.is-full .ps-hb { right: calc(104px + env(safe-area-inset-right)); bottom: calc(14px + env(safe-area-inset-bottom)); }
 .ps-sim.has-card .ps-ctl { opacity: .3; }
+.ps-gl { position: absolute; inset: 0; z-index: 1; display: block; pointer-events: none; }
+.ps-gl[hidden] { display: none; }
+.ps-straight { position: absolute; left: 14px; bottom: 154px; width: 132px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .16); background: rgba(13, 15, 21, .62); color: #fff; font-size: 12.5px; font-weight: 800; font-variant-numeric: tabular-nums; pointer-events: auto; -webkit-tap-highlight-color: transparent; -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4); transition: color .15s; }
+.ps-straight svg { width: 15px; height: 15px; flex: none; transition: opacity .15s; }
+.ps-straight.is-straight svg { opacity: .3; }
+.ps-straight.is-lock { color: #ffd166; }
+.ps-straight:active { transform: scale(.96); }
+.ps-sim.is-full .ps-straight { left: calc(14px + env(safe-area-inset-left)); bottom: calc(154px + env(safe-area-inset-bottom)); }
 .ps-sim .sim-toast { top: 18%; bottom: auto; }
 .ps-view button { min-width: 3.4em; }
 @media (max-width: 760px) {
   .ps-wheel, .ps-sim.is-full .ps-wheel { left: 8px; bottom: 8px; width: 108px; height: 108px; }
+  .ps-straight, .ps-sim.is-full .ps-straight { left: 8px; bottom: 122px; width: 108px; font-size: 12px; }
   .ps-pedals, .ps-sim.is-full .ps-pedals { right: 8px; bottom: 8px; gap: 6px; }
   .ps-ped { width: 64px; height: 54px; border-radius: 15px; }
   .ps-hb, .ps-sim.is-full .ps-hb { right: 80px; bottom: 8px; width: 54px; height: 54px; }

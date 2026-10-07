@@ -41,7 +41,8 @@
   };
   MODEL.taxi = MODEL.sedan; MODEL.player = MODEL.sedan;
 
-  let wheelDeg = 0;
+  let wheelDeg = 0, centering = false, detent = 0;
+  const KEY_RATE = 300, CENTER_RATE = 420;               // °/s: tuşla çevirme ve “Düz” ile ortalama hızı
   const steerRad = () => (wheelDeg / WHEEL_MAX) * MAXS;
   function integrate(p, d) {
     const da = (d / WB) * Math.tan(steerRad());
@@ -288,12 +289,14 @@
     <rect x="46" y="3.5" width="8" height="11" rx="2.5" fill="#ffc83d"/></svg>`;
   const ctl = document.createElement('div');
   ctl.className = 'ps-ctl';
-  ctl.innerHTML = `<div class="ps-wheel" role="slider" aria-label="Direksiyon (sol/sağ ok tuşları)" aria-valuemin="-540" aria-valuemax="540" aria-valuenow="0" aria-valuetext="Düz">${WHEEL_SVG}</div>
+  ctl.innerHTML = `<button class="ps-straight is-straight" type="button" aria-label="Direksiyonu düzelt (C)"><span class="ps-st-v">Düz</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4v4h4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="ps-wheel" role="slider" aria-label="Direksiyon (sol/sağ ok tuşları)" aria-valuemin="-540" aria-valuemax="540" aria-valuenow="0" aria-valuetext="Düz">${WHEEL_SVG}</div>
     <button class="ps-hb" type="button" aria-label="El frenini çek ve parkı bitir (P)"><b>P</b><small>El freni</small></button>
     <div class="ps-pedals"><button class="ps-ped" type="button" data-ped="fwd" aria-label="İleri git (yukarı ok)">${ICON_UP}<span>İleri</span></button><button class="ps-ped" type="button" data-ped="rev" aria-label="Geri git (aşağı ok)">${ICON_DN}<span>Geri</span></button></div>
     <button class="ps-exit" type="button"><svg class="ic"><use href="#i-x"/></svg><span>Küçült</span></button>`;
   stage.ui.appendChild(ctl);
   const wheelEl = $('.ps-wheel', ctl), wheelSvg = $('svg', wheelEl), hbBtn = $('.ps-hb', ctl);
+  const straightBtn = $('.ps-straight', ctl), stVal = $('.ps-st-v', straightBtn);
 
   /* ---------- Durum ---------- */
   let sc = null, car = null, taskName = 'ileri', taskIdx = 0, seed = 1, hard = false, freeMode = false, gen = 0;
@@ -302,7 +305,7 @@
   let stat = null, contact = 0, shake = 0, beepT = 0, sens = Infinity, sensDir = -1, ready = false, last = null;
   let wheelHeld = false, wheelLast = 0, orbit = null;
   const keys = new Set(), ped = { fwd: false, rev: false };
-  const cam3 = { yaw: 0, off: 0, dist: 9.4, h: 3.7 };
+  const cam3 = { yaw: 0, off: 0, dist: 9.0, h: 3.8 };
   const cam2 = { x: 0, y: 0 };
 
   const TIPS = {
@@ -530,9 +533,21 @@
 
   /* ---------- Güncelleme ---------- */
   function update(dt) {
+    // Direksiyon bırakılınca yerinde kalır; tuşla çevirirken ortadan geçerken kısa süre durur
     const kl = keys.has('left'), kr = keys.has('right');
-    if (kl !== kr && !busy) wheelDeg = clamp(wheelDeg + (kr ? 1 : -1) * 720 * dt, -WHEEL_MAX, WHEEL_MAX);
-    else if (!wheelHeld) wheelDeg = toward0(wheelDeg, 900 * dt);
+    if (kl !== kr && !busy) {
+      centering = false;
+      if (detent > 0) detent -= dt;
+      else {
+        const prev = wheelDeg;
+        wheelDeg = clamp(wheelDeg + (kr ? 1 : -1) * KEY_RATE * dt, -WHEEL_MAX, WHEEL_MAX);
+        if (prev && Math.sign(prev) !== Math.sign(wheelDeg)) { wheelDeg = 0; detent = 0.35; buzz(); }
+        else if (Math.abs(wheelDeg) === WHEEL_MAX && Math.abs(prev) < WHEEL_MAX) buzz();
+      }
+    } else {
+      detent = 0;
+      if (centering && !wheelHeld) { wheelDeg = toward0(wheelDeg, CENTER_RATE * dt); if (!wheelDeg) centering = false; }
+    }
     const live = started && !busy && !stage.hasCard;
     const up = live && (keys.has('up') || ped.fwd), dn = live && (keys.has('down') || ped.rev), br = keys.has('brake');
     const want = up && !dn ? 1 : dn && !up ? -1 : 0;
@@ -572,6 +587,15 @@
     cam2.y += (lerp(car.y + f[1] * la, ty, mixT) - cam2.y) * (1 - Math.exp(-dt * 3));
     paintHud();
   }
+  // Direksiyon konumu tur cinsinden: “½ tur sağa”, “Tam sola”, “Düz”
+  function turnText(d) {
+    const a = Math.abs(d);
+    if (a < 12) return 'Düz';
+    if (a >= WHEEL_MAX - 1) return d > 0 ? 'Tam sağa' : 'Tam sola';
+    const q = Math.max(1, Math.round(a / 90));
+    return `${['', '¼', '½', '¾', '1', '1¼', '1½'][q]} tur ${d > 0 ? 'sağa' : 'sola'}`;
+  }
+  const buzz = () => { if (navigator.vibrate && matchMedia('(pointer: coarse)').matches) try { navigator.vibrate(12); } catch (e) { /* yoksay */ } };
   function paintHud() {
     const kmh = Math.round(Math.abs(car.v) * 3.6);
     const gt = car.gear === 'R' ? 'R · Geri' : car.gear === 'P' ? 'P · Park' : 'D · İleri';
@@ -583,273 +607,17 @@
     } else chipSens.show(false);
     const wv = Math.round(wheelDeg);
     wheelSvg.style.transform = `rotate(${wv}deg)`;
-    if (wheelEl._v !== wv) { wheelEl._v = wv; wheelEl.setAttribute('aria-valuenow', wv); wheelEl.setAttribute('aria-valuetext', Math.abs(wv) < 15 ? 'Düz' : `${Math.abs(wv)}° ${wv > 0 ? 'sağa' : 'sola'}`); }
+    if (wheelEl._v !== wv) {
+      wheelEl._v = wv;
+      const txt = turnText(wv);
+      wheelEl.setAttribute('aria-valuenow', wv); wheelEl.setAttribute('aria-valuetext', txt);
+      if (stVal.textContent !== txt) stVal.textContent = txt;
+      straightBtn.classList.toggle('is-straight', Math.abs(wv) < 12);
+      straightBtn.classList.toggle('is-lock', Math.abs(wv) >= WHEEL_MAX - 1);
+    }
   }
 
-  /* =========================================================
-     3B görünüm
-     ========================================================= */
-  const V = new R.View3D();
-  V.hfov = 66; V.near = 0.25; V.far = 260; V.fogStart = 80; V.fogEnd = 260;
-  const LGT = (() => { const x = -0.42, y = 0.8, z = 0.43, n = Math.hypot(x, y, z); return [x / n, y / n, z / n]; })();
-  let P3 = R.palette(false, 'dry');
-  const lit = (col, n) => shade(col, clamp((n[0] * LGT[0] + n[1] * LGT[1] + n[2] * LGT[2]) * 0.34 - 0.14, -0.36, 0.17));
-  // Dışbükey yüz: merkezden dışa bakan normal kameraya dönükse çizilir; görünürse normali döndürür
-  function face(ctx, pts, col, ctr) {
-    let nx = 0, ny = 0, nz = 0, px = 0, py = 0, pz = 0;
-    const n = pts.length;
-    for (let i = 0; i < n; i++) {
-      const a = pts[i], b = pts[(i + 1) % n];
-      nx += (a[1] - b[1]) * (a[2] + b[2]); ny += (a[2] - b[2]) * (a[0] + b[0]); nz += (a[0] - b[0]) * (a[1] + b[1]);
-      px += a[0]; py += a[1]; pz += a[2];
-    }
-    px /= n; py /= n; pz /= n;
-    if (nx * (px - ctr[0]) + ny * (py - ctr[1]) + nz * (pz - ctr[2]) < 0) { nx = -nx; ny = -ny; nz = -nz; }
-    const cm = V.cam;
-    if (nx * (cm.x - px) + ny * (cm.y - py) + nz * (cm.z - pz) <= 0) return null;
-    const l = Math.hypot(nx, ny, nz) || 1, N = [nx / l, ny / l, nz / l];
-    if (col) V.poly(ctx, pts, lit(col, N));
-    return N;
-  }
-  const HEX = [[4, 5, 6, 7, 'top'], [0, 1, 5, 4, 'rear'], [2, 3, 7, 6, 'front'], [3, 0, 4, 7, 'left'], [1, 2, 6, 5, 'right']];
-  function shrink(pts, k) {
-    let cx = 0, cy = 0, cz = 0;
-    for (const p of pts) { cx += p[0]; cy += p[1]; cz += p[2]; }
-    cx /= pts.length; cy /= pts.length; cz /= pts.length;
-    return pts.map((p) => [cx + (p[0] - cx) * k, cy + (p[1] - cy) * k, cz + (p[2] - cz) * k]);
-  }
-  function hexa(ctx, P, col, colOf) {
-    const ctr = [0, 0, 0];
-    for (const p of P) { ctr[0] += p[0] / 8; ctr[1] += p[1] / 8; ctr[2] += p[2] / 8; }
-    const vis = {};
-    for (const [a, b, c, d, nm] of HEX) {
-      if (nm === 'top' && V.cam.y < Math.min(P[4][1], P[5][1], P[6][1], P[7][1])) continue;
-      vis[nm] = face(ctx, [P[a], P[b], P[c], P[d]], colOf ? colOf(nm) : col, ctr);
-    }
-    return vis;
-  }
-  // Işık halesi (toplamalı)
-  function glowAt(ctx, p, rM, color, a) {
-    const q = V.P(p[0], p[1], p[2]);
-    if (!q) return;
-    ctx.globalCompositeOperation = 'lighter';
-    G.glow(ctx, q.X, q.Y, Math.max(4, rM * q.s), color, a);
-    ctx.globalCompositeOperation = 'source-over';
-  }
-
-  /* Araç (3B): uzak yandaki tekerler, gövde, kabin, ışıklar, yakın yandaki tekerler */
-  function car3(ctx, c, o = {}) {
-    const m = MODEL[c.kind] || MODEL.sedan, hw = m.W / 2, hl = m.L / 2;
-    const cs = Math.cos(c.ang), sn = Math.sin(c.ang);
-    const W3 = (u, w, h) => [c.x + u * cs + w * sn, h, -(c.y + u * sn - w * cs)];
-    const night = P3.night;
-    const body = o.player ? R.BRAND.body : c.color;
-    const bc = night ? shade(body, -0.52) : body;
-    const glass = night ? '#0b1017' : '#26323f';
-    const camS = (V.cam.x - c.x) * cs + (-V.cam.z - c.y) * sn;
-    const near = camS >= 0 ? 1 : -1;
-    const wf = m.L * 0.3, steer = o.steer || 0;
-    const wheels = [[-1, wf, steer], [1, wf, steer], [-1, -wf, 0], [1, -wf, 0]];
-    const camD = Math.hypot(V.cam.x - c.x, -V.cam.z - c.y);
-    if (o.player) for (const wd of wheels) if (wd[0] !== near) wheel3(ctx, W3, m, wd, camD);
-    const b0 = m.b0, b1 = m.b1;
-    const lo = [W3(-hw, -hl, b0), W3(hw, -hl, b0), W3(hw, hl, b0), W3(-hw, hl, b0),
-      W3(-hw + 0.04, -hl + m.trunk, b1), W3(hw - 0.04, -hl + m.trunk, b1), W3(hw - 0.04, hl - m.hood, b1), W3(-hw + 0.04, hl - m.hood, b1)];
-    const vis = hexa(ctx, lo, bc);
-    // Yüzey üstü ayrıntı: yükseklik oranı t'de gövde yüzündeki nokta
-    const fH = (t) => b0 + t * (b1 - b0);
-    const onFront = (u, t) => W3(u * (1 - 0.02 * t), hl - m.hood * t + 0.012, fH(t));
-    const onRear = (u, t) => W3(u, -hl + m.trunk * t - 0.012, fH(t));
-    const onSide = (s, w, t) => W3(s * (hw - 0.04 * t + 0.008), w, fH(t));
-    const quadF = (fn, u0, u1, t0, t1) => [fn(u0, t0), fn(u1, t0), fn(u1, t1), fn(u0, t1)];
-    if (vis.front) {
-      const n = vis.front;
-      V.poly(ctx, quadF(onFront, -0.42, 0.42, 0.3, 0.58), lit(night ? '#0d0f13' : '#1d2027', n));
-      V.poly(ctx, quadF(onFront, -0.26, 0.26, 0.06, 0.26), lit('#f4f5f7', n));
-      for (const s of [-1, 1]) V.poly(ctx, quadF(onFront, s * (hw - 0.12), s * (hw - 0.5), 0.62, 0.88), o.player && night ? '#fff8dc' : lit(night ? '#9a988c' : '#eef0ea', n));
-    }
-    if (vis.rear) {
-      const n = vis.rear;
-      V.poly(ctx, quadF(onRear, -0.27, 0.27, 0.16, 0.4), lit('#f4f5f7', n));
-      for (const s of [-1, 1]) {
-        V.poly(ctx, quadF(onRear, s * (hw - 0.1), s * (hw - 0.46), 0.6, 0.86), o.brake ? '#ff3b2e' : lit(night && o.player ? '#c0262a' : night ? '#4a1416' : '#a3161c', n));
-        if (o.rev) V.poly(ctx, quadF(onRear, s * (hw - 0.46), s * (hw - 0.62), 0.6, 0.86), '#fbfbf6');
-      }
-    }
-    if (o.player) for (const s of [-1, 1]) {
-      const n = vis[s < 0 ? 'left' : 'right'];
-      if (!n) continue;
-      const band = (t0, t1, col) => { const wr = (t) => -hl + m.trunk * t + 0.25, wq = (t) => hl - m.hood * t - 0.4; V.poly(ctx, [onSide(s, wr(t0), t0), onSide(s, wq(t0), t0), onSide(s, wq(t1), t1), onSide(s, wr(t1), t1)], lit(col, n)); };
-      band(0.42, 0.57, R.BRAND.red);
-      band(0.33, 0.39, R.BRAND.blue);
-    }
-    // Kabin: tavan gövde renginde, camlar direklerin içinde
-    const cw0 = hw - 0.1, cw1 = hw - 0.28;
-    const cb = [W3(-cw0, m.c0[0], b1), W3(cw0, m.c0[0], b1), W3(cw0, m.c0[1], b1), W3(-cw0, m.c0[1], b1),
-      W3(-cw1, m.c1[0], m.top), W3(cw1, m.c1[0], m.top), W3(cw1, m.c1[1], m.top), W3(-cw1, m.c1[1], m.top)];
-    const ctr = [0, 0, 0];
-    for (const p of cb) { ctr[0] += p[0] / 8; ctr[1] += p[1] / 8; ctr[2] += p[2] / 8; }
-    for (const [a, b, cc, d, nm] of HEX) {
-      const pts = [cb[a], cb[b], cb[cc], cb[d]];
-      const n = face(ctx, pts, bc, ctr);
-      if (!n || nm === 'top') continue;
-      V.poly(ctx, shrink(pts, nm === 'left' || nm === 'right' ? 0.84 : 0.82), lit(glass, n));
-    }
-    if (o.player) {
-      // Direksiyon eğitim aracı tavan levhası
-      const s0 = m.c1[0] + 0.2, s1 = s0 + 0.3;
-      hexa(ctx, [W3(-0.44, s0, m.top), W3(0.44, s0, m.top), W3(0.44, s1, m.top), W3(-0.44, s1, m.top),
-        W3(-0.44, s0, m.top + 0.26), W3(0.44, s0, m.top + 0.26), W3(0.44, s1, m.top + 0.26), W3(-0.44, s1, m.top + 0.26)], null,
-      (nm) => (nm === 'front' || nm === 'rear' ? '#f4f5f7' : R.BRAND.blue));
-      if (night) { glowAt(ctx, onFront(-(hw - 0.3), 0.75), 0.7, '#fff2c8', 0.8); glowAt(ctx, onFront(hw - 0.3, 0.75), 0.7, '#fff2c8', 0.8); }
-    }
-    if (o.brake || o.rev || (night && o.player)) for (const s of [-1, 1]) {
-      if (!vis.rear) break;
-      glowAt(ctx, onRear(s * (hw - 0.28), 0.73), o.brake ? 0.75 : 0.4, '#ff2a1f', o.brake ? 0.85 : 0.5);
-      if (o.rev) glowAt(ctx, onRear(s * (hw - 0.54), 0.73), 0.5, '#ffffff', 0.7);
-    }
-    for (const wd of wheels) if (wd[0] === near) wheel3(ctx, W3, m, wd, camD);
-  }
-  // Teker: sekizgen prizma (dış kapak + sırt yüzleri), ön tekerler direksiyonla döner
-  function wheel3(ctx, W3, m, [side, axle, st], camD) {
-    const r = m.wr, uc = side * (m.W / 2 - 0.1), half = 0.11, cs = Math.cos(st), sn = Math.sin(st);
-    const ring = (du) => {
-      const out = [];
-      for (let i = 0; i < 8; i++) {
-        const a = ((i + 0.5) * TAU) / 8, dw = Math.cos(a) * r, h = r + Math.sin(a) * r;
-        out.push(W3(uc + du * cs + dw * sn, axle - du * sn + dw * cs, h));
-      }
-      return out;
-    };
-    const oR = ring(side * half), ctr = W3(uc, axle, r);
-    const tire = P3.night ? '#0d0e11' : '#1c1e23';
-    const n = face(ctx, oR, tire, ctr);
-    if (camD < 26) {
-      const iR = ring(-side * half);
-      for (let i = 0; i < 8; i++) { const j = (i + 1) % 8; face(ctx, [oR[i], oR[j], iR[j], iR[i]], tire, ctr); }
-    }
-    if (n) V.poly(ctx, shrink(oR, 0.62), lit(P3.night ? '#4a4f58' : '#a7adb6', n));
-  }
-  function tree3(ctx, t) {
-    const T0 = 0.16, h = 2.3;
-    hexa(ctx, [[t.x - T0, 0, -t.y - T0], [t.x + T0, 0, -t.y - T0], [t.x + T0, 0, -t.y + T0], [t.x - T0, 0, -t.y + T0],
-      [t.x - T0, h, -t.y - T0], [t.x + T0, h, -t.y - T0], [t.x + T0, h, -t.y + T0], [t.x - T0, h, -t.y + T0]], P3.trunk);
-    const p = V.P(t.x, h + t.r * 0.75, -t.y);
-    if (!p) return;
-    const R0 = t.r * 1.05 * p.s, [dk, md, lt] = P3.leaf;
-    const fc = (c) => V.fc(c, p.d);
-    ctx.fillStyle = fc(dk); ctx.beginPath(); ctx.ellipse(p.X, p.Y, R0, R0 * 0.92, 0, 0, TAU); ctx.fill();
-    ctx.fillStyle = fc(md); ctx.beginPath(); ctx.ellipse(p.X - R0 * 0.16, p.Y - R0 * 0.2, R0 * 0.74, R0 * 0.66, 0, 0, TAU); ctx.fill();
-    ctx.fillStyle = fc(lt); ctx.beginPath(); ctx.ellipse(p.X - R0 * 0.34, p.Y - R0 * 0.4, R0 * 0.3, R0 * 0.26, 0, 0, TAU); ctx.fill();
-  }
-  function lamp3(ctx, l) {
-    const s = 0.07, H = 5.6, ax = Math.sin(l.ang), ay = -Math.cos(l.ang);
-    const z = -l.y;
-    hexa(ctx, [[l.x - s, 0, z - s], [l.x + s, 0, z - s], [l.x + s, 0, z + s], [l.x - s, 0, z + s], [l.x - s, H, z - s], [l.x + s, H, z - s], [l.x + s, H, z + s], [l.x - s, H, z + s]], P3.pole);
-    const hx = l.x + ax * 1.5, hz = -(l.y + ay * 1.5);
-    hexa(ctx, [[hx - 0.22, H - 0.18, hz - 0.22], [hx + 0.22, H - 0.18, hz - 0.22], [hx + 0.22, H - 0.18, hz + 0.22], [hx - 0.22, H - 0.18, hz + 0.22],
-      [hx - 0.2, H + 0.02, hz - 0.2], [hx + 0.2, H + 0.02, hz - 0.2], [hx + 0.2, H + 0.02, hz + 0.2], [hx - 0.2, H + 0.02, hz + 0.2]], P3.poleDark);
-    const a = V.P(l.x, H - 0.1, z), b = V.P(hx, H - 0.1, hz);
-    if (a && b) { ctx.strokeStyle = V.fc(P3.pole, a.d); ctx.lineWidth = Math.max(1, 0.1 * a.s); ctx.beginPath(); ctx.moveTo(a.X, a.Y); ctx.lineTo(b.X, b.Y); ctx.stroke(); }
-    if (P3.night) glowAt(ctx, [hx, H - 0.25, hz], 1.6, '#ffd79a', 0.85);
-  }
-  // Bina: duvarlar ve kameraya bakan yüzlerde pencereler
-  function bld3(ctx, b) {
-    const { x0, x1, h } = b, z0 = -b.y1, z1 = -b.y0;
-    const base = P3.bld[b.ci % P3.bld.length];
-    const P = [[x0, 0, z0], [x1, 0, z0], [x1, 0, z1], [x0, 0, z1], [x0, h, z0], [x1, h, z0], [x1, h, z1], [x0, h, z1]];
-    const vis = hexa(ctx, P, base);
-    const walls = { rear: [P[0], P[1]], front: [P[2], P[3]], left: [P[3], P[0]], right: [P[1], P[2]] };
-    let wi = 0;
-    for (const nm in walls) {
-      const n = vis[nm], r = rng(b.s + 97 * wi++);
-      if (!n) continue;
-      const [A, B] = walls[nm], len = Math.hypot(B[0] - A[0], B[2] - A[2]);
-      const cols = Math.max(1, Math.floor((len - 1.2) / 2.6)), gap = len / cols, ox = n[0] * 0.03, oz = n[2] * 0.03;
-      const at = (s, y) => [A[0] + ((B[0] - A[0]) * s) / len + ox, y, A[2] + ((B[2] - A[2]) * s) / len + oz];
-      const floors = Math.max(1, Math.floor((h - 0.6) / 3.1));
-      for (let f = 0; f < floors; f++) for (let i = 0; i < cols; i++) {
-        const s = gap * (i + 0.5), y = 0.95 + f * 3.1;
-        const litW = P3.night && r() < 0.45;
-        V.poly(ctx, [at(s - 0.6, y), at(s + 0.6, y), at(s + 0.6, y + 1.4), at(s - 0.6, y + 1.4)], litW ? P3.winLit : lit(P3.win, n));
-      }
-      // Saçak
-      V.poly(ctx, [at(0, h - 0.35), at(len, h - 0.35), at(len, h), at(0, h)], lit(shade(base, -0.12), n));
-    }
-  }
-  function draw3(ctx, w, h, time) {
-    P3 = R.palette(stage.night, 'dry');
-    const v = V;
-    v.viewport(0, 0, w, h, stage.narrow ? 0.3 : 0.32, stage.narrow ? 0.88 : 0.8);
-    const yaw = cam3.yaw + cam3.off;
-    const jx = shake > 0 ? (Math.random() - 0.5) * shake * 0.5 : 0, jy = shake > 0 ? (Math.random() - 0.5) * shake * 0.3 : 0;
-    v.cam.x = car.x - Math.sin(yaw) * cam3.dist + jx;
-    v.cam.z = -(car.y + Math.cos(yaw) * cam3.dist);
-    v.cam.y = cam3.h + jy;
-    v.cam.yaw = yaw;
-    v.look();
-    v.setFog(P3.haze);
-    R.drawSky(ctx, v, P3, time);
-    const g = ctx.createLinearGradient(0, v.cy, 0, h);
-    g.addColorStop(0, P3.groundFar); g.addColorStop(1, P3.ground);
-    ctx.fillStyle = g; ctx.fillRect(0, v.cy - 1, w, h - v.cy + 1);
-    // Zemin katmanı: alanlar, bordürler, çizgiler, hedef, gölgeler, yörünge
-    const AC = { earth: P3.ground, grass: P3.garden, plant: shade(P3.garden, -0.06), asphalt: P3.road, walk: P3.walk };
-    for (const a of sc.areas) v.quad(ctx, a.x0, a.x1, -a.y1, -a.y0, AC[a.t], a.h);
-    for (const c of sc.curbs) {
-      const H = 0.15, mx = (c.x0 + c.x1) / 2, mz = -(c.y0 + c.y1) / 2;
-      if ((v.cam.x - mx) * c.nx + (v.cam.z - mz) * -c.ny <= 0) continue;
-      v.poly(ctx, [[c.x0, 0, -c.y0], [c.x1, 0, -c.y1], [c.x1, H, -c.y1], [c.x0, H, -c.y0]], lit(P3.curb, [c.nx, 0, -c.ny]));
-      const tx = -c.nx * 0.22, ty = -c.ny * 0.22;
-      v.poly(ctx, [[c.x0, H, -c.y0], [c.x1, H, -c.y1], [c.x1 + tx, H, -(c.y1 + ty)], [c.x0 + tx, H, -(c.y0 + ty)]], P3.curbTop);
-    }
-    for (const p of sc.paint) v.poly(ctx, p.pts.map(([x, y]) => [x, 0.01, -y]), p.c === 'y' ? P3.lineY : P3.line);
-    if (P3.night) for (const l of sc.lamps) R.groundGlow(ctx, v, l.x + Math.sin(l.ang) * 1.5, -(l.y - Math.cos(l.ang) * 1.5), 7, '#ffcf8a', 0.32);
-    target3(ctx, time);
-    const sa = P3.night ? 0.34 : 0.24;
-    for (const c of sc.cars) shadow3(ctx, c, sa);
-    shadow3(ctx, { x: car.x, y: car.y, ang: car.ang, kind: 'sedan' }, sa);
-    if (P3.night) beam3(ctx);
-    guides3(ctx);
-    // Nesneler: binalar önce, sonra uzaktan yakına
-    const objs = [], cm = v.cam, tanH = (w / 2) / v.f + 0.2;
-    const push = (x, y, rad, kind, ref) => {
-      const dx = x - cm.x, dz = -y - cm.z;
-      const d = dx * v.s + dz * v.c, a = dx * v.c - dz * v.s;
-      if (d < -rad || Math.abs(a) > (Math.max(d, 0) + rad) * tanH + rad) return;
-      objs.push({ d, kind, ref });
-    };
-    for (const b of sc.blds) push((b.x0 + b.x1) / 2, (b.y0 + b.y1) / 2, Math.hypot(b.x1 - b.x0, b.y1 - b.y0) / 2, 'b', b);
-    for (const c of sc.cars) push(c.x, c.y, 3.2, 'c', c);
-    for (const t of sc.trees) push(t.x, t.y, t.r + 0.5, 't', t);
-    for (const l of sc.lamps) push(l.x, l.y, 2, 'l', l);
-    push(car.x, car.y, 3.2, 'p', car);
-    objs.sort((p, q) => (p.kind === 'b') !== (q.kind === 'b') ? (p.kind === 'b' ? -1 : 1) : q.d - p.d);
-    for (const o of objs) {
-      if (o.kind === 'b') bld3(ctx, o.ref);
-      else if (o.kind === 'c') car3(ctx, o.ref);
-      else if (o.kind === 't') tree3(ctx, o.ref);
-      else if (o.kind === 'l') lamp3(ctx, o.ref);
-      else car3(ctx, { x: car.x, y: car.y, ang: car.ang, kind: 'sedan' }, { player: true, steer: steerRad(), brake: car.brake, rev: car.gear === 'R' });
-    }
-    marker3(ctx, time);
-  }
-  function shadow3(ctx, c, a) {
-    const m = MODEL[c.kind] || MODEL.sedan;
-    const cs = corners(box(c.x + 0.16, c.y + 0.2, m.W / 2 + 0.1, m.L / 2 + 0.12, c.ang));
-    V.poly(ctx, cs.map(([x, y]) => [x, 0.008, -y]), `rgba(0,0,0,${a})`);
-  }
-  function beam3(ctx) {
-    const f = [Math.sin(car.ang), -Math.cos(car.ang)], r = [Math.cos(car.ang), Math.sin(car.ang)];
-    const P = (u, w) => [car.x + r[0] * u + f[0] * w, 0.012, -(car.y + r[1] * u + f[1] * w)];
-    const pts = [P(-0.8, HL), P(0.8, HL), P(3.6, HL + 15), P(-3.6, HL + 15)];
-    if (!V.path(ctx, pts)) return;
-    const p0 = V.P(...P(0, HL + 0.5)), p1 = V.P(...P(0, HL + 15));
-    if (!p0 || !p1) return;
-    const g = ctx.createLinearGradient(p0.X, p0.Y, p1.X, p1.Y);
-    g.addColorStop(0, 'rgba(255,244,210,.42)'); g.addColorStop(1, 'rgba(255,240,200,0)');
-    ctx.fillStyle = g; ctx.fill();
-  }
+  /* ---------- Hedef ve yörünge (iki görünüm ortak) ---------- */
   function targetPoly(pad = 0) {
     const t = sc.target;
     if (t.type === 'bay') {
@@ -860,26 +628,6 @@
   }
   const tColor = () => (ready ? '#1fbf6a' : '#ffc83d');
   function targetCenter() { const t = sc.target; return t.type === 'bay' ? [t.x, t.y] : [(t.x0 + t.x1) / 2, (t.lane + t.curb) / 2]; }
-  function target3(ctx, time) {
-    const poly = targetPoly(), pulse = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(time * 4);
-    V.poly(ctx, poly.map(([x, y]) => [x, 0.011, -y]), alpha(tColor(), 0.16 + 0.12 * pulse));
-    for (let i = 0; i < 4; i++) {
-      const [ax, ay] = poly[i], [bx, by] = poly[(i + 1) % 4], l = Math.hypot(bx - ax, by - ay), nx = (-(by - ay) / l) * 0.07, ny = ((bx - ax) / l) * 0.07;
-      V.poly(ctx, [[ax + nx, 0.013, -(ay + ny)], [bx + nx, 0.013, -(by + ny)], [bx - nx, 0.013, -(by - ny)], [ax - nx, 0.013, -(ay - ny)]], tColor());
-    }
-  }
-  function marker3(ctx, time) {
-    if (busy) return;
-    const [cx, cy] = targetCenter();
-    const p = V.P(cx, 2.4 + (reduced ? 0 : Math.sin(time * 3) * 0.18), -cy);
-    if (!p || p.d < 3) return;
-    const s = clamp(p.s * 0.55, 9, 22);
-    ctx.save();
-    ctx.translate(p.X, p.Y);
-    ctx.fillStyle = tColor(); ctx.strokeStyle = 'rgba(0,0,0,.45)'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(-s, -s * 0.7); ctx.lineTo(s, -s * 0.7); ctx.lineTo(0, s * 0.6); ctx.closePath(); ctx.stroke(); ctx.fill();
-    ctx.restore();
-  }
   // Yörünge çizgileri: direksiyonun şu anki açısıyla gidiş yönünde 5 m (geri vites kamerası gibi)
   function guidePts() {
     const dir = car.gear === 'R' ? -1 : 1, L = [], Rr = [];
@@ -893,24 +641,59 @@
     return [L, Rr];
   }
   const GUIDE_TICKS = [[4, '#ff5a4f'], [8, '#ffc83d'], [12, '#7df0a8']];
-  function guides3(ctx) {
-    if (!started || busy) return;
-    const [L, Rr] = guidePts();
-    const pr = (p) => V.P(p[0], 0.03, -p[1]);
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.strokeStyle = 'rgba(255,214,90,.9)'; ctx.lineWidth = 2.5;
-    for (const line of [L, Rr]) {
-      ctx.beginPath();
-      let on = false;
-      for (const p of line) { const q = pr(p); if (!q) { on = false; continue; } if (on) ctx.lineTo(q.X, q.Y); else { ctx.moveTo(q.X, q.Y); on = true; } }
-      ctx.stroke();
+
+  /* =========================================================
+     3B görünüm: WebGL (park-3d.js + three.js), ilk kullanımda yüklenir.
+     Gökyüzü ve Kapadokya manzarası alttaki 2B tuvale academy-3d.js ile çizilir; ufuk WebGL kamerasıyla eşlenir.
+     ========================================================= */
+  const V = new R.View3D();
+  let gl = null, glLoading = null, glFailed = false, glToast = false;
+  function ensureGL() {
+    if (gl || glLoading || glFailed) return glLoading;
+    glLoading = import('./park-3d.js?v=1').then((m) => m.create()).then((g) => {
+      gl = g;
+      host.insertBefore(g.canvas, stage.ui);
+      g.resize(stage.w, stage.h, stage.dpr);
+      g.shadows(stage.narrow ? 1024 : 1536);
+      g.canvas.hidden = view !== '3d';
+    }).catch((e) => {
+      console.error(e);
+      glFailed = true;
+      if (view === '3d') { setView('2d', true); stage.toast('3B görünüm bu cihazda açılamadı', 'info', 2200); }
+      viewBtns.forEach((b) => { if (b.dataset.view === '3d') b.disabled = true; });
+    });
+    return glLoading;
+  }
+  stage.onResize((w, h) => { if (gl) gl.resize(w, h, stage.dpr); });
+  // Uyarlanabilir kalite: çözünürlük en alta inmesine rağmen kareler yavaşsa gölgeleri kapat
+  let glSlow = 0, glLow = false;
+  function glQuality(dt) {
+    if (glLow || !dt) return;
+    glSlow = dt > 0.045 && stage.dpr <= 1 ? glSlow + dt : Math.max(0, glSlow - dt);
+    if (glSlow > 2.5) { glLow = true; gl.shadows(0); }
+  }
+  function draw3(ctx, w, h, time) {
+    if (!gl) {
+      ensureGL();
+      if (!glToast && started) { glToast = true; stage.toast('3B görünüm yükleniyor…', 'info', 1500); }
+      draw2(ctx, w, h, time);
+      return;
     }
-    for (const [i, col] of GUIDE_TICKS) {
-      const a = pr(L[i]), b = pr(Rr[i]);
-      if (!a || !b) continue;
-      ctx.strokeStyle = col; ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.moveTo(a.X, a.Y); ctx.lineTo(b.X, b.Y); ctx.stroke();
-    }
+    const P3 = R.palette(stage.night, 'dry');
+    const yaw = cam3.yaw + cam3.off;
+    const info = gl.frame({
+      scene: Object.assign(sc, { targetPoly: targetPoly(), targetCenter: targetCenter() }), sceneKey: sc.id + (stage.night ? 'n' : 'd'), pal: P3,
+      car: { x: car.x, y: car.y, ang: car.ang, v: car.v }, steer: steerRad(), brake: car.brake, rev: car.gear === 'R', night: stage.night,
+      ready, busy, time, pulse: reduced ? 0.5 : 0.5 + 0.5 * Math.sin(time * 4), bob: reduced ? 0 : Math.sin(time * 3) * 0.18,
+      guides: started && !busy ? guidePts() : null,
+      cam: { yaw, dist: cam3.dist, h: cam3.h, jx: shake > 0 ? (Math.random() - 0.5) * shake * 0.5 : 0, jy: shake > 0 ? (Math.random() - 0.5) * shake * 0.3 : 0 }
+    }, w, h);
+    // Gökyüzü (WebGL tuvalinin altında)
+    V.viewport(0, 0, w, h, 0.3);
+    V.cy = info.horizon; V.f = info.f;
+    V.cam.yaw = yaw;
+    R.drawSky(ctx, V, P3, time);
+    ctx.fillStyle = P3.groundFar; ctx.fillRect(0, V.cy, w, h - V.cy);
   }
 
   /* =========================================================
@@ -1011,7 +794,17 @@
     const ctx = stage.begin();
     if (view === '3d') draw3(ctx, stage.w, stage.h, time); else draw2(ctx, stage.w, stage.h, time);
   }
-  const loop = G.loop((dt, t) => { stage.tick(dt); if (sc) update(dt); draw(t / 1000); });
+  // Başlamadan önce 3B önizleme birkaç kare çizilip bekletilir (pil ve işlemci için)
+  let idle = 0;
+  const wake = () => { idle = 0; };
+  const loop = G.loop((dt, t) => {
+    stage.tick(dt);
+    if (sc) update(dt);
+    if (!started && view === '3d' && gl) { if (idle > 3) return; idle++; } else if (gl && view === '3d') glQuality(dt);
+    draw(t / 1000);
+  });
+  stage.onResize(wake);
+  stage.onTheme(wake);
 
   /* =========================================================
      Girdiler
@@ -1026,14 +819,19 @@
     wheelEl.classList.add('is-held');
     if (!started) begin(view);
   });
+  // Simit parmağın döndüğü kadar döner (1:1); merkeze yakın dokunuşlar ani sıçrama yapmasın diye sayılmaz
   wheelEl.addEventListener('pointermove', (e) => {
     if (!wheelHeld) return;
     const r = wheelEl.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
-    if (dx * dx + dy * dy < 100) return;
-    const a = angOf(e), d = clamp(wrapA(a - wheelLast), -1.2, 1.2);
+    const a = angOf(e);
+    if (Math.hypot(dx, dy) < r.width * 0.16) { wheelLast = a; return; }
+    const d = clamp(wrapA(a - wheelLast), -0.6, 0.6), prev = wheelDeg;
     wheelLast = a;
+    centering = false;
     wheelDeg = clamp(wheelDeg + d / DEG, -WHEEL_MAX, WHEEL_MAX);
+    if (Math.abs(wheelDeg) === WHEEL_MAX && Math.abs(prev) < WHEEL_MAX) buzz();
   });
+  straightBtn.addEventListener('click', () => { centering = true; if (!started) begin(view); });
   const wheelUp = () => { wheelHeld = false; wheelEl.classList.remove('is-held'); };
   wheelEl.addEventListener('pointerup', wheelUp);
   wheelEl.addEventListener('pointercancel', wheelUp);
@@ -1083,7 +881,8 @@
       return;
     }
     if (e.code === 'KeyP' || (e.code === 'Enter' && !(e.target.closest && e.target.closest('button, a')))) { e.preventDefault(); handbrake(); }
-    else if (e.code === 'KeyV' || e.code === 'KeyC') { e.preventDefault(); setView(view === '3d' ? '2d' : '3d'); }
+    else if (e.code === 'KeyV') { e.preventDefault(); setView(view === '3d' ? '2d' : '3d'); }
+    else if (e.code === 'KeyC') { e.preventDefault(); centering = true; }
     else if (e.code === 'KeyF') { e.preventDefault(); setFull(!full); }
   });
   document.addEventListener('keyup', (e) => { const kk = CODES[e.code]; if (kk && keys.delete(kk) && active()) e.preventDefault(); });
@@ -1096,6 +895,9 @@
     store.set(VIEW_KEY, view);
     viewBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
     host.classList.toggle('sim-3d', view === '3d');
+    if (gl) gl.canvas.hidden = view !== '3d';
+    wake();
+    if (view === '3d' && !quiet) ensureGL();
     cv.setAttribute('aria-label', view === '3d' ? 'Arkadan takip kamerasıyla park simülatörü (3B)' : 'Kuşbakışı park simülatörü (2B)');
     if (!quiet && started) stage.toast(view === '3d' ? '3B takip kamerası' : '2B kuşbakışı', 'info', 900);
   }
@@ -1132,8 +934,8 @@
     stage.card({
       icon: '<svg class="ic"><use href="#i-wheel"/></svg>',
       title: 'Park simülatörü',
-      text: 'Direksiyonu çevir, <b>İleri</b> ya da <b>Geri</b> pedalına basılı tut. Aracı yeşil çerçeveli yere sok, durunca <b>El freni</b>’ni çek. Üç görev: ileri, geri geri ve paralel park.',
-      keys: [['↑ ↓', 'İleri / geri'], ['← →', 'Direksiyon'], ['Boşluk', 'Fren'], ['P', 'El freni'], ['V', '2B / 3B']],
+      text: 'Direksiyonu çevir; bıraktığında olduğu yerde kalır, <b>Düz</b> düğmesi ortalar. <b>İleri</b> ya da <b>Geri</b> pedalına basılı tut, aracı yeşil çerçeveli yere sok, durunca <b>El freni</b>’ni çek. Üç görev: ileri, geri geri ve paralel park.',
+      keys: [['↑ ↓', 'İleri / geri'], ['← →', 'Direksiyon'], ['C', 'Direksiyonu düzelt'], ['Boşluk', 'Fren'], ['P', 'El freni'], ['V', '2B / 3B']],
       buttons: view === '3d' ? [btn('3d'), btn('2d')] : [btn('2d'), btn('3d')],
       focus: false
     });
@@ -1148,6 +950,10 @@
     G.Sfx.onChange(paint);
   }
   stage.onTheme(() => { bakeKey = ''; });
+  if ('IntersectionObserver' in window) {
+    const pre = new IntersectionObserver(([e]) => { if (e.isIntersecting) { if (view === '3d') ensureGL(); pre.disconnect(); } }, { rootMargin: '700px 0px' });
+    pre.observe(host);
+  }
   new IntersectionObserver(([e]) => {
     visible = e.isIntersecting;
     if (visible && !document.hidden) loop.start(); else { loop.stop(); keys.clear(); ped.fwd = ped.rev = false; }
@@ -1161,11 +967,11 @@
 
   // Betikli denemeler için
   window.YildizParkSim = {
-    debug: () => ({ task: taskName, ok, bad, started, busy, free: freeMode, view, full, ready, sens, wheel: wheelDeg, car: Object.assign({}, car), target: sc && sc.target, card: stage.hasCard, check: sc && check() }),
+    debug: () => ({ gl: !!gl, glFailed, centering, task: taskName, ok, bad, started, busy, free: freeMode, view, full, ready, sens, wheel: wheelDeg, car: Object.assign({}, car), target: sc && sc.target, card: stage.hasCard, check: sc && check() }),
     pose(x, y, ang) { Object.assign(car, { x, y, ang, v: 0 }); },
     park: handbrake,
     start: (vw) => begin(vw || view),
-    keys, ped,
+    keys, ped, cam: cam3, gl: () => gl, scene: () => sc, lockQuality: () => { glLow = true; },
     setWheel: (d, hold = false) => { wheelDeg = clamp(d, -WHEEL_MAX, WHEEL_MAX); wheelHeld = hold; }
   };
 })();

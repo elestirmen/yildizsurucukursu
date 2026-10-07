@@ -38,7 +38,10 @@ assets/
   sinav.js                   deneme sınavı ve çıkmış sınavlar
   konu.js                    levha/ikaz lambası/ilk yardım çizimleri ve sınav sayfasındaki konu çekmecesi
   kit.js, academy*.js        etkileşimli uygulamalar (konu sayfalarında tek ders kipinde çalışır)
-  park-sim.js                park simülatörü: araç fiziği, çarpışma, park sensörü; 2B kuşbakışı ve 3B takip kamerası
+  park-sim.js                park simülatörü: araç fiziği, çarpışma, park sensörü, direksiyon; 2B kuşbakışı görünüm
+  park-3d.js                 park simülatörünün 3B görünümü (WebGL); ilk 3B kullanımda yüklenir
+  vendor/three-park.js       three.js'in (MIT) simülatörde kullanılan alt kümesi (tools/park ile derlenir)
+  park/                      3B araç modelleri (arabalar.bin) ve renk paleti (renkler.png)
   data/sorular.js            soru bankası (üretilir)
   data/konular.js            konu anlatımları (üretilir)
   img/                       kurumsal görseller (WebP)
@@ -64,6 +67,9 @@ Okunan konular, çözüm ilerlemesi, sınav sonuçları, evrak listesi ve tema t
 ## Görseller
 
 Kurumsal fotoğraf ve illüstrasyonlar ile konu sayfası görselleri yapay zekâ ile üretilmiştir (Codex görsel üretimi); kursun gerçek araçlarını veya personelini göstermez. Levha ve ikaz lambası konularında yapay zekâ görseli kullanılmaz; doğru çizimler `kit.js`'ten gelir.
+
+Park simülatörünün 3B araç modelleri [Kenney](https://www.kenney.nl) Car Kit'ten alınmıştır (CC0). 3B çizim için
+[three.js](https://threejs.org) (MIT lisansı) kullanılır.
 
 ## İletişim
 
