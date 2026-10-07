@@ -41,7 +41,7 @@ def footer(home):
       <div class="foot-grid">
         <div class="foot-brand">
           <a class="brand" href="{h or '#top'}"><svg class="brand-mark"><use href="#brandmark"/></svg><span class="brand-text"><b>YILDIZ</b><small>ÜRGÜP SÜRÜCÜ KURSU</small></span></a>
-          <p>Özel Ürgüp Yıldız Motorlu Taşıtlar Sürücü Kursu — T.C. Millî Eğitim Bakanlığı'na bağlı özel kurum. 35 yıldır Ürgüp'te.</p>
+          <p>Özel Ürgüp Yıldız Motorlu Taşıtlar Sürücü Kursu — T.C. Millî Eğitim Bakanlığı'na bağlı özel kurum. 1989'dan beri Ürgüp'te.</p>
           <p class="foot-meta">Kurs Müdürü: Mustafa AYAZ</p>
           <div class="socials">
             <a href="https://www.instagram.com/urgup_yildiz_surucu_kursu/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic"><use href="#i-insta"/></svg></a>

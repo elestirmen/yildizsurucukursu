@@ -17,6 +17,9 @@
   /* Trafik Akademisi ayrı sayfaya taşındı; eski #egitim bağlantıları oraya gitsin. */
   if (location.hash === '#egitim' && !document.getElementById('egitim')) { location.replace('trafik-akademisi.html'); return; }
 
+  /* Kuruluş 1989: "N yıl" sayıları her yıl kendiliğinden artar (HTML'de 2026'nın değeri yazılı). */
+  $$('[data-yil]').forEach((el) => { el.textContent = String(Math.max(37, new Date().getFullYear() - 1989)); });
+
   /* ---------------- Üst menü ---------------- */
   const nav = $('#nav');
   const burger = $('.burger');
@@ -228,7 +231,9 @@
   if ($('#age-board')) {
   // Yalnız kursumuzda verilen sınıflar; diğer sınıflar dipnotta.
   const CLASSES = [
-    { k: 'B', name: 'Otomobil', age: 18 },
+    { k: 'B', name: 'Otomobil (manuel / otomatik)', age: 18 },
+    { k: 'BE', name: 'Otomobil + römork', age: 18, note: 'B belgesiyle' },
+    { k: 'D', name: 'Otobüs', age: 24, note: 'B belgesiyle' },
     { k: 'A1', name: 'Hafif motosiklet', age: 16 },
     { k: 'A2', name: 'Orta sınıf motosiklet', age: 18 },
     { k: 'A', name: 'Tüm motosikletler', age: 20, alt: 24 }
@@ -270,7 +275,7 @@
         }
       }
       return `<div class="ag-row ${cls}"><span class="ag-k">${c.k}</span>` +
-        `<span class="ag-n">${c.name}<small>${c.alt ? `${c.age} yaş (2 yıllık A2 ile) · ${c.alt} yaş` : `${c.age} yaş`}</small></span>` +
+        `<span class="ag-n">${c.name}<small>${c.alt ? `${c.age} yaş (2 yıllık A2 ile) · ${c.alt} yaş` : `${c.age} yaş${c.note ? ` · ${c.note}` : ''}`}</small></span>` +
         `<span class="ag-st">${st}</span></div>`;
     }).join('');
 

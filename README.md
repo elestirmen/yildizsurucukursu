@@ -7,7 +7,7 @@ Canlı adres: <https://www.urgupyildizsurucu.com/>
 
 | Sayfa | İçerik |
 |---|---|
-| `index.html` | Kurumsal ana sayfa: hakkımızda, kurslar (B, A1, A2, A, özel direksiyon), yaş hesaplayıcı, ehliyet süreci, gerekli belgeler, e-Sınav ve Trafik Akademisi tanıtımı, SSS, iletişim ve ön kayıt |
+| `index.html` | Kurumsal ana sayfa: hakkımızda, kurslar (B manuel/otomatik, BE, D, A1, A2, A, özel direksiyon), yaş hesaplayıcı, ehliyet süreci, gerekli belgeler, e-Sınav ve Trafik Akademisi tanıtımı, SSS, iletişim ve ön kayıt |
 | `trafik-akademisi.html` | Trafik Akademisi: e-Sınav'ın dört dersine göre 10 etkileşimli ders (3B sürüş, kavşak, park, ayna, gösterge, ilk yardım ritmi) |
 | `e-sinav.html` | e-Sınav Merkezi: deneme sınavı (e-Sınav düzeninde 50 soru / 45 dk), çalışma modu (ders/konu seçimi, anında geri bildirim, açıklama, konu çekmecesi), çıkmış sınavlar, gelişim takibi |
 | `konu-anlatimi.html` | 40 başlıkta konu anlatımı (İlk Yardım, Trafik ve Çevre, Araç Tekniği, Trafik Adabı); her konuda çıkmış soru örnekleri |
