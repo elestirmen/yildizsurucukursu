@@ -1,7 +1,7 @@
 # Ürgüp Yıldız Sürücü Kursu — web sitesi
 
 Özel Ürgüp Yıldız Motorlu Taşıtlar Sürücü Kursu'nun (Ürgüp / Nevşehir) kurumsal web sitesi ve e-Sınav hazırlık merkezi.
-Canlı adres: <https://yildiz.perinet.org/>
+Canlı adres: <https://www.urgupyildizsurucu.com/>
 
 ## Sayfalar
 

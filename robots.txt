@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yildiz.perinet.org/sitemap.xml
+Sitemap: https://www.urgupyildizsurucu.com/sitemap.xml

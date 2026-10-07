@@ -64,14 +64,14 @@ def head(title, desc, canonical, extra_css=''):
     }})();
   </script>
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://yildiz.perinet.org/{canonical}">
+  <link rel="canonical" href="https://www.urgupyildizsurucu.com/{canonical}">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="tr_TR">
   <meta property="og:site_name" content="Ürgüp Yıldız Sürücü Kursu">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
-  <meta property="og:url" content="https://yildiz.perinet.org/{canonical}">
-  <meta property="og:image" content="https://yildiz.perinet.org/assets/og.jpg?v={ver('og')}">
+  <meta property="og:url" content="https://www.urgupyildizsurucu.com/{canonical}">
+  <meta property="og:image" content="https://www.urgupyildizsurucu.com/assets/og.jpg?v={ver('og')}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
