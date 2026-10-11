@@ -6,8 +6,9 @@
   if (!DATA || !Y) return;
   const { $, $$, esc, ICON, L, DERS, DORDER, store, K, record, saveStat, saveHist, stemHTML, optsHTML, srcText, noteHTML, shuffle, pct, dialog, reduced } = Y;
   const MODES = {
-    tam: { ad: 'Tam deneme', n: 50, dk: 45, dist: { iy: 12, tc: 23, at: 9, ta: 6 } },
-    mini: { ad: 'Kısa deneme', n: 20, dk: 18, dist: { iy: 5, tc: 9, at: 4, ta: 2 } }
+    // vid: MEB'in örnek kitapçıklarındaki gibi her 50 soruda 5 animasyonlu (video) soru
+    tam: { ad: 'Tam deneme', n: 50, dk: 45, vid: 5, dist: { iy: 12, tc: 23, at: 9, ta: 6 } },
+    mini: { ad: 'Kısa deneme', n: 20, dk: 18, vid: 2, dist: { iy: 5, tc: 9, at: 4, ta: 2 } }
   };
   const Q = DATA.sorular;
   const byId = new Map(Q.map((q) => [q.i, q]));
@@ -60,21 +61,24 @@
     $('#d-rule-n').textContent = m.n;
     $('#d-rule-dk').textContent = m.dk;
     $('#d-rule-pass').textContent = Math.ceil(m.n * 0.7);
+    if ($('#d-rule-vid')) $('#d-rule-vid').textContent = Math.min(m.vid, live.filter((q) => q.v).length);
   }
   $$('.mode-opt').forEach((b) => b.addEventListener('click', () => { mode = b.dataset.mode; paintMode(); }));
   paintMode();
 
+  const fresh = (pool, preferNew) => { shuffle(pool); if (preferNew) pool.sort((a, b) => (Y.S.stat[a.i] ? 1 : 0) - (Y.S.stat[b.i] ? 1 : 0)); return pool; };
   function pickExam(m, preferNew) {
     const ids = [];
+    // video sorular önce kotadan seçilir; kalanlar videosuz sorulardan tamamlanır
+    const vids = fresh(live.filter((q) => q.v), preferNew).slice(0, m.vid || 0);
     DORDER.forEach((d) => {
-      let pool = live.filter((q) => q.d === d);
-      shuffle(pool);
-      if (preferNew) pool.sort((a, b) => (Y.S.stat[a.i] ? 1 : 0) - (Y.S.stat[b.i] ? 1 : 0));
+      const pre = vids.filter((q) => q.d === d).slice(0, m.dist[d]);
+      const pool = fresh(live.filter((q) => q.d === d && !q.v), preferNew);
       // aynı konudan art arda çok soru gelmesin: konulara dengeli dağıt
       const byTopic = new Map();
       pool.forEach((q) => { if (!byTopic.has(q.k)) byTopic.set(q.k, []); byTopic.get(q.k).push(q); });
       const lists = shuffle([...byTopic.values()]);
-      const picked = [];
+      const picked = pre.slice();
       while (picked.length < m.dist[d] && lists.some((l) => l.length)) {
         for (const l of lists) { if (l.length && picked.length < m.dist[d]) picked.push(l.shift()); }
       }
@@ -166,7 +170,7 @@
     function render() {
       const q = byId.get(S.ids[S.cur]);
       const flagged = S.flag.includes(S.cur);
-      body.innerHTML = `<div class="xm-q"><div><p class="xm-num"><b>${S.cur + 1}</b>/ ${S.ids.length} <span class="chip-d" data-d="${q.d}">${DERS[q.d]}</span></p>${S.kind === 'oturum' ? noteHTML(q) : ''}${stemHTML(q)}</div>` +
+      body.innerHTML = `<div class="xm-q"><div><p class="xm-num"><b>${S.cur + 1}</b>/ ${S.ids.length} <span class="chip-d" data-d="${q.d}">${DERS[q.d]}</span></p>${S.kind === 'oturum' ? noteHTML(q) : ''}${stemHTML(q, true)}</div>` +
         `<div>${optsHTML(q)}<div class="q-actions"><button class="btn btn-line btn-sm bm" type="button" data-x="flag" aria-pressed="${flagged}">${ICON('i-flag')}${flagged ? 'İşaretlendi' : 'Sonra bakacağım'}</button>` +
         `${S.ans[S.cur] != null ? `<button class="btn btn-line btn-sm" type="button" data-x="clear">${ICON('i-x')}Cevabı sil</button>` : ''}<span class="spacer"></span><span class="kbd-hint"><kbd>A</kbd>–<kbd>D</kbd> seç · <kbd>←</kbd> <kbd>→</kbd> gezin</span></div></div></div>`;
       $$('.opt', body).forEach((b) => b.classList.toggle('sel', Number(b.dataset.i) === S.ans[S.cur]));

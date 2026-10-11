@@ -130,6 +130,9 @@
 .q-fig { margin: 14px 0 6px; }
 .q-fig img { display: block; max-width: 100%; max-height: 360px; width: auto; height: auto; border-radius: 8px; background: #fff; }
 [data-theme="dark"] .q-fig img, [data-theme="dark"] .opt img { filter: brightness(.94); }
+.q-vid video { display: block; width: 100%; max-width: 720px; aspect-ratio: 16 / 9; height: auto; border-radius: 8px; background: #000; }
+.q-vid figcaption { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 13px; font-weight: 500; line-height: 1.4; color: var(--muted); }
+.q-vid figcaption .ic { flex: none; width: 14px; height: 14px; }
 .opts { display: grid; gap: 10px; margin-top: 18px; }
 .opts.img-opts { grid-template-columns: repeat(2, 1fr); }
 .opt { position: relative; display: flex; align-items: center; gap: 14px; width: 100%; padding: 13px 16px; border: 1.5px solid var(--line-2); border-radius: 12px; background: var(--surface); text-align: left; font-size: 16px; line-height: 1.45; color: var(--text); transition: border-color .15s, background-color .15s; }

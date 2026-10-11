@@ -12,7 +12,13 @@
    Ardından kimlikler (`m0001`…) ders ve kaynak sırasına göre verilir (`bank/dedup_ids.json`). Kimlikler kullanıcı ilerlemesinde kullanıldığından değiştirilmemelidir.
 5. **Sınıflandırma** — `data/siniflandirma/batch_*.json`: her soru için ders, konu (`data/topics.json`), açıklama, güncellik (`old`) ve yazım düzeltmeleri. Elle inceleme kararları `data/review.json`.
 6. **Güncel e-Sınav soruları** — `esinav_scrape.js` (puppeteer) deneme sitesindeki üç kitapçığı kaydeder, `parse_esinav.py` yapılandırır.
-   Cevaplar iki bağımsız çözümle belirlendi (`data/es-sinav/`); yalnızca örtüşenler ve video gerektirmeyenler alındı (`es_final.json`).
+   Cevaplar iki bağımsız çözümle belirlendi (`data/es-sinav/`); yalnızca örtüşenler alındı (`es_final.json`).
+   **Animasyonlu sorular:** deneme sitesindeki 10 video soru (`es_video.json`; kitapçık 1 ve 2'de 5'er, işitme engelli
+   kitapçığında yok) `https://esinavdeneme.meb.gov.tr/video/<soruID>.mp4` adresinden indirildi, sessizdir.
+   `ffmpeg -an -vf scale=960:-2 -c:v libx264 -preset slower -crf 30 -movflags +faststart` ile `assets/v/<id>.mp4`'e,
+   kapak karesi `assets/v/<id>.webp`'ye yazıldı. Cevaplar kare kare iki bağımsız çözümle belirlendi
+   (`video_cozum1.json`, `video_cozum2.json`, 10/10 örtüştü); `es_final.json`'da `"v": 1` → bankada `v` alanı.
+   Deneme sınavı her 50 soruda 5 video soru koyar (`MODES[..].vid`, `assets/sinav.js`).
 7. **Derleme** — `python -I build_bank.py <çalışma_dizini> <site>` → `sorular.js` + WebP görseller (magenta → kırmızı).
 8. **Sayfalar** — `python3 build_pages.py <çalışma_dizini> <site>` → `konular.js`, `hazirlik.html`, `konu-<id>.html`,
    `e-sinav.html` ve eski adresleri yönlendiren `konu-anlatimi.html` / `trafik-akademisi.html`. Etkileşimli uygulamalar

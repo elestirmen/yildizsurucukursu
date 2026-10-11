@@ -79,7 +79,8 @@
 
   /* ---------------- Soru gösterimi ---------------- */
   const ITEM = /^((I{1,3}|IV|V|VI{1,3})\s*[-.)]|[1-9]\s*[-.)]|•)/;
-  function stemHTML(q) {
+  // auto: tek soru ekranında video sessiz başlar ve e-Sınav'daki gibi kendini tekrarlar
+  function stemHTML(q, auto) {
     const lines = q.q.split('\n').map((s) => s.trim()).filter(Boolean);
     const anyItem = lines.some((l) => ITEM.test(l));
     let html = lines.map((l, i) => {
@@ -87,7 +88,11 @@
       const ask = anyItem && !item && i === lines.length - 1;
       return `<p class="${item ? 'q-item' : ask ? 'q-ask' : ''}">${esc(l)}</p>`;
     }).join('');
-    if (q.g) html += `<figure class="q-fig"><img src="assets/q/${q.g}" alt="Sorunun şekli" loading="lazy"></figure>`;
+    if (q.v) {
+      html += `<figure class="q-fig q-vid"><video src="assets/v/${q.v}.mp4" poster="assets/v/${q.v}.webp" muted loop playsinline controls ` +
+        `preload="${auto ? 'auto' : 'none'}"${auto && !reduced ? ' autoplay' : ''} aria-label="Soru videosu"></video>` +
+        `<figcaption>${ICON('i-play')}Video soru: ses yoktur, video kendini tekrarlar. Cevaplamadan önce sonuna kadar izleyin.</figcaption></figure>`;
+    } else if (q.g) html += `<figure class="q-fig"><img src="assets/q/${q.g}" alt="Sorunun şekli" loading="lazy"></figure>`;
     return `<div class="q-stem">${html}</div>`;
   }
   function optsHTML(q, cls = '') {
@@ -99,7 +104,7 @@
   }
   function srcText(q) {
     if (q.st) return q.st;
-    if (q.es) return 'MEB e-Sınav örnek sorusu · cevap anahtarı yayımlanmadı, kursumuzca belirlendi';
+    if (q.es) return `MEB e-Sınav ${q.v ? 'animasyonlu (video) ' : ''}örnek sorusu · cevap anahtarı yayımlanmadı, kursumuzca belirlendi`;
     const m = sessions();
     const o = m && m.get(q.src[0]);
     const first = o ? `${o.tarih} · ${o.tur}` : q.src[0];
@@ -144,7 +149,7 @@
         <div class="q-top"><div class="q-progress"><button class="btn btn-line btn-sm" type="button" data-s="back">${ICON('i-left2')}${esc(opts.backLabel || 'Geri')}</button><span><b>${ST.i + 1}</b> / ${ST.qs.length}</span><span class="bar"><i style="width:${pct(ST.i, ST.qs.length)}%"></i></span>${single ? '' : `<span class="chip-d" data-d="${q.d}">${DERS[q.d]}</span>`}</div>
         <div class="score-chips">${chips(score())}</div></div>
         ${single ? '' : `<p class="q-from">${esc(ST.label)} · <a href="${konuURL(q.k, 'anlatim')}">${esc((window.YildizSorular && window.YildizSorular.konular[q.k]) || 'Konu anlatımı')}</a></p>`}
-        ${noteHTML(q)}${stemHTML(q)}${optsHTML(q)}
+        ${noteHTML(q)}${stemHTML(q, true)}${optsHTML(q)}
         <div class="feedback" hidden></div>
         <div class="q-actions"><button class="btn btn-line btn-sm" type="button" data-s="prev" ${ST.i ? '' : 'disabled'}>${ICON('i-left')}Önceki</button>
         <button class="btn btn-line btn-sm bm" type="button" data-s="mark" aria-pressed="${S.marks.has(q.i)}">${ICON('i-star')}${S.marks.has(q.i) ? 'İşaretlendi' : 'İşaretle'}</button>

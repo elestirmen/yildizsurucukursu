@@ -161,7 +161,12 @@ for qid, dec in sorted(es_dec.items()):
     it = es_items[qid]
     rec = {'i': qid, 'd': dec['topic'].split('-')[0], 'k': dec['topic'], 'q': (dec.get('fixq') or it['q']).strip(),
            'o': [x.strip() for x in (dec.get('fixo') or it['o'])], 'a': L.index(dec['a']), 'e': dec['exp'].strip(), 'src': [f"es{it['test']}"], 'es': 1}
-    if it['img']:
+    if dec.get('v'):
+        # animasyonlu soru: MEB'in video dosyası assets/v/<id>.mp4 (+ .webp kapak); sitedeki küçük resim yalnızca oynat düğmesiydi
+        if not os.path.exists(os.path.join(SITE, 'assets', 'v', f'{qid}.mp4')):
+            print('UYARI video yok', qid)
+        rec['v'] = qid
+    elif it['img']:
         rec['g'] = save_es(it['img'][0], f'{qid}.webp')
     if it['oimg']:
         rec['og'] = [save_es(p_, f"{qid}-{L[i].lower()}.webp", 380) if p_ else None for i, p_ in enumerate(it['oimg'])]
@@ -183,12 +188,14 @@ stats = {
     'guncel': sum(1 for q in out_q if 'old' not in q),
     'oturum': sum(1 for o in oturumlar if not o['c'].startswith('es')),
     'es': sum(1 for q in out_q if q.get('es')),
+    'video': sum(1 for q in out_q if q.get('v')),
     'konu': len(konular),
 }
 data = {'v': 1, 'stats': stats, 'konular': konular, 'oturumlar': oturumlar, 'sorular': out_q}
 js = '/* Ürgüp Yıldız Sürücü Kursu — e-Sınav soru bankası (otomatik üretildi: tools/build_bank.py)\n' \
      '   Kaynak: MEB Motorlu Taşıt Sürücü Adayları/Kursiyerleri Sınavı soru kitapçıkları ve resmî cevap anahtarları (2012–2016).\n' \
      '   Alanlar: i kimlik · d ders · k konu · q soru · o şıklar · a doğru şık (0 tabanlı) · g soru görseli · og şık görselleri\n' \
+     '            v animasyonlu soru videosu (assets/v/<v>.mp4, kapak .webp) · es MEB e-Sınav deneme sitesi sorusu\n' \
      '            e açıklama (kursumuzca yazıldı) · src çıktığı sınavlar · old güncel değil gerekçesi */\n' \
      'window.YildizSorular = ' + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';\n'
 open(os.path.join(DDIR, 'sorular.js'), 'w', encoding='utf-8').write(js)

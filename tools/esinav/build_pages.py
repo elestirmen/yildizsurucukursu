@@ -448,6 +448,7 @@ es += f'''
                 <li>{ICON('i-check')}<span><b id="d-rule-n">50</b> soru, <b id="d-rule-dk">45</b> dakika. Süre bitince sınav otomatik olarak sona erer.</span></li>
                 <li>{ICON('i-check')}<span>Her sorunun dört şıkkı vardır; yalnızca biri doğrudur. Yanlışlar doğruları götürmez.</span></li>
                 <li>{ICON('i-check')}<span>Başarı için en az 70 puan (<b id="d-rule-pass">35</b> doğru) gerekir.</span></li>
+                <li>{ICON('i-check')}<span>Gerçek sınavdaki gibi <b id="d-rule-vid">5</b> soru kısa, sessiz bir video izlenerek cevaplanır.</span></li>
                 <li>{ICON('i-check')}<span>Sorular arasında serbestçe gezinebilir, cevabınızı değiştirebilirsiniz. Sınav iki aşamalı onayla bitirilir.</span></li>
               </ul>
               <label class="check-row"><input type="checkbox" id="d-new" checked> Önce daha önce çözmediğim soruları getir</label>
@@ -467,7 +468,7 @@ es += f'''
                 <h3>Sorular nereden geliyor?</h3>
                 <ul class="src-list">
                   <li>MEB'in 2012–2016 yılları arasında yaptığı Motorlu Taşıt Sürücü Adayları ve Kursiyerleri Sınavı'nın yayımlanmış soru kitapçıkları ve <b>resmî cevap anahtarları</b>.</li>
-                  <li>MEB'in e-Sınav deneme sitesinde yayımladığı güncel e-Sınav soruları (bu soruların cevap anahtarı yayımlanmadığı için cevaplar eğitmenlerimizce belirlenmiştir).</li>
+                  <li>MEB'in e-Sınav deneme sitesinde yayımladığı güncel e-Sınav soruları ve {stats['video']} animasyonlu (video) sorusu (bu soruların cevap anahtarı yayımlanmadığı için cevaplar eğitmenlerimizce belirlenmiştir).</li>
                   <li>Mevzuatı değişen sorular deneme sınavına ve konu sorularına alınmaz.</li>
                 </ul>
               </div>

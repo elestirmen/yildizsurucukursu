@@ -149,6 +149,14 @@
   "fixq": null,
   "fixo": null
  },
+ "e121": {
+  "a": "B",
+  "topic": "tc-sollama",
+  "exp": "Motosiklet sürücüsü araçların arasından, şerit çizgilerinin üzerinden ve sağdan geçerek zikzak çiziyor. Bu sürüş geçme kurallarına aykırıdır ve hem kendisinin hem başkalarının can ve mal güvenliğini tehlikeye atar (I ve IV). Şerit izlemediği için III, böyle sürmek ileri sürüş tekniği sayılmadığı için II yanlıştır.",
+  "fixq": null,
+  "fixo": null,
+  "v": 1
+ },
  "e122": {
   "a": "A",
   "topic": "tc-kaza",
@@ -156,12 +164,41 @@
   "fixq": null,
   "fixo": null
  },
+ "e123": {
+  "a": "D",
+  "topic": "tc-kaza",
+  "exp": "Videoda sağanak yağmur ve sis var, yol ıslak ve kaygan; sol şeritte birbirine çok yakın giden araçlar zincirleme çarpışıyor. Kaza bu iklim şartlarının etkisiyle meydana gelmiştir. Araçlar takip mesafesine uymadığı için C yanlıştır; mavi araç kazaya karışmaz, yeşil aracın ani fren yaptığı da kesin değildir. Yağışlı ve sisli havada hız düşürülmeli, takip mesafesi artırılmalıdır.",
+  "fixq": null,
+  "fixo": [
+   "Yeşil araç sürücüsünün ani fren yapması kazaya sebep olmuştur.",
+   "Mavi araç sürücüsünün hatalı geçme yapması kazaya sebep olmuştur.",
+   "Araç sürücüleri takip mesafesine uymaktadır.",
+   "Kaza, iklim şartlarına bağlı olarak meydana gelmiştir."
+  ],
+  "v": 1
+ },
  "e124": {
   "a": "A",
   "topic": "tc-yatay",
   "exp": "Bu yolda iki şerit görseldeki araçların yönüne, en soldaki şerit karşı yöne ayrılmıştır. Çift çizginin sürekli tarafındaki sürücü çizgiyi geçemez; karşı yön şeridine girerek sollayan 1 ve 2 numaralı araçlar hatalıdır.",
   "fixq": null,
   "fixo": null
+ },
+ "e125": {
+  "a": "C",
+  "topic": "tc-sollama",
+  "exp": "Beyaz otomobil çıkış için önceden sağ şeride geçmiyor; son anda kamyonun önünü keserek taralı ayırım alanının dibinden çıkış koluna giriyor. Bu, şerit izleme ve manevra kurallarının ihlalidir. Uyuşturucu etkisi ya da uykusuzluk görüntüden anlaşılamaz; bu davranış ileri sürüş tekniğiyle de bağdaşmaz.",
+  "fixq": null,
+  "fixo": null,
+  "v": 1
+ },
+ "e126": {
+  "a": "C",
+  "topic": "tc-gecis",
+  "exp": "Sağdaki akaryakıt istasyonundan bir kamyon ve bir tır yola çıkmak üzere. İstasyondan ana yola çıkan araçlar yoldakilere geçiş hakkı vermek zorundadır; yine de sürücü bir aracın önüne çıkabileceğini düşünüp hızını ve şeridini buna göre ayarlamalıdır. Videoda rüzgâr, ani fren yapacak bir araç ya da trafik denetimine dair bir ipucu yoktur.",
+  "fixq": null,
+  "fixo": null,
+  "v": 1
  },
  "e127": {
   "a": "D",
@@ -296,6 +333,14 @@
   "fixq": null,
   "fixo": null
  },
+ "e149": {
+  "a": "A",
+  "topic": "ta-adab",
+  "exp": "Sarı minibüsün egzozundan sürekli ve yoğun duman çıkıyor; duman yola ve yayaların üzerine yayılıyor. Görüntüden kesin olarak söylenebilecek tek şey egzozunun arızalı olduğudur. Böyle bir araçla trafiğe çıkmak çevreyi kirletir, başkalarının sağlığına saygısızlıktır. Motorun düzensiz çalışması, yüksek devir ya da aşırı yük sessiz görüntüden anlaşılamaz.",
+  "fixq": null,
+  "fixo": null,
+  "v": 1
+ },
  "e150": {
   "a": "D",
   "topic": "ta-adab",
@@ -401,6 +446,22 @@
   "fixq": null,
   "fixo": null
  },
+ "e215": {
+  "a": "A",
+  "topic": "tc-isikli",
+  "exp": "Siyah ve sarı otomobiller kavşağa yeşil ışıkta giriyor; sağdaki yoldan gelen beyaz otomobile kırmızı ışık yanıyor. Işıklı kavşakta geçişi ışıklar belirler, bu yüzden beyaz otomobil beklemelidir. 'Sağdan gelene yol ver' kuralı ışıkla yönetilen kavşakta uygulanmaz.",
+  "fixq": null,
+  "fixo": null,
+  "v": 1
+ },
+ "e216": {
+  "a": "A",
+  "topic": "tc-uyari",
+  "exp": "Yolda 'Yandan rüzgâr' tehlike uyarı işareti var, yapraklar savruluyor. Yan rüzgâr direksiyon hâkimiyetini zorlaştırır (I). Kamyon gibi büyük bir aracın yanındayken rüzgâr perdelendiği için daha az hissedilir; kamyonu geçince birden artar (II). Bu işaret trafik kontrolü ya da yerleşim yeri bildirmez.",
+  "fixq": "I. Direksiyon hakimiyetinde zorlanacağını\nII. Kamyonla yan yana geldiğinde rüzgârın şiddetini daha az hissedeceğini\nIII. İleride trafik kontrolünün olacağını\nIV. Yerleşim yeri sınırları içine gireceğini\nSürücü, tehlike uyarı işaretine göre numaralanmış ifadelerden hangilerinin olacağını düşünmelidir?",
+  "fixo": null,
+  "v": 1
+ },
  "e217": {
   "a": "B",
   "topic": "tc-yatay",
@@ -414,6 +475,14 @@
   "exp": "Şerit azalması levhası sağ şeridin kapandığını bildirir. Kapanan şeritteki sürücü, devam eden şeritteki araçlara yol vermeli ve onlar geçtikten sonra güvenle sol şeride geçmelidir.",
   "fixq": null,
   "fixo": null
+ },
+ "e219": {
+  "a": "A",
+  "topic": "tc-gecis",
+  "exp": "Dönel kavşakta araçlar ortadaki göbeği (saat kulesini) soluna alarak saat yönünün tersine dolaşmalıdır. Mavi otomobil göbeği dolaşmadan ters yönden kestirip sağdaki yola giriyor; dönüş ve manevra kuralını ihlal ediyor. Videoda geçme, takip mesafesi ya da hız ihlali kesin olarak görülmez.",
+  "fixq": null,
+  "fixo": null,
+  "v": 1
  },
  "e220": {
   "a": "A",
@@ -485,6 +554,14 @@
   "fixq": null,
   "fixo": null
  },
+ "e232": {
+  "a": "D",
+  "topic": "tc-sollama",
+  "exp": "Aynı yönde giden beyaz ve yeşil otomobiller kavşak ve yaya geçidi içinde şeritlerini terk edip birbirinin şeridine geçiyor; tehlikeli durum bu yüzden oluşuyor. Sürücüler şerit izleme kuralını ihlal etmiştir. Kavşaklarda ve yaya geçitlerinde şerit değiştirilmez.",
+  "fixq": null,
+  "fixo": null,
+  "v": 1
+ },
  "e234": {
   "a": "D",
   "topic": "tc-hiz",
@@ -538,6 +615,14 @@
   "exp": "Ünlem işaretli lastik kesiti biçimindeki ikaz ışığı lastik basıncı izleme sistemine aittir; basınç düştüğünde, lastik patladığında ya da sensör arızalandığında yanar. Lastiğin ısınması basıncı düşürmediğinden ışığı yakmaz.",
   "fixq": null,
   "fixo": null
+ },
+ "e242": {
+  "a": "D",
+  "topic": "at-gosterge",
+  "exp": "Otoyolda giderken gösterge panelinde kırmızı hararet (motor soğutma suyu sıcaklığı) ikaz lambası yanıyor. Kırmızı ikaz lambası ciddi bir arızayı gösterir: sürücü trafik kurallarına uygun biçimde güvenli bir yerde derhal durmalı ve motorun soğumasını beklemelidir; radyatör kapağı sıcakken açılmaz. Bu hâlde yola devam etmek ya da servise gitmek motora ağır zarar verir.",
+  "fixq": null,
+  "fixo": null,
+  "v": 1
  },
  "e243": {
   "a": "A",
