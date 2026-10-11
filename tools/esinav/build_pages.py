@@ -9,7 +9,7 @@ Varlık sürümleri (?v=) <scratchpad>/versions.json'dan, yoksa bu dizindeki ver
 """
 import html, json, os, re, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from partials import nav, footer, quickbar, FONTS
+from partials import nav, footer, FONTS
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SP, SITE = sys.argv[1], sys.argv[2]
@@ -165,9 +165,8 @@ DIALOG = '''  <div class="dlg" id="dlg" hidden><div class="dlg-box" role="alertd
 
 def tail(scripts, extra=''):
     s = '\n'.join(f'  <script src="{x}" defer></script>' if isinstance(x, str) else f'  <script src="{x[0]}" {x[1]} defer></script>' for x in scripts)
+    # Mobil hızlı erişim çubuğu (Ara · WhatsApp · Ön Kayıt) yalnız ana sayfada: soru çözerken altta durunca yanlışlıkla basılıyordu
     return f'''
-  <!-- Mobil hızlı erişim -->
-{quickbar(False)}
 {extra}{s}
 </body>
 </html>

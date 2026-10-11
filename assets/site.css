@@ -1428,6 +1428,7 @@ a.c-card:hover { border-color: var(--line-2); transform: translateY(-2px); }
   .map-card { left: 12px; right: 12px; bottom: 12px; max-width: none; }
   .map-card .btn { margin-left: auto; }
   .footer { padding-bottom: 120px; }
+  body:not(:has(.quickbar)) .footer { padding-bottom: 30px; }
   .foot-grid { gap: 30px; }
   .foot-brand { grid-column: 1 / -1; }
   .quickbar { display: grid; }
