@@ -184,7 +184,7 @@
     let P = null;
     function route() {
       const h = decodeURIComponent(location.hash.slice(1));
-      const m = /^coz=(karisik|yanlis|isaret)(?:-(iy|tc|at|ta))?$/.exec(h);
+      const m = /^coz=(karisik|yanlis|isaret|video)(?:-(iy|tc|at|ta))?$/.exec(h);
       if (P) { P.destroy(); P = null; }
       if (!m) {
         run.hidden = true; main.hidden = false; runBox.innerHTML = '';
@@ -201,6 +201,7 @@
         let label;
         if (kind === 'karisik') { qs = Y.pick(qs, 'all', 'newfirst').slice(0, 20); Y.shuffle(qs); label = 'Karışık 20 soru' + (d ? ' · ' + DERS[d] : ''); }
         else if (kind === 'yanlis') { qs = Y.pick(qs, 'wrong'); label = 'Yanlışlarım'; }
+        else if (kind === 'video') { qs = Y.pick(qs.filter((q) => q.v), 'all', 'newfirst'); label = 'Video sorular'; }
         else { qs = Y.pick(qs, 'mark'); label = 'İşaretlediklerim'; }
         if (!qs.length) { runBox.innerHTML = `<div class="card card-pad"><p class="es-sub">Bu seçimde soru yok.</p><div class="q-actions"><a class="btn btn-line" href="#calis">Hazırlığa dön</a></div></div>`; return; }
         P = Y.Practice(runBox, { qs, label, topicLinks: true, backLabel: 'Hazırlığa dön', onBack: () => { location.hash = 'calis'; } });

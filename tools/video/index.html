@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Animasyonlu soru sahneleri</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+<script src="/assets/kit.js"></script>
+</head>
+<body>
+<script type="module">
+  // render.mjs: R.load(id) → { dur }, R.frame(t) → tuval
+  import { createEngine } from './motor.js';
+  import SCENES from './senaryolar.js';
+  const E = await createEngine(960, 540);
+  window.R = {
+    ids: SCENES.map((s) => s.id),
+    meta: (id) => { const s = SCENES.find((x) => x.id === id); return { id: s.id, dur: s.dur, poster: s.poster, soru: s.soru }; },
+    load: (id) => E.load(SCENES.find((x) => x.id === id)),
+    frame: (t) => E.frame(t),
+    glows: () => E.glows()
+  };
+  window.E = E;
+  window.READY = true;
+</script>
+</body>
+</html>

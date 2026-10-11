@@ -13,6 +13,8 @@
   const Q = DATA.sorular;
   const byId = new Map(Q.map((q) => [q.i, q]));
   const live = Q.filter((q) => !q.old);
+  // deneme sınavı yalnız MEB'in yayımladığı sorulardan: kaynağı doğrulanamayan ve kursumuzca hazırlanan sorular girmez
+  const exam = live.filter((q) => !q.uv && !q.kurs);
   const SESS = new Map(DATA.oturumlar.map((o) => [o.c, o]));
   const K_RUN = K.run;
   const fmtDate = (ts) => new Date(ts).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' }) + ' ' + new Date(ts).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
@@ -61,7 +63,7 @@
     $('#d-rule-n').textContent = m.n;
     $('#d-rule-dk').textContent = m.dk;
     $('#d-rule-pass').textContent = Math.ceil(m.n * 0.7);
-    if ($('#d-rule-vid')) $('#d-rule-vid').textContent = Math.min(m.vid, live.filter((q) => q.v).length);
+    if ($('#d-rule-vid')) $('#d-rule-vid').textContent = Math.min(m.vid, exam.filter((q) => q.v).length);
   }
   $$('.mode-opt').forEach((b) => b.addEventListener('click', () => { mode = b.dataset.mode; paintMode(); }));
   paintMode();
@@ -70,10 +72,10 @@
   function pickExam(m, preferNew) {
     const ids = [];
     // video sorular önce kotadan seçilir; kalanlar videosuz sorulardan tamamlanır
-    const vids = fresh(live.filter((q) => q.v), preferNew).slice(0, m.vid || 0);
+    const vids = fresh(exam.filter((q) => q.v), preferNew).slice(0, m.vid || 0);
     DORDER.forEach((d) => {
       const pre = vids.filter((q) => q.d === d).slice(0, m.dist[d]);
-      const pool = fresh(live.filter((q) => q.d === d && !q.v), preferNew);
+      const pool = fresh(exam.filter((q) => q.d === d && !q.v), preferNew);
       // aynı konudan art arda çok soru gelmesin: konulara dengeli dağıt
       const byTopic = new Map();
       pool.forEach((q) => { if (!byTopic.has(q.k)) byTopic.set(q.k, []); byTopic.get(q.k).push(q); });

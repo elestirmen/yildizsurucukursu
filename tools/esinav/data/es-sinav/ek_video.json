@@ -1,0 +1,119 @@
+{
+ "x01": {
+  "q": "Olay yerindeki araç sürücüsü ilk yardımın temel uygulamalarından hangisini gerçekleştirmektedir?",
+  "o": [
+   "Kurtarma",
+   "Tedavi etme",
+   "Koruma",
+   "Bildirme"
+  ],
+  "a": "D",
+  "topic": "iy-temel",
+  "exp": "Kaza yerine reflektör konmuştur, bir yaralı vardır; araç sürücüsü cep telefonuyla yardım çağırmaktadır. İlk yardımın temel uygulamaları Koruma, Bildirme ve Kurtarmadır (KBK); 112'yi arayarak olayı bildirmek Bildirme aşamasıdır. Tedavi etmek ilk yardımcının görevi değildir.",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · M.E.B.-E-Sinav.mp4"
+ },
+ "x02": {
+  "q": "Araç sürücüsü nasıl davranmalıdır?",
+  "o": [
+   "Hızını artırarak bu bölgeden uzaklaşmalı",
+   "Korna çalarak öndeki araç sürücüsünü uyarmalı",
+   "Dörtlü ikaz ışıklarını yakarak beklemeli",
+   "Hızını azaltarak sol şeritten yoluna devam etmeli"
+  ],
+  "a": "D",
+  "topic": "tc-sollama",
+  "exp": "Sağ şeritte önde giden otobüs durağa yanaşıp durmaktadır; sol şerit boştur. Sürücü hızını azaltmalı, otobüsün önünden yola çıkabilecek yayalara dikkat ederek sol şeritten yoluna devam etmelidir. Hızlanmak, korna çalmak ya da dörtlüleri yakıp beklemek gereksiz ve yanlıştır.",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · M.E.B.-E-Sinav_2.mp4"
+ },
+ "x03": {
+  "q": "Sürücünün hangisini yapması doğrudur?",
+  "o": [
+   "Hızını azaltıp şeridinde devam etmesi",
+   "Bisikletin sağından yoluna devam etmesi",
+   "Uyarı ışıklarını yakarak durması",
+   "Korna çalarak bisiklet sürücüsünü uyarması"
+  ],
+  "a": "A",
+  "topic": "tc-ozel",
+  "exp": "Önde şerit çizgisine yakın giden bir bisikletli, sağ şeritte de park etmiş araçlar vardır. Sürücü hızını azaltmalı, bisikletliyle güvenli mesafeyi koruyarak şeridinde devam etmelidir. Bisikletin sağından geçmek kural dışı ve tehlikelidir; korna bisikletliyi ürkütebilir, dörtlüleri yakıp durmak ise gereksizdir.",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · M.E.B.-E-Sinav_3.mp4"
+ },
+ "x04": {
+  "q": "I. Hız sınırlamasına uymadığı\nII. Araç ışıklarını gerekli yerde kullanmadığı\nIII. Kavşaklarda dönme ve dönüş kurallarına uymadığı\nSağa dönüş yapan kırmızı renkli araç sürücüsü hakkında numaralanmış ifadelerden hangileri kesinlikle söylenir?",
+  "o": [
+   "II ve III",
+   "I ve II",
+   "I ve III",
+   "I, II ve III"
+  ],
+  "a": "A",
+  "topic": "tc-gecis",
+  "exp": "Kırmızı otomobil sağa dönerken sinyal vermemiş (II) ve dönüşte yaya geçidindeki yayayı gözetmeden, dönülen yolun en sağ şeridine girmeden dönmüştür (III). Hız sınırını aştığı ise görüntüden kesin olarak anlaşılamaz (I).",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · M.E.B.-E-Sinav_4.mp4"
+ },
+ "x05": {
+  "q": "Sürücü hakkında hangisi kesinlikle söylenir?",
+  "o": [
+   "Kaygılı",
+   "Heyecanlı",
+   "Kavgacı",
+   "Sabırsız"
+  ],
+  "a": "D",
+  "topic": "ta-surucu",
+  "exp": "Işık yeşile döndüğünde yaşlı yaya henüz karşıya geçememiştir. Sürücü beklemek yerine el kol hareketleriyle tepki göstermektedir; bu sabırsızlıktır. Sürücü, geçişini tamamlamamış yayayı sabırla beklemeli ve ona saygı göstermelidir.",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · M.E.B.-E-Sinav_5.mp4"
+ },
+ "x06": {
+  "q": "I. Kırmızı ışıkta geçmektedir.\nII. Sağdan gelen yeşil araca ilk geçiş hakkını vermemektedir.\nIII. Girişi olmayan yol bölümüne girmektedir.\nVideoya göre, kırmızı otomobil sürücüsü numaralanmış hatalardan hangilerini yapmaktadır?",
+  "o": [
+   "II ve III",
+   "I ve II",
+   "I ve III",
+   "I, II ve III"
+  ],
+  "a": "C",
+  "topic": "tc-isikli",
+  "exp": "Kırmızı otomobil kendisine kırmızı ışık yanarken geçmiş (I) ve girişinde 'Girişi olmayan yol' levhası bulunan yola girmiştir (III). Yeşil araç kırmızı araç geçtikten sonra karşı yönden geldiği için aralarında bir geçiş hakkı durumu oluşmamıştır (II).",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · girisi-olmayan-yol.mp4"
+ },
+ "x07": {
+  "q": "Videoya göre, kırmızı otomobil sürücüsü nasıl davranmalıdır?",
+  "o": [
+   "Korna çalarak önündeki aracın hızlanmasını istemeli",
+   "Yavaşlamalı ve önündeki aracın arkasından yoluna devam etmeli",
+   "Önündeki aracın sağından yoluna devam etmeli",
+   "Solundaki şeride geçmeli"
+  ],
+  "a": "B",
+  "topic": "tc-sollama",
+  "exp": "Kırmızı otomobilin solunda düz çizgi ve karşı yönün şeridi vardır; burada sola geçerek otobüsü geçmek yasaktır, sağından geçmek de kural dışıdır. Duraktaki otobüse yaklaşan sürücü yavaşlamalı ve otobüsün arkasından yoluna devam etmelidir; korna çalmak yanlıştır.",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · otobus-kirmizi-arac.mp4"
+ },
+ "x08": {
+  "q": "Videoya göre hangisinin yapılması doğru olur?",
+  "o": [
+   "Siyah otomobil sürücüsünün sol şeride geçmesi",
+   "Beyaz otomobil sürücüsünün beklemesi",
+   "Siyah otomobil sürücüsünün beyaz otomobil sürücüsüne ilk geçiş hakkını vermesi",
+   "Sarı otomobil sürücüsünün hızlanması"
+  ],
+  "a": "B",
+  "topic": "tc-isikli",
+  "exp": "Siyah ve sarı otomobillere yeşil ışık yanmaktadır; sağdaki yan yoldan gelen beyaz otomobile ise kırmızı ışık yanar. Işıklı kavşaklarda geçişi ışıklar belirler; beyaz otomobil sürücüsü beklemelidir. Siyah otomobilin ona yol vermesi, şerit değiştirmesi ya da sarı otomobilin hızlanması doğru değildir.",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · kirmizi-isik.mp4"
+ },
+ "x09": {
+  "q": "Videodaki tehlikeli durum, sürücülerin hangi kuralı ihlal etmeleri sonucunda oluşmuştur?",
+  "o": [
+   "Şerit takip kuralını",
+   "Kavşaklarda ilk geçiş hakkı kuralını",
+   "Geçme kuralını",
+   "Takip mesafesi kuralını"
+  ],
+  "a": "A",
+  "topic": "tc-sollama",
+  "exp": "Beyaz ve yeşil otomobiller kavşağa gidecekleri yöne uygun olmayan şeritlerden girmiş, kavşak içinde şerit değiştirerek birbirlerinin yolunu kesmiştir. Tehlikeli durum şerit takip kuralının ihlali sonucu oluşmuştur. Sürücüler gidecekleri yöne göre şeridi kavşağa gelmeden seçmelidir.",
+  "kaynak": "ehliyetkursu.com.tr/ehliyet-animasyonlu-sorular · serit-degistirme.mp4"
+ }
+}

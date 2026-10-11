@@ -1,0 +1,145 @@
+{
+ "y01": {
+  "d": "tc",
+  "k": "tc-gecis",
+  "q": "Işıksız ve trafik işareti bulunmayan kavşakta beyaz otomobil sürücüsü hangi kuralı ihlal etmiştir?",
+  "o": [
+   "Öndeki aracı geçme kuralını",
+   "Takip mesafesi kuralını",
+   "Kavşakta sağdan gelen araca ilk geçiş hakkını verme kuralını",
+   "Duraklama ve park etme kuralını"
+  ],
+  "a": 2,
+  "e": "Işıksız, trafik işareti ve görevlisi bulunmayan eş kavşakta ilk geçiş hakkı sağdan gelen aracındır. Beyaz otomobil, sağından gelen kırmızı otomobile yol vermeden kavşağa girmiş; kırmızı otomobil ancak sert fren yaparak çarpışmayı önleyebilmiştir."
+ },
+ "y02": {
+  "d": "tc",
+  "k": "tc-ozel",
+  "q": "Videoya göre mavi otomobil sürücüsü nasıl davranmalıdır?",
+  "o": [
+   "Hızını artırarak ambulansın önünde gitmeli",
+   "Sol şeritte aynı hızla yoluna devam etmeli",
+   "Sağ şeride geçip yavaşlayarak ambulansa yol vermeli",
+   "Ani fren yaparak sol şeritte durmalı"
+  ],
+  "a": 2,
+  "e": "Işıklı ve sesli uyarı işaretlerini kullanarak gelen ambulans geçiş üstünlüğüne sahiptir. Sürücüler, geçiş üstünlüğüne sahip araçlara yol vermek için sağa yanaşmak, gerekiyorsa durmak zorundadır. Mavi otomobil sol şeritte aynı hızla ilerleyerek ambulansın yolunu kesmektedir; gri otomobil ise doğru davranarak sağa yanaşıp yavaşlamıştır."
+ },
+ "y03": {
+  "d": "tc",
+  "k": "tc-sollama",
+  "q": "Videoya göre kırmızı otomobil sürücüsü için hangisi kesinlikle söylenir?",
+  "o": [
+   "Sinyal vererek güvenli biçimde geçtiği",
+   "Takip mesafesine uyarak kamyonetin arkasından gittiği",
+   "Kavşakta ilk geçiş hakkını vermediği",
+   "Geçme yasağı olan yerde öndeki aracı geçtiği"
+  ],
+  "a": 3,
+  "e": "Yolda \"Öndeki taşıtı geçmek yasaktır\" levhası vardır ve yol ortası sürekli çizgiyle ayrılmıştır; bu kesimde öndeki aracı geçmek yasaktır. Kırmızı otomobil sinyal vermeden sürekli çizgiyi geçerek karşı şeride girmiş, karşıdan gelen araca rağmen kamyoneti sollamış ve kamyonetin önüne kırarak kendini ve başkalarını tehlikeye atmıştır."
+ },
+ "y04": {
+  "d": "tc",
+  "k": "tc-hiz",
+  "q": "Videodaki kazada kusurlu olan mavi otomobil sürücüsü hangi kurala uymamıştır?",
+  "o": [
+   "Takip mesafesi kuralına",
+   "Kavşaklarda ilk geçiş hakkı kuralına",
+   "Öndeki aracı geçme kuralına",
+   "Duraklama ve park etme kuralına"
+  ],
+  "a": 0,
+  "e": "Mavi otomobil, gri otomobili çok yakından izlemektedir. Yaya geçidinde duran araç nedeniyle gri otomobil fren yaptığında mavi otomobil zamanında duramamış ve arkadan çarpmıştır. Arkadan çarpmalı kazalarda kusur genellikle takip mesafesine uymayan arkadaki sürücüdedir; sürücü, öndeki araç aniden dursa bile güvenle durabileceği mesafeyi bırakmalıdır."
+ },
+ "y05": {
+  "d": "tc",
+  "k": "tc-ozel",
+  "q": "Videoya göre hemzemin geçide yaklaşan sürücü nasıl davranmalıdır?",
+  "o": [
+   "Bariyer tamamen inmeden hızlanarak geçidi geçmeli",
+   "Korna çalarak hemzemin geçide girmeli",
+   "Durmalı; tren geçip bariyer açıldıktan sonra yoluna devam etmeli",
+   "Bariyerin yanından dolaşarak geçmeli"
+  ],
+  "a": 2,
+  "e": "Hemzemin geçitte kırmızı ışıklar yanıp sönmeye ve bariyer inmeye başladığında tren yaklaşmaktadır. Sürücü geçide girmeden durmalı, tren geçip bariyer tamamen açılana ve ışıklar sönene kadar beklemelidir. Bariyer inerken hızlanmak ya da bariyerin yanından dolaşmak ölümcül kazalara yol açar."
+ },
+ "y06": {
+  "d": "tc",
+  "k": "tc-gecis",
+  "q": "Videoya göre mavi otomobil sürücüsü hangi kuralı ihlal etmiştir?",
+  "o": [
+   "Takip mesafesi kuralını",
+   "Dönel kavşak içindeki araçlara ilk geçiş hakkını verme kuralını",
+   "Öndeki aracı geçme kuralını",
+   "Duraklama ve park etme kuralını"
+  ],
+  "a": 1,
+  "e": "Dönel kavşaklarda ilk geçiş hakkı kavşağın içinde dönmekte olan araçlarındır; kavşağa girecek sürücü \"Yol ver\" işaretine uyarak içerideki araçların geçmesini beklemelidir. Mavi otomobil kavşak içindeki beyaz otomobile yol vermeden kavşağa girmiş, beyaz otomobil sert fren yapmak zorunda kalmıştır."
+ },
+ "y07": {
+  "d": "at",
+  "k": "at-gosterge",
+  "q": "Sürüş sırasında gösterge panelinde videodaki ikaz lambası yanan sürücü nasıl davranmalıdır?",
+  "o": [
+   "Hızını artırarak en yakın servise gitmeli",
+   "Lambayı dikkate almadan yoluna devam etmeli",
+   "Dörtlü ikaz lambalarını yakıp aynı hızla yoluna devam etmeli",
+   "Güvenli bir yerde durup motoru hemen durdurmalı"
+  ],
+  "a": 3,
+  "e": "Yanan kırmızı lamba motor yağ basıncı ikaz lambasıdır: motorda yağ basıncı düşmüştür ve yağlama yetersizdir. Bu hâlde çalışmaya devam eden motor kısa sürede ağır hasar görür. Sürücü trafik kurallarına uygun biçimde güvenli bir yerde durmalı, motoru hemen durdurmalı ve yağ seviyesini kontrol etmeli ya da yardım çağırmalıdır."
+ },
+ "y08": {
+  "d": "tc",
+  "k": "tc-ozel",
+  "q": "Videoya göre beyaz otomobil sürücüsü için hangisi kesinlikle söylenir?",
+  "o": [
+   "Yaya geçidinde yayaya ilk geçiş hakkını vermediği",
+   "Kavşakta sağdan gelen araca yol vermediği",
+   "Geçme yasağı olan yerde sollama yaptığı",
+   "Park yasağı olan yerde park ettiği"
+  ],
+  "a": 0,
+  "e": "Işıksız yaya geçidinde geçmekte olan ya da geçmek üzere olan yayalara ilk geçiş hakkı verilmelidir. Yaya geçide girmişken beyaz otomobil yavaşlamadan geçmiş, yaya durmak zorunda kalmıştır. Karşı yöndeki turuncu otomobil ise doğru davranarak geçidin önünde durmuştur."
+ },
+ "y09": {
+  "d": "tc",
+  "k": "tc-ozel",
+  "q": "Videoya göre sürücü nasıl bir tehlikenin olabileceğini düşünmelidir?",
+  "o": [
+   "Yolun ilerisinde trafik denetimi yapılabileceğini",
+   "Topun arkasından bir çocuğun yola çıkabileceğini",
+   "Rüzgâr nedeniyle direksiyon hâkimiyetini kaybedebileceğini",
+   "Arkadan gelen aracın kendisini sollayabileceğini"
+  ],
+  "a": 1,
+  "e": "Park etmiş araçların arasından yola yuvarlanan top, arkasından onu almaya koşan bir çocuğun çıkabileceğinin işaretidir. Okul ve yerleşim bölgelerinde sürücü yavaşlamalı, durmaya hazır olmalı ve park etmiş araçların arasını dikkatle izlemelidir."
+ },
+ "y10": {
+  "d": "ta",
+  "k": "ta-surucu",
+  "q": "Videoya göre siyah otomobil sürücüsü için hangisi söylenebilir?",
+  "o": [
+   "Sakin ve hoşgörülü olduğu",
+   "Sabırsız ve saldırgan olduğu",
+   "Trafik kurallarına saygılı olduğu",
+   "Yorgun ve uykusuz olduğu"
+  ],
+  "a": 1,
+  "e": "Siyah otomobil sürücüsü öndeki aracı çok yakından izleyip selektör yaparak sıkıştırmış, ardından sağdan geçip aniden önüne kırarak gri otomobili fren yapmak zorunda bırakmıştır. Bu davranışlar sabırsızlığın ve saldırganlığın göstergesidir. Trafikte sabırlı ve hoşgörülü olmak, başkalarının hakkına saygı göstermek gerekir."
+ },
+ "y11": {
+  "d": "tc",
+  "k": "tc-isik",
+  "q": "Gece, karşıdan araç gelirken videodaki sürücü farlarını nasıl kullanmalıdır?",
+  "o": [
+   "Uzun hüzmeli farları yakmaya devam etmeli",
+   "Farlarını tamamen söndürmeli",
+   "Kısa hüzmeli farlara geçmeli",
+   "Sis lambalarını yakmalı"
+  ],
+  "a": 2,
+  "e": "Gösterge panelindeki mavi lamba uzun hüzmeli farların (uzağı gösteren) yandığını gösterir. Karşıdan gelen aracın sürücüsü gözü kamaştığı için selektör yaparak uyarmaktadır. Gece karşılaşmalarda, karşıdan gelen sürücünün gözünü almamak için uzun hüzmeli farlar söndürülüp kısa hüzmeli (yakını gösteren) farlar yakılmalıdır."
+ }
+}

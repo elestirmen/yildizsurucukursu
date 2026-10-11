@@ -109,6 +109,7 @@ order = [k for d in DORDER for k in titles if k.startswith(d + '-')]
 count = {k: sum(1 for q in live if q['k'] == k) for k in titles}
 dcount = {d: sum(1 for q in live if q['d'] == d) for d in DORDER}
 n_live = fmt(stats['guncel'])
+n_vid = sum(1 for q in live if q.get('v'))
 konu_url = lambda k: f'konu-{k}.html'
 img_path = lambda k: f'assets/img/konu/{k}.webp'
 has_img = lambda k: os.path.exists(os.path.join(SITE, img_path(k)))
@@ -375,7 +376,7 @@ hz += f'''
             <h2>Çalış</h2>
             <p>{n_live} çıkmış soru. Her konunun soruları kendi sayfasında; burada dersleri karışık çalışabilirsiniz.</p>
             <div class="seg hz-dz" role="group" aria-label="Ders"><button type="button" data-dz="all" aria-pressed="true">Tümü</button>{''.join(f'<button type="button" data-dz="{d}" aria-pressed="false">{DERS[d]}</button>' for d in DORDER)}</div>
-            <div class="hz-acts"><button class="btn btn-navy" type="button" data-coz="karisik">{ICON('i-play')}20 karışık soru</button><button class="btn btn-line" type="button" data-coz="yanlis" hidden>{ICON('i-refresh')}Yanlışlarım <small></small></button><button class="btn btn-line" type="button" data-coz="isaret" hidden>{ICON('i-star')}İşaretlediklerim <small></small></button></div>
+            <div class="hz-acts"><button class="btn btn-navy" type="button" data-coz="karisik">{ICON('i-play')}20 karışık soru</button><button class="btn btn-line" type="button" data-coz="video">{ICON('i-play')}Video sorular <small>{n_vid}</small></button><button class="btn btn-line" type="button" data-coz="yanlis" hidden>{ICON('i-refresh')}Yanlışlarım <small></small></button><button class="btn btn-line" type="button" data-coz="isaret" hidden>{ICON('i-star')}İşaretlediklerim <small></small></button></div>
           </li>
           <li class="hz-step" id="sinav"><span class="hz-no">3</span>
             <h2>Sınav ol</h2>
@@ -470,6 +471,7 @@ es += f'''
                   <li>MEB'in 2012–2016 yılları arasında yaptığı Motorlu Taşıt Sürücü Adayları ve Kursiyerleri Sınavı'nın yayımlanmış soru kitapçıkları ve <b>resmî cevap anahtarları</b>.</li>
                   <li>MEB'in e-Sınav deneme sitesinde yayımladığı güncel e-Sınav soruları ve {stats['video']} animasyonlu (video) sorusu (bu soruların cevap anahtarı yayımlanmadığı için cevaplar eğitmenlerimizce belirlenmiştir).</li>
                   <li>Mevzuatı değişen sorular deneme sınavına ve konu sorularına alınmaz.</li>
+                  <li>Çalışma bölümünde ayrıca, kaynağı doğrulanamayan {stats.get('video_ek', 0)} MEB tarzı animasyonlu soru ve kursumuzca hazırlanan {stats.get('video_kurs', 0)} animasyonlu alıştırma sorusu vardır; bunlar deneme sınavına girmez.</li>
                 </ul>
               </div>
             </div>

@@ -111,7 +111,8 @@
     return q.src.length > 1 ? `${first} · toplam ${q.src.length} sınavda çıktı` : first;
   }
   const noteHTML = (q) => (q.old ? `<p class="q-old"><b>Güncel değil:</b> ${esc(q.old)} Bu soru puanlamaya katılmaz.</p>` : '') +
-    (q.es ? `<p class="q-es">${ICON('i-monitor')} MEB'in e-Sınav deneme sitesinde yayımlanan güncel bir sorudur; resmî cevap anahtarı yayımlanmadığından cevap, kursumuz eğitmenlerince belirlenmiştir.</p>` : '');
+    (q.es ? `<p class="q-es">${ICON('i-monitor')} MEB'in e-Sınav deneme sitesinde yayımlanan güncel bir sorudur; resmî cevap anahtarı yayımlanmadığından cevap, kursumuz eğitmenlerince belirlenmiştir.</p>` : '') +
+    (q.nt ? `<p class="q-es">${ICON('i-play')} ${esc(q.nt)}</p>` : '');
   const konuURL = (k, part) => `konu-${k}.html${part ? '#' + part : ''}`;
 
   /* ---------------- Onay penceresi ---------------- */

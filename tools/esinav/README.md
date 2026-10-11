@@ -19,6 +19,11 @@
    kapak karesi `assets/v/<id>.webp`'ye yazıldı. Cevaplar kare kare iki bağımsız çözümle belirlendi
    (`video_cozum1.json`, `video_cozum2.json`, 10/10 örtüştü); `es_final.json`'da `"v": 1` → bankada `v` alanı.
    Deneme sınavı her 50 soruda 5 video soru koyar (`MODES[..].vid`, `assets/sinav.js`).
+   **Ek animasyonlu sorular (x01–x09):** MEB tarzı ama kaynağı doğrulanamayan 9 video soru, ehliyetkursu.com.tr'deki
+   animasyonlu soru sayfasından (soru metni ve videolar; 10 tanesi MEB'in deneme sitesindekilerle aynıydı, onlar alınmadı).
+   Cevaplar iki bağımsız çözümle (`ek_cozum1.json`, `ek_cozum2.json`, 9/9 örtüştü) → `ek_video.json`; bankada `uv: 1`.
+   **Kursumuzca hazırlananlar (y01–…):** `tools/video/` sahne motoruyla üretilir (`kurs_video.json`, bankada `kurs: 1`).
+   `uv` ve `kurs` soruları çalışma ve konu sayfalarında çıkar; "çıkmış soru" sayısına (`stats.guncel`) ve deneme sınavına girmez.
 7. **Derleme** — `python -I build_bank.py <çalışma_dizini> <site>` → `sorular.js` + WebP görseller (magenta → kırmızı).
 8. **Sayfalar** — `python3 build_pages.py <çalışma_dizini> <site>` → `konular.js`, `hazirlik.html`, `konu-<id>.html`,
    `e-sinav.html` ve eski adresleri yönlendiren `konu-anlatimi.html` / `trafik-akademisi.html`. Etkileşimli uygulamalar

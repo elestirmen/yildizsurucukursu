@@ -178,17 +178,45 @@ for t in (3, 2, 1):
     if ids:
         oturumlar.insert(0, {'c': f'es{t}', 'tarih': f'e-Sınav örnek kitapçığı {t}', 'tur': 'MEB e-Sınav deneme sitesi (güncel)', 'kural': 'toplam', 'dk': round(len(ids) * 0.9), 'l': ids})
 
+# ---------- Ek animasyonlu sorular (MEB kaynağı doğrulanamayan) ve kursumuzca hazırlananlar ----------
+# Bunlar çalışma ve konu sayfalarında çıkar; "çıkmış soru" sayısına ve deneme sınavına girmez.
+HERE = os.path.dirname(os.path.abspath(__file__))
+EKD = os.path.join(HERE, 'data', 'es-sinav')
+NOTE_UV = ("Bu animasyonlu soru MEB e-Sınav tarzındadır; bir sürücü kursunun sitesinde yayımlanmıştır, MEB kaynağı doğrulanamamıştır. "
+           "Cevabı kursumuz eğitmenlerince belirlenmiştir.")
+NOTE_KURS = ("Bu animasyonlu soru kursumuzca hazırlanmıştır, MEB sorusu değildir. "
+             "Sınavdaki animasyonlu sorulara alışmanız için hazırlandı.")
+for fn, flag, st, nt in (('ek_video.json', 'uv', 'MEB e-Sınav tarzı animasyonlu soru · kaynağı doğrulanamadı, cevap kursumuzca belirlendi', NOTE_UV),
+                         ('kurs_video.json', 'kurs', 'Kursumuzca hazırlanan animasyonlu alıştırma sorusu · MEB sorusu değildir', NOTE_KURS)):
+    fp = os.path.join(EKD, fn)
+    if not os.path.exists(fp):
+        continue
+    for qid, x in sorted(json.load(open(fp, encoding='utf-8')).items()):
+        topic = x.get('topic') or x.get('k')
+        a = x['a'] if isinstance(x['a'], int) else L.index(x['a'])
+        if not os.path.exists(os.path.join(SITE, 'assets', 'v', f'{qid}.mp4')):
+            print('UYARI video yok', qid)
+        if topic not in topics:
+            print('UYARI konu', qid, topic)
+        rec = {'i': qid, 'd': topic.split('-')[0], 'k': topic, 'q': x['q'].strip(), 'o': [o.strip() for o in x['o']], 'a': a,
+               'e': (x.get('exp') or x.get('e') or '').strip(), 'src': [flag], 'v': qid, flag: 1, 'st': st, 'nt': nt}
+        out_q.append(rec)
+        by_id[qid] = rec
+
 # konu başlıkları
 konular = {}
 for k in topics:
     konular[k] = titles[k]
 
+meb = [q for q in out_q if not q.get('uv') and not q.get('kurs')]
 stats = {
     'toplam': len(out_q),
-    'guncel': sum(1 for q in out_q if 'old' not in q),
+    'guncel': sum(1 for q in meb if 'old' not in q),
     'oturum': sum(1 for o in oturumlar if not o['c'].startswith('es')),
     'es': sum(1 for q in out_q if q.get('es')),
-    'video': sum(1 for q in out_q if q.get('v')),
+    'video': sum(1 for q in meb if q.get('v')),
+    'video_ek': sum(1 for q in out_q if q.get('uv')),
+    'video_kurs': sum(1 for q in out_q if q.get('kurs')),
     'konu': len(konular),
 }
 data = {'v': 1, 'stats': stats, 'konular': konular, 'oturumlar': oturumlar, 'sorular': out_q}
@@ -196,6 +224,7 @@ js = '/* Ürgüp Yıldız Sürücü Kursu — e-Sınav soru bankası (otomatik �
      '   Kaynak: MEB Motorlu Taşıt Sürücü Adayları/Kursiyerleri Sınavı soru kitapçıkları ve resmî cevap anahtarları (2012–2016).\n' \
      '   Alanlar: i kimlik · d ders · k konu · q soru · o şıklar · a doğru şık (0 tabanlı) · g soru görseli · og şık görselleri\n' \
      '            v animasyonlu soru videosu (assets/v/<v>.mp4, kapak .webp) · es MEB e-Sınav deneme sitesi sorusu\n' \
+     '            uv kaynağı doğrulanamayan, kurs kursumuzca hazırlanan soru (ikisi de deneme sınavına girmez) · st kaynak · nt not\n' \
      '            e açıklama (kursumuzca yazıldı) · src çıktığı sınavlar · old güncel değil gerekçesi */\n' \
      'window.YildizSorular = ' + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';\n'
 open(os.path.join(DDIR, 'sorular.js'), 'w', encoding='utf-8').write(js)
