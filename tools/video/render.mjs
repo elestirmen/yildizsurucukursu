@@ -1,5 +1,6 @@
 // Animasyonlu soru videolarını üretir: senaryolar.js → başsız Chrome'da kare kare çizim → ffmpeg → assets/v/<id>.mp4 (+ .webp kapak)
-// Kullanım: NODE_PATH=<puppeteer'ın bulunduğu node_modules> node render.mjs --kenney <Kenney kitleri> --three <three paketi> [--only y01,y02] [--fps 25] [--preview] [--work <geçici dizin>]
+// Kullanım: NODE_PATH=<puppeteer'ın bulunduğu node_modules> node render.mjs --kenney <Kenney kitleri> --three <three paketi> --ph <Poly Haven indirmeleri>
+//   [--only y01,y02] [--fps 25] [--blur 3] [--preview] [--work <geçici dizin>]
 // Soru metinleri ve cevaplar tools/esinav/data/es-sinav/kurs_video.json'a yazılır (build_bank.py okur).
 import http from 'node:http';
 import fs from 'node:fs';
@@ -12,18 +13,19 @@ const puppeteer = require('puppeteer');
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
-const KENNEY = arg('kenney'), THREE = arg('three'), FPS = Number(arg('fps', 25)), ONLY = arg('only', ''), PREVIEW = process.argv.includes('--preview');
-if (!KENNEY || !THREE) { console.error('--kenney ve --three gerekli'); process.exit(1); }
+const KENNEY = arg('kenney'), THREE = arg('three'), PHD = arg('ph'), BLUR = Number(arg('blur', 3)), FPS = Number(arg('fps', 25)), ONLY = arg('only', ''), PREVIEW = process.argv.includes('--preview');
+if (!KENNEY || !THREE || !PHD) { console.error('--kenney, --three ve --ph gerekli'); process.exit(1); }
 const OUT = path.join(ROOT, 'assets', 'v');
 const WORK = arg('work', os.tmpdir());   // kare ve önizleme dizini
 const TMP = fs.mkdtempSync(path.join(WORK, 'yv-'));
-const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.glb': 'model/gltf-binary', '.png': 'image/png', '.json': 'application/json' };
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.json': 'application/json', '.hdr': 'application/octet-stream' };
 
 const server = http.createServer((req, res) => {
   const u = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   let f;
   if (u.startsWith('/kenney/')) f = path.join(KENNEY, u.slice(8));
   else if (u.startsWith('/three/')) f = path.join(THREE, u.slice(7));
+  else if (u.startsWith('/ph/')) f = path.join(PHD, u.slice(4));
   else f = path.join(ROOT, u);
   if (!fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); res.end(); return; }
   res.writeHead(200, { 'content-type': TYPES[path.extname(f)] || 'application/octet-stream' });
@@ -32,13 +34,13 @@ const server = http.createServer((req, res) => {
 await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const PORT = server.address().port;
 
-const browser = await puppeteer.launch({ args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+const browser = await puppeteer.launch({ args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'], protocolTimeout: 900000 });
 const page = await browser.newPage();
 page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') console.log('[sayfa]', m.text()); });
 page.on('pageerror', (e) => console.log('[hata]', e.message));
 page.on('response', (r) => { if (r.status() >= 400) console.log('[yok]', r.status(), r.url()); });
 await page.setViewport({ width: 960, height: 540 });
-await page.goto(`http://127.0.0.1:${PORT}/tools/video/index.html`, { waitUntil: 'load' });
+await page.goto(`http://127.0.0.1:${PORT}/tools/video/index.html?blur=${PREVIEW ? 1 : BLUR}`, { waitUntil: 'load' });
 await page.waitForFunction('window.READY === true', { timeout: 300000 });
 const ids = (await page.evaluate(() => R.ids)).filter((id) => !ONLY || ONLY.split(',').includes(id));
 const metas = [];

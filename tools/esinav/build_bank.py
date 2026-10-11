@@ -182,6 +182,7 @@ for t in (3, 2, 1):
 # Bunlar çalışma ve konu sayfalarında çıkar; "çıkmış soru" sayısına ve deneme sınavına girmez.
 HERE = os.path.dirname(os.path.abspath(__file__))
 EKD = os.path.join(HERE, 'data', 'es-sinav')
+KURS_VIDEO_V = 2  # 2: Poly Haven gökyüzü/dokular, yordamsal binalar, gerçekçi kokpit (2026-10-12)
 NOTE_UV = ("Bu animasyonlu soru MEB e-Sınav tarzındadır; bir sürücü kursunun sitesinde yayımlanmıştır, MEB kaynağı doğrulanamamıştır. "
            "Cevabı kursumuz eğitmenlerince belirlenmiştir.")
 NOTE_KURS = ("Bu animasyonlu soru kursumuzca hazırlanmıştır, MEB sorusu değildir. "
@@ -200,6 +201,8 @@ for fn, flag, st, nt in (('ek_video.json', 'uv', 'MEB e-Sınav tarzı animasyonl
             print('UYARI konu', qid, topic)
         rec = {'i': qid, 'd': topic.split('-')[0], 'k': topic, 'q': x['q'].strip(), 'o': [o.strip() for o in x['o']], 'a': a,
                'e': (x.get('exp') or x.get('e') or '').strip(), 'src': [flag], 'v': qid, flag: 1, 'st': st, 'nt': nt}
+        if flag == 'kurs':
+            rec['vv'] = KURS_VIDEO_V  # tools/video ile yeniden üretilince artırın
         out_q.append(rec)
         by_id[qid] = rec
 

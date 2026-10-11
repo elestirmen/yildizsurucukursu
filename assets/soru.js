@@ -89,7 +89,8 @@
       return `<p class="${item ? 'q-item' : ask ? 'q-ask' : ''}">${esc(l)}</p>`;
     }).join('');
     if (q.v) {
-      html += `<figure class="q-fig q-vid"><video src="assets/v/${q.v}.mp4" poster="assets/v/${q.v}.webp" muted loop playsinline controls ` +
+      const vv = q.vv ? '?v=' + q.vv : ''; // video yeniden üretilince önbelleği aş
+      html += `<figure class="q-fig q-vid"><video src="assets/v/${q.v}.mp4${vv}" poster="assets/v/${q.v}.webp${vv}" muted loop playsinline controls ` +
         `preload="${auto ? 'auto' : 'none'}"${auto && !reduced ? ' autoplay' : ''} aria-label="Soru videosu"></video>` +
         `<figcaption>${ICON('i-play')}Video soru: ses yoktur, video kendini tekrarlar. Cevaplamadan önce sonuna kadar izleyin.</figcaption></figure>`;
     } else if (q.g) html += `<figure class="q-fig"><img src="assets/q/${q.g}" alt="Sorunun şekli" loading="lazy"></figure>`;

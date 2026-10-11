@@ -12,7 +12,8 @@
   // render.mjs: R.load(id) → { dur }, R.frame(t) → tuval
   import { createEngine } from './motor.js';
   import SCENES from './senaryolar.js';
-  const E = await createEngine(960, 540);
+  // ?blur=3: hareket bulanıklığı için kare başına alt kare sayısı
+  const E = await createEngine(960, 540, { blur: +new URLSearchParams(location.search).get('blur') || 1 });
   window.R = {
     ids: SCENES.map((s) => s.id),
     meta: (id) => { const s = SCENES.find((x) => x.id === id); return { id: s.id, dur: s.dur, poster: s.poster, soru: s.soru }; },

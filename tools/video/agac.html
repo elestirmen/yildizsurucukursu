@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Ağaç kartı pişirme</title>
+<style>html,body{margin:0;background:transparent}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+</head><body><script type="module">
+// render.mjs --bake: Poly Haven ağaç modelini 16 yönden ortografik çizer (şeffaf arka plan)
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const W = 384, H = 512;
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setSize(W, H); renderer.setClearColor(0x000000, 0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping; // ton eşleme sahnede bir kez yapılır
+document.body.appendChild(renderer.domElement);
+window.BAKE = async (url, n, elev) => {
+  const g = await new GLTFLoader().loadAsync(url);
+  const scene = new THREE.Scene();
+  scene.add(new THREE.HemisphereLight(0xdfeaff, 0x5a4a35, 1.0));
+  const sun = new THREE.DirectionalLight(0xfff1dc, 2.2); sun.position.set(-4, 8, 3); scene.add(sun);
+  const m = g.scene; scene.add(m);
+  m.traverse((o) => { if (o.isMesh) { const mats = [].concat(o.material); mats.forEach((mt) => { if (mt.alphaMode === 'BLEND' || mt.transparent) { mt.transparent = false; mt.alphaTest = 0.5; } mt.side = THREE.DoubleSide; }); } });
+  const b = new THREE.Box3().setFromObject(m), sz = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3());
+  const R = Math.max(sz.x, sz.z) / 2 * 1.05, hh = sz.y * 1.04;
+  const halfH = Math.max(hh / 2, R * H / W);
+  const cam = new THREE.OrthographicCamera(-halfH * W / H, halfH * W / H, halfH, -halfH, 0.1, 1000);
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2, e = elev * Math.PI / 180, d = 100;
+    cam.position.set(c.x + Math.sin(a) * Math.cos(e) * d, c.y + Math.sin(e) * d, c.z + Math.cos(a) * Math.cos(e) * d);
+    cam.lookAt(c.x, c.y, c.z);
+    sun.position.set(cam.position.x - 40, 80, cam.position.z + 20); // ışık her yönde benzer gelsin
+    renderer.render(scene, cam);
+    out.push(renderer.domElement.toDataURL('image/png'));
+  }
+  return { out, height: sz.y, width: Math.max(sz.x, sz.z), halfH, baseY: b.min.y, cy: c.y };
+};
+window.READY = true;
+</script></body></html>

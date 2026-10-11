@@ -252,7 +252,7 @@ export default [
       q: 'Videoya göre beyaz otomobil sürücüsü için hangisi kesinlikle söylenir?',
       o: ['Yaya geçidinde yayaya ilk geçiş hakkını vermediği', 'Kavşakta sağdan gelen araca yol vermediği', 'Geçme yasağı olan yerde sollama yaptığı', 'Park yasağı olan yerde park ettiği'],
       a: 0,
-      e: 'Işıksız yaya geçidinde geçmekte olan ya da geçmek üzere olan yayalara ilk geçiş hakkı verilmelidir. Yaya geçide girmişken beyaz otomobil yavaşlamadan geçmiş, yaya durmak zorunda kalmıştır. Karşı yöndeki turuncu otomobil ise doğru davranarak geçidin önünde durmuştur.'
+      e: 'Işıksız yaya geçidinde geçmekte olan ya da geçmek üzere olan yayalara ilk geçiş hakkı verilmelidir. Yaya karşıya geçmek için geçidin başına gelmişken beyaz otomobil yavaşlamadan geçmiş, yaya beklemek zorunda kalmıştır. Karşı yöndeki turuncu otomobil ise doğru davranarak geçidin önünde durmuştur.'
     },
     async build(A) {
       const { hx } = straightRoad(A, { n: 1 });
@@ -287,8 +287,8 @@ export default [
         const z = -12 - i * 6.3 - (i > 3 ? 2.6 : 0);
         A.car({ id: 'p' + i, model: m, color: cols[i], path: [[hx + 1.3, z], [hx + 1.3, z - 1]], v: [[0, 0]] });
       });
-      A.ball({ id: 'top', r: 0.22, path: [[right + 1.5, -35.3], [right - 0.5, -35.3], [-8, -35.1]], v: [[0, 0], [2.6, 0], [2.7, 3.4], [7, 2.6]], bounce: 9 });
-      A.car({ id: 'ben', model: 'sedan', color: '#f2f3f5', path: [[1.75, 20], [1.75, -200]], v: [[0, 40], [3.9, 40], [5.0, 0], [7, 0]], holdBrake: true });
+      A.ball({ id: 'top', r: 0.25, path: [[right + 1.5, -35.3], [right - 0.5, -35.3], [-8, -35.1]], v: [[0, 0], [2.2, 0], [2.3, 3.4], [7, 2.6]], bounce: 9 });
+      A.car({ id: 'ben', model: 'sedan', color: '#f2f3f5', path: [[1.75, 20], [1.75, -200]], v: [[0, 40], [3.5, 40], [4.7, 0], [7, 0]], holdBrake: true });
       A.car({ id: 'karsi', model: 'van', color: '#e9ecef', path: [[-1.75, -160], [-1.75, 100]], v: [[0, 35]] });
       A.camera({ mode: 'driver', target: 'ben', fov: 60 });
     }
