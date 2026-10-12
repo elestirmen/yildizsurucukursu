@@ -423,6 +423,34 @@ export async function createEngine(W = 960, H = 540, opts = {}) {
       },
       car(o) { const a = makeCar(o); actors.push(a); return a; },
       ped(o) { const a = makePed(o); actors.push(a); return a; },
+      // Poz verilmiş kişi (ilk yardım sahneleri): temel animasyon karesi + gövde yerleşimi + kemik düzeltmeleri + kol IK
+      person(o) { const a = makePerson(o); actors.push(a); return a; },
+      // Bir kişinin kemiğinin o anki dünya konumu (IK hedefi için; hedef kişi daha önce eklenmiş olmalı)
+      boneAt(id, bone, off = [0, 0, 0]) { const a = actors.find((x) => x.o.id === id); return a.bonePos(bone).add(new THREE.Vector3(...off)); },
+      // Reflektör (uyarı üçgeni): taşıyan kişinin elinde gelir, t anında yere konur
+      reflector(o) { const a = makeReflector(o); actors.push(a); return a; },
+      // Battaniye: (cx, cz) merkezli, z boyunca uzanan bir gövdenin üstüne serilip yanlardan yere sarkar
+      blanket(cx, cz, len, wid, color, top = 0.27) {
+        const g = new THREE.PlaneGeometry(wid, len, 18, 22); g.rotateX(-Math.PI / 2);
+        const p = g.attributes.position, half = 0.23;
+        for (let i = 0; i < p.count; i++) {
+          const dx = Math.abs(p.getX(i)), dz = p.getZ(i), endK = 1 - Math.pow(Math.min(1, Math.abs(dz) / (len / 2)), 6);
+          let y = dx < half ? top * Math.sqrt(1 - 0.55 * (dx / half) ** 2) : Math.max(0.04, top * 0.67 - (dx - half) * 1.9);
+          y = 0.04 + (y - 0.04) * endK + 0.012 * Math.sin(dz * 9 + dx * 5);
+          p.setY(i, y);
+        }
+        g.computeVertexNormals();
+        const m = new THREE.Mesh(g, std(color, { roughness: 0.95, side: THREE.DoubleSide }));
+        m.position.set(cx, 0, cz); m.castShadow = true; m.receiveShadow = true; scene.add(m); return m;
+      },
+      // Basit nesne: kutu (battaniye, çanta …)
+      prop(kind, x, y, z, w, h, d, color, ang = 0) {
+        const mat = kind === 'cloth' ? std(color, { roughness: 0.95 }) : std(color, { roughness: 0.7 });
+        if (kind === 'roll') { const c = new THREE.Mesh(new THREE.CylinderGeometry(h / 2, h / 2, w, 24), mat); c.rotation.z = Math.PI / 2; c.position.set(x, y + h / 2, z); c.castShadow = true; c.receiveShadow = true; scene.add(c); return c; }
+        const m = new THREE.Mesh(kind === 'cloth' ? new THREE.BoxGeometry(w, h, d, 6, 1, 6) : new THREE.BoxGeometry(w, h, d), mat);
+        if (kind === 'cloth') { const p = m.geometry.attributes.position; for (let i = 0; i < p.count; i++) { const px = p.getX(i), pz = p.getZ(i); if (p.getY(i) > 0) p.setY(i, p.getY(i) + 0.05 * Math.cos(px / w * Math.PI) * Math.cos(pz / d * Math.PI)); else p.setY(i, p.getY(i) - Math.max(0, Math.abs(px) - w * 0.3) * 0.6); } m.geometry.computeVertexNormals(); }
+        m.position.set(x, y + h / 2, z); m.rotation.y = yawOf(ang); m.castShadow = true; m.receiveShadow = true; scene.add(m); return m;
+      },
       ball(o) { const a = makeBall(o); actors.push(a); return a; },
       camera(spec) { camSpec = spec; },
       each(fn) { hooks.push(fn); },
@@ -721,6 +749,147 @@ export async function createEngine(W = 960, H = 540, opts = {}) {
     };
   }
 
+  /* ---------- Poz verilmiş kişi ---------- */
+  const _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _q1 = new THREE.Quaternion(), _q2 = new THREE.Quaternion();
+  const wpos = (o3) => o3.getWorldPosition(new THREE.Vector3());
+  const vec = (v) => (v && v.isVector3 ? v.clone() : new THREE.Vector3(...v));
+  // Kemiği, çocuğunun dünyadaki konumu hedefe gelecek biçimde döndür (kemik eksenine bağlı olmayan nişan alma)
+  function aim(bone, childPos, target) {
+    const bp = wpos(bone);
+    const cur = _v1.copy(childPos).sub(bp).normalize(), des = _v2.copy(target).sub(bp).normalize();
+    const dq = _q1.setFromUnitVectors(cur, des);
+    const bw = bone.getWorldQuaternion(new THREE.Quaternion()), pw = bone.parent.getWorldQuaternion(new THREE.Quaternion());
+    bone.quaternion.copy(pw.invert().multiply(dq.multiply(bw)));
+    bone.updateMatrixWorld(true);
+  }
+  // İki kemikli IK: omuz → dirsek → bilek; dirsek pole noktasına doğru bükülür
+  function ik2(upper, lower, end, target, pole) {
+    const S = wpos(upper), E0 = wpos(lower), W0 = wpos(end);
+    const a = S.distanceTo(E0), b = E0.distanceTo(W0);
+    const T = new THREE.Vector3().copy(target), dvec = T.clone().sub(S);
+    const d = clamp(dvec.length(), Math.abs(a - b) + 1e-3, a + b - 1e-3), u = dvec.normalize();
+    const x = (a * a - b * b + d * d) / (2 * d), h = Math.sqrt(Math.max(0, a * a - x * x));
+    const pv = new THREE.Vector3().copy(pole).sub(S); const w = pv.sub(u.clone().multiplyScalar(pv.dot(u))).normalize();
+    const E = S.clone().add(u.clone().multiplyScalar(x)).add(w.multiplyScalar(h));
+    aim(upper, E0, E);
+    aim(lower, wpos(end), S.clone().add(u.multiplyScalar(d)));
+  }
+  // Kemiği dünya ekseni etrafında döndür
+  function rotW(bone, axis, deg) {
+    const q = _q2.setFromAxisAngle(new THREE.Vector3(...axis).normalize(), deg * DEG);
+    const bw = bone.getWorldQuaternion(new THREE.Quaternion()), pw = bone.parent.getWorldQuaternion(new THREE.Quaternion());
+    bone.quaternion.copy(pw.invert().multiply(q.multiply(bw)));
+    bone.updateMatrixWorld(true);
+  }
+  // İki modelin iskeleti ortak adlarla: erkek Quaternius (adlardaki nokta three.js'te silinir), kadın Mixamo
+  const RIG = {
+    man: { hips: 'Hips', spine: 'Abdomen', chest: 'Torso', neck: 'Neck', head: 'Head', upperArmL: 'UpperArmL', lowerArmL: 'LowerArmL', handL: 'PalmL', upperArmR: 'UpperArmR', lowerArmR: 'LowerArmR', handR: 'PalmR', upperLegL: 'UpperLegL', lowerLegL: 'LowerLegL', footL: 'FootL', upperLegR: 'UpperLegR', lowerLegR: 'LowerLegR', footR: 'FootR' },
+    woman: { hips: 'Hips', spine: 'Spine', chest: 'Spine2', neck: 'Neck', head: 'Head', upperArmL: 'LeftArm', lowerArmL: 'LeftForeArm', handL: 'LeftHand', upperArmR: 'RightArm', lowerArmR: 'RightForeArm', handR: 'RightHand', upperLegL: 'LeftUpLeg', lowerLegL: 'LeftLeg', footL: 'LeftFoot', upperLegR: 'RightUpLeg', lowerLegR: 'RightLeg', footR: 'RightFoot' }
+  };
+  function makePerson(o) {
+    const female = /woman|female/.test(o.model || ''), g = LIB['people/' + (female ? 'woman' : 'man')];
+    const m = SkeletonUtils.clone(g.scene), letter = (o.model || 'x-a').slice(-1), fit = OUTFIT[letter] || OUTFIT.a;
+    m.traverse((ob) => {
+      if (!ob.isMesh) return;
+      const src = ob.material, nm = src.name;
+      const col = nm === 'Shirt' ? fit[0] : nm === 'Pants' ? fit[1] : nm === 'Skin' ? fit[2] : null;
+      ob.material = new THREE.MeshStandardMaterial({ map: src.map, color: col ? new THREE.Color(col) : src.color.clone(), roughness: 0.8 });
+      ob.frustumCulled = false;
+    });
+    m.updateMatrixWorld(true);
+    const b0 = bbox(m), k = (o.height || (female ? 1.66 : 1.76)) / b0.getSize(new THREE.Vector3()).y;
+    m.scale.setScalar(k); m.position.y = -b0.min.y * k;
+    const body = new THREE.Group(); body.add(m);
+    const root = new THREE.Group(); root.add(body); scene.add(root);
+    const raw = {}; m.traverse((x) => { if (x.isBone) raw[x.name] = x; });
+    // her güncellemede kemikleri dinlenme pozuna döndür: klibin dokunmadığı kemiklerde IK döndürmeleri birikmesin
+    const rest = []; m.traverse((x) => { if (x.isBone) rest.push([x, x.position.clone(), x.quaternion.clone(), x.scale.clone()]); });
+    const bones = {}; for (const [k2, v2] of Object.entries(RIG[female ? 'woman' : 'man'])) bones[k2] = raw[v2];
+    const mixer = new THREE.AnimationMixer(m);
+    const clip = g.animations.find((c) => (o.clip || /idle/i).test(c.name)) || g.animations[0];
+    const act = mixer.clipAction(clip); act.play();
+    // ayaklar iskelet köküne bağlı: bacak bükülünce ayak, alt bacağa göre bağıl konumunu korusun
+    const feetOff = {};
+    const saveFeet = () => { for (const s2 of ['L', 'R']) { const ll = bones['lowerLeg' + s2], ft = bones['foot' + s2]; if (ll && ft && ft.parent !== ll) feetOff[s2] = new THREE.Matrix4().copy(ll.matrixWorld).invert().multiply(ft.matrixWorld); } };
+    const placeFeet = () => { for (const s2 of ['L', 'R']) { const ll = bones['lowerLeg' + s2], ft = bones['foot' + s2]; if (!ll || !ft || !feetOff[s2]) continue; const wm = new THREE.Matrix4().copy(ll.matrixWorld).multiply(feetOff[s2]); const lm = new THREE.Matrix4().copy(ft.parent.matrixWorld).invert().multiply(wm); lm.decompose(ft.position, ft.quaternion, ft.scale); ft.updateMatrixWorld(true); } };
+    const P = {
+      THREE, bones, rot: (n, axis, deg) => bones[n] && rotW(bones[n], axis, deg),
+      arm: (side, target, pole) => ik2(bones['upperArm' + side], bones['lowerArm' + side], bones['hand' + side], vec(target), vec(pole)),
+      leg: (side, target, pole) => ik2(bones['upperLeg' + side], bones['lowerLeg' + side], bones['foot' + side], vec(target), vec(pole)),
+      // Diz çökme: kalçayı diz yüksekliğine indir, dizler yerde, ayaklar geride; lean: belden öne eğilme (derece)
+      kneel: (opt = {}) => {
+        const yaw = root.rotation.y, f = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw)), r = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+        const thigh = wpos(bones.upperLegL).distanceTo(wpos(bones.lowerLegL)), shin = wpos(bones.lowerLegL).distanceTo(wpos(bones.footL));
+        const hipY = wpos(bones.upperLegL).y, want = thigh * 0.96 + 0.07 - (opt.drop || 0);
+        root.position.y += want - hipY; root.updateMatrixWorld(true);
+        // öne eğilme kalça ekleminden: önce kalça döner, bacaklar ardından yeniden çözülür
+        if (opt.lean) rotW(bones.hips, [r.x, r.y, r.z], opt.lean * 0.75);
+        for (const s2 of ['L', 'R']) {
+          const hp = wpos(bones['upperLeg' + s2]);
+          const foot = hp.clone().addScaledVector(f, -shin * 0.95).setY(0.07).addScaledVector(r, (s2 === 'L' ? 1 : -1) * (opt.spread || 0.06));
+          const pole = hp.clone().addScaledVector(f, 1).setY(-0.5);
+          ik2(bones['upperLeg' + s2], bones['lowerLeg' + s2], bones['foot' + s2], foot, pole);
+        }
+        if (opt.lean) rotW(bones.chest, [r.x, r.y, r.z], opt.lean * 0.25);
+        return { f, r };
+      },
+      look: (n, target) => { const bn = bones[n]; if (!bn) return; const ch = bn.children.find((c) => c.isBone) || bn; const tip = wpos(ch).sub(wpos(bn)).length() > 1e-3 ? wpos(ch) : wpos(bn).add(new THREE.Vector3(0, 0.1, 0)); aim(bn, tip, new THREE.Vector3(...target)); },
+      pos: (n) => wpos(bones[n])
+    };
+    const blob = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: TEX.blob, transparent: true, depthWrite: false }));
+    blob.rotation.x = -Math.PI / 2; blob.position.y = 0.02; scene.add(blob);
+    const mo = o.path ? motion(Object.assign({ unit: 'ms' }, o)) : null;
+    const self = {
+      o, root, bones,
+      poseAt: (t) => (mo ? pose(mo, t) : { p: new THREE.Vector3(o.x || 0, 0, o.z || 0), yaw: yawOf(o.ang || 0) }),
+      bonePos: (n) => { root.updateMatrixWorld(true); return wpos(bones[n]); },
+      update(t) {
+        let x = o.x || 0, z = o.z || 0, yaw = yawOf(o.ang || 0), v = 0;
+        if (mo) { const ps = pose(mo, t); x = ps.p.x; z = ps.p.z; yaw = ps.yaw; v = mo.at(t)[1]; }
+        root.position.set(x, o.y ? (typeof o.y === 'function' ? o.y(t) : o.y) : groundY(x, z), z);
+        root.rotation.set(0, yaw, 0);
+        // gövde yerleşimi: lie = 'back' (sırtüstü), 'side' (yan), 'front' (yüzüstü)
+        // sırtüstü: X ekseninde −90° (baş yerel −Z'ye); yan: aynı doğrultuda uzun ekseni etrafında roll derece
+        body.quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), o.lie === 'back' || o.lie === 'side' ? -Math.PI / 2 : o.lie === 'front' ? Math.PI / 2 : 0);
+        if (o.lie === 'side') body.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), (o.roll != null ? o.roll : 90) * DEG));
+        body.position.set(0, o.lift || 0, 0);
+        for (const [bn, p0, q0, s0] of rest) { bn.position.copy(p0); bn.quaternion.copy(q0); bn.scale.copy(s0); }
+        const ct = typeof o.at === 'function' ? o.at(t) : o.at != null ? o.at * clip.duration : (mo && v > 0.15 ? (t * v / 1.25) % clip.duration : 0);
+        act.time = clamp(ct, 0, clip.duration - 1e-3); mixer.update(0);
+        root.updateMatrixWorld(true);
+        if (!Object.keys(feetOff).length) saveFeet();
+        else saveFeet();
+        if (o.lie) { const cy = wpos(bones.chest).y, want = groundY(x, z) + (o.restY || 0.13); body.position.y += want - cy; root.updateMatrixWorld(true); saveFeet(); }
+        if (o.pose) o.pose(P, t, self);
+        placeFeet();
+        const bp = wpos(bones.hips); blob.position.set(bp.x, 0.02 + groundY(bp.x, bp.z), bp.z); blob.scale.setScalar(o.lie ? 1.9 : 0.8);
+      }
+    };
+    return self;
+  }
+  /* ---------- Reflektör ---------- */
+  function makeReflector(o) {
+    const g = new THREE.Group();
+    const tri = (r, th) => { const sh = new THREE.Shape(); for (let i = 0; i < 3; i++) { const a = Math.PI / 2 + i * 2 * Math.PI / 3; i ? sh.lineTo(Math.cos(a) * r, Math.sin(a) * r) : sh.moveTo(Math.cos(a) * r, Math.sin(a) * r); } sh.closePath(); return new THREE.ExtrudeGeometry(sh, { depth: th, bevelEnabled: false }); };
+    const outer = new THREE.Mesh(tri(0.3, 0.02), new THREE.MeshStandardMaterial({ color: 0xd8261c, emissive: 0x7a0c06, emissiveIntensity: 0.6, roughness: 0.35 }));
+    const inner = new THREE.Mesh(tri(0.17, 0.03), std('#f2f2f2', { roughness: 0.5 })); inner.position.z = 0.0;
+    const holeless = new THREE.Group(); holeless.add(outer, inner); holeless.position.y = 0.17; g.add(holeless);
+    const leg = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.02, 0.32), M.metal); leg.position.set(0, 0.01, -0.12); g.add(leg);
+    g.traverse((x) => { if (x.isMesh) x.castShadow = true; });
+    scene.add(g);
+    return {
+      o, root: g,
+      update(t) {
+        if (o.carrier && t < o.place) {
+          const c = actors.find((x) => x.o.id === o.carrier);
+          const hp = c.bonePos ? c.bonePos('handR') : wpos(c.root);
+          g.position.set(hp.x, hp.y - 0.36, hp.z); g.rotation.set(0, c.root.rotation.y + Math.PI / 2, 0);
+        } else if (o.at) { g.position.set(o.at[0], groundY(o.at[0], o.at[1]), o.at[1]); g.rotation.set(0, yawOf(o.ang || 0), 0); }
+        else { const c = actors.find((x) => x.o.id === o.carrier), ps = c.poseAt(o.place); g.position.set(ps.p.x + Math.sin(ps.yaw) * 0.75, 0, ps.p.z + Math.cos(ps.yaw) * 0.75); g.rotation.set(0, ps.yaw + Math.PI, 0); }
+      }
+    };
+  }
+
   /* ---------- Top ---------- */
   function makeBall(o) {
     const tex = canvasTex(256, 128, (x, w, h) => { x.fillStyle = '#f4f4f4'; x.fillRect(0, 0, w, h); x.fillStyle = '#d6282b'; for (let i = 0; i < 4; i++) x.fillRect(i * 64, 0, 32, h); }, false);
@@ -855,6 +1024,7 @@ export async function createEngine(W = 960, H = 540, opts = {}) {
     },
     canvas: out,
     get scene() { return scene; }, renderer,
+    people() { return actors.filter((a) => a.bones).map((a) => { a.root.updateMatrixWorld(true); const r = { id: a.o.id }; for (const k of ['hips', 'chest', 'head', 'upperArmL', 'upperArmR', 'handL', 'handR', 'upperLegL', 'footL']) { const b = a.bones[k]; if (b) r[k] = b.getWorldPosition(new THREE.Vector3()).toArray().map((v) => +v.toFixed(2)); } return r; }); },
     glows() { const r = []; scene.traverse((o) => { if (o.isSprite) { let v = true; for (let p = o; p; p = p.parent) if (!p.visible) v = false; if (v) { const w = o.getWorldPosition(new THREE.Vector3()); r.push([o.material.color.getHexString(), +w.x.toFixed(1), +w.y.toFixed(1), +w.z.toFixed(1)]); } } }); return r; }
   };
 }

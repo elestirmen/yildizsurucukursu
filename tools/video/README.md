@@ -51,6 +51,14 @@ uzun dizinlerde açılamadığı için `TMPDIR` değiştirilmez, kareler `--work
   `follow` (arkadan; `reverse` önden geriye bakar), `driver` (sürücü koltuğu; `pitch` derece, `lamps: [[id, t0, t1]]`
   kit.js ikaz lambaları).
 - Levhalar `A.sign(kitKimliği, x, z, bakışYönü)` ile sitedeki kit.js çizimlerinden gelir.
+- İlk yardım sahneleri: `A.person({ id, model: 'man-b' | 'woman', x, z, ang, lie: 'back' | 'side', clip, at, pose(P, t) })`.
+  `pose` içinde `P.kneel({ lean, drop })` (diz çökme; eğilme kalçadan), `P.arm('L'|'R', hedef, pole)` ve `P.leg(...)`
+  (iki kemikli IK; dirsek/diz pole noktasına doğru bükülür), `P.rot(kemik, dünyaEkseni, derece)`, `P.look('head', hedef)`.
+  Kemik adları iki iskelette ortaktır (`hips`, `chest`, `head`, `upperArmL`, `handR` …). Başka kişinin kemiği
+  `A.boneAt(id, kemik, ofset)` ile hedef alınır (hedef kişi önce eklenmeli). Yan yatma `lie: 'side'` sırtüstü pozun
+  uzun eksen etrafında `roll` derece çevrilmesidir. Uzanabilme sınırı: 1,66 m'lik kadın modelde kol ~0,45 m; yerdeki
+  göğse ulaşmak için ~60° eğilme ve ~0,1 m alçalma gerekir. `A.reflector({ carrier, place })` taşıyanın elinden
+  bırakıldığı yere konur; `A.blanket(...)` gövdenin üstüne serilen örtü.
 - Yazılımsal WebGL tuzakları: uzun ince çizgiler 20 m'lik parçalara bölünür (yoksa bazı karelerde kaybolur);
   `visible` her zaman boolean olmalı; sürücü görünümünde aracın yalnız gövdesi gizlenir (kökü gizlemek farı da söndürür).
 - Videoyu yeniden üretince aynı adla kaydedildiği için Cloudflare eskisini tutabilir; `sorular.js` sürümünü artırın.
