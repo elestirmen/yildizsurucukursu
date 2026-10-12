@@ -133,6 +133,14 @@
 .q-vid video { display: block; width: 100%; max-width: 720px; aspect-ratio: 16 / 9; height: auto; border-radius: 8px; background: #000; }
 .q-vid figcaption { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 13px; font-weight: 500; line-height: 1.4; color: var(--muted); }
 .q-vid figcaption .ic { flex: none; width: 14px; height: 14px; }
+/* YouTube bölümü (Türk Kızılay): kapak resmi + oynat düğmesi, sonra iframe */
+.q-yt .yt-box, .kv-box { position: relative; width: 100%; max-width: 720px; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #000; }
+.q-yt .yt-box iframe, .kv-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.yt-play { position: absolute; inset: 0; display: grid; place-items: center; width: 100%; height: 100%; padding: 0; border: 0; background: #000; color: #fff; cursor: pointer; }
+.yt-play img, .q-fig .yt-play img { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; object-fit: cover; border-radius: 0; background: #000; }
+.yt-play .ic { position: relative; width: 60px; height: 60px; padding: 17px; border-radius: 50%; background: rgba(0, 0, 0, .62); transition: background-color .15s; }
+.yt-play:hover .ic, .yt-play:focus-visible .ic { background: var(--red); }
+.yt-off { position: absolute; left: 10px; bottom: 10px; padding: 6px 10px; border-radius: 6px; background: #fff; color: #1c1d22; font-size: 14px; font-weight: 600; }
 .opts { display: grid; gap: 10px; margin-top: 18px; }
 .opts.img-opts { grid-template-columns: repeat(2, 1fr); }
 .opt { position: relative; display: flex; align-items: center; gap: 14px; width: 100%; padding: 13px 16px; border: 1.5px solid var(--line-2); border-radius: 12px; background: var(--surface); text-align: left; font-size: 16px; line-height: 1.45; color: var(--text); transition: border-color .15s, background-color .15s; }

@@ -93,9 +93,63 @@
       html += `<figure class="q-fig q-vid"><video src="assets/v/${q.v}.mp4${vv}" poster="assets/v/${q.v}.webp${vv}" muted loop playsinline controls ` +
         `preload="${auto ? 'auto' : 'none'}"${auto && !reduced ? ' autoplay' : ''} aria-label="Soru videosu"></video>` +
         `<figcaption>${ICON('i-play')}Video soru: ses yoktur, video kendini tekrarlar. Cevaplamadan önce sonuna kadar izleyin.</figcaption></figure>`;
+    } else if (q.yt) {
+      // Türk Kızılay videosundan bir bölüm: dosya sitede barındırılmaz, YouTube oynatıcısıyla gösterilir (ytMount)
+      const [id, s, e] = q.yt;
+      html += `<figure class="q-fig q-vid q-yt" data-yt="${esc(id)}" data-s="${s}" data-e="${e}"${auto ? ' data-auto="1"' : ''}>` +
+        `<div class="yt-box"><button class="yt-play" type="button" aria-label="Videoyu oynat"><img src="https://i.ytimg.com/vi/${esc(id)}/hqdefault.jpg" alt="" loading="lazy">${ICON('i-play')}</button></div>` +
+        `<figcaption>${ICON('i-play')}Video soru: Türk Kızılay'ın ilk yardım eğitim videosundan bir bölüm. Ses kapalı başlar, bölüm kendini tekrarlar.</figcaption></figure>`;
     } else if (q.g) html += `<figure class="q-fig"><img src="assets/q/${q.g}" alt="Sorunun şekli" loading="lazy"></figure>`;
     return `<div class="q-stem">${html}</div>`;
   }
+  /* YouTube kesitleri: iframe API gerektiğinde yüklenir; oynatıcı sessiz başlar ve [s, e] aralığını döngüyle oynatır */
+  let ytP = null;
+  function ytAPI() {
+    if (window.YT && window.YT.Player) return Promise.resolve(window.YT);
+    if (ytP) return ytP;
+    ytP = new Promise((res, rej) => {
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => { if (prev) prev(); res(window.YT); };
+      const sc = document.createElement('script');
+      sc.src = 'https://www.youtube.com/iframe_api';
+      sc.onerror = () => { ytP = null; rej(new Error('yt')); };
+      document.head.appendChild(sc);
+    });
+    return ytP;
+  }
+  function ytMount(fig) {
+    if (!fig || fig.dataset.on) return;
+    fig.dataset.on = '1';
+    const id = fig.dataset.yt, s = Number(fig.dataset.s), e = Number(fig.dataset.e);
+    const box = $('.yt-box', fig);
+    ytAPI().then((YT) => {
+      if (!fig.isConnected) return;
+      const el = document.createElement('div');
+      box.replaceChildren(el);
+      let timer = 0;
+      const p = new YT.Player(el, {
+        host: 'https://www.youtube-nocookie.com', videoId: id, width: '100%', height: '100%',
+        playerVars: { start: s, end: e, autoplay: 1, mute: 1, playsinline: 1, rel: 0, iv_load_policy: 3 },
+        events: {
+          onReady: (ev) => {
+            ev.target.mute(); ev.target.playVideo();
+            // bölüm sonuna gelince başa sar; sayfadan çıkan oynatıcıyı kapat
+            timer = setInterval(() => {
+              if (!fig.isConnected) { clearInterval(timer); try { p.destroy(); } catch (x) { /* */ } return; }
+              if (p.getPlayerState && p.getPlayerState() === 1 && p.getCurrentTime() >= e - 0.25) p.seekTo(s, true);
+            }, 200);
+          },
+          onStateChange: (ev) => { if (ev.data === 0 && fig.isConnected) ev.target.loadVideoById({ videoId: id, startSeconds: s, endSeconds: e }); }
+        }
+      });
+    }).catch(() => {
+      fig.dataset.on = '';
+      if (!$('.yt-off', fig)) box.insertAdjacentHTML('beforeend', `<a class="yt-off" href="https://www.youtube.com/watch?v=${encodeURIComponent(id)}&amp;t=${s}s" target="_blank" rel="noopener">Video yüklenemedi, YouTube'da açın</a>`);
+    });
+  }
+  const ytAuto = (root) => { if (!reduced) $$('.q-yt[data-auto]', root).forEach(ytMount); };
+  document.addEventListener('click', (ev) => { const b = ev.target.closest('.yt-play'); if (b) ytMount(b.closest('.q-yt')); });
+
   function optsHTML(q, cls = '') {
     const img = !!(q.og && q.og.some(Boolean));
     return `<div class="opts${img ? ' img-opts' : ''}">` + q.o.map((o, i) => {
@@ -157,6 +211,7 @@
         <button class="btn btn-line btn-sm bm" type="button" data-s="mark" aria-pressed="${S.marks.has(q.i)}">${ICON('i-star')}${S.marks.has(q.i) ? 'İşaretlendi' : 'İşaretle'}</button>
         <span class="spacer"></span><span class="kbd-hint"><kbd>A</kbd>–<kbd>D</kbd> cevapla · <kbd>Enter</kbd> sonraki</span>
         <button class="btn btn-red" type="button" data-s="next" ${r ? '' : 'disabled'}>${ST.i === ST.qs.length - 1 ? 'Bitir' : 'Sonraki soru'}${ICON('i-right')}</button></div></div>`;
+      ytAuto(root);
       if (r) reveal(q, r.pick, false);
     }
     function reveal(q, pick, fresh) {

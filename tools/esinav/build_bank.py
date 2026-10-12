@@ -206,6 +206,21 @@ for fn, flag, st, nt in (('ek_video.json', 'uv', 'MEB e-Sınav tarzı animasyonl
         out_q.append(rec)
         by_id[qid] = rec
 
+# Türk Kızılay'ın ilk yardım eğitim videolarından bölümlerle kursumuzca yazılan sorular (k01…).
+# Video sitede barındırılmaz: yt = [YouTube kimliği, başlangıç sn, bitiş sn], soru ekranında YouTube oynatıcısıyla gösterilir.
+NOTE_KZ = ("Video, Türk Kızılay'ın ilk yardım eğitim videosundan bir bölümdür ve YouTube'dan oynatılır; tüm hakları Türk Kızılay'a aittir. "
+           "Soru kursumuzca hazırlanmıştır, MEB sorusu değildir.")
+fp = os.path.join(EKD, 'kizilay_video.json')
+for qid, x in sorted(json.load(open(fp, encoding='utf-8')).items()):
+    topic = x['topic']
+    if topic not in topics:
+        print('UYARI konu', qid, topic)
+    rec = {'i': qid, 'd': topic.split('-')[0], 'k': topic, 'q': x['q'].strip(), 'o': [o.strip() for o in x['o']], 'a': x['a'],
+           'e': x['exp'].strip(), 'src': ['kurs'], 'yt': x['yt'], 'kurs': 1,
+           'st': 'Kursumuzca hazırlanan video alıştırma sorusu · video: Türk Kızılay · MEB sorusu değildir', 'nt': NOTE_KZ}
+    out_q.append(rec)
+    by_id[qid] = rec
+
 # konu başlıkları
 konular = {}
 for k in topics:
@@ -220,13 +235,14 @@ stats = {
     'video': sum(1 for q in meb if q.get('v')),
     'video_ek': sum(1 for q in out_q if q.get('uv')),
     'video_kurs': sum(1 for q in out_q if q.get('kurs')),
+    'video_kizilay': sum(1 for q in out_q if q.get('yt')),
     'konu': len(konular),
 }
 data = {'v': 1, 'stats': stats, 'konular': konular, 'oturumlar': oturumlar, 'sorular': out_q}
 js = '/* Ürgüp Yıldız Sürücü Kursu — e-Sınav soru bankası (otomatik üretildi: tools/build_bank.py)\n' \
      '   Kaynak: MEB Motorlu Taşıt Sürücü Adayları/Kursiyerleri Sınavı soru kitapçıkları ve resmî cevap anahtarları (2012–2016).\n' \
      '   Alanlar: i kimlik · d ders · k konu · q soru · o şıklar · a doğru şık (0 tabanlı) · g soru görseli · og şık görselleri\n' \
-     '            v animasyonlu soru videosu (assets/v/<v>.mp4, kapak .webp) · es MEB e-Sınav deneme sitesi sorusu\n' \
+     '            v animasyonlu soru videosu (assets/v/<v>.mp4, kapak .webp) · yt YouTube videosu bölümü [kimlik, başlangıç, bitiş] · es MEB e-Sınav deneme sitesi sorusu\n' \
      '            uv kaynağı doğrulanamayan, kurs kursumuzca hazırlanan soru (ikisi de deneme sınavına girmez) · st kaynak · nt not\n' \
      '            e açıklama (kursumuzca yazıldı) · src çıktığı sınavlar · old güncel değil gerekçesi */\n' \
      'window.YildizSorular = ' + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';\n'

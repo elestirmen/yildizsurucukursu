@@ -23,6 +23,11 @@
    animasyonlu soru sayfasından (soru metni ve videolar; 10 tanesi MEB'in deneme sitesindekilerle aynıydı, onlar alınmadı).
    Cevaplar iki bağımsız çözümle (`ek_cozum1.json`, `ek_cozum2.json`, 9/9 örtüştü) → `ek_video.json`; bankada `uv: 1`.
    **Kursumuzca hazırlananlar (y01–…):** `tools/video/` sahne motoruyla üretilir (`kurs_video.json`, bankada `kurs: 1`).
+   **Türk Kızılay videolarıyla (k01–k14):** ilk yardım soruları, Kızılay'ın YouTube'daki eğitim videolarından bir bölümle
+   (`kizilay_video.json`, `yt: [kimlik, başlangıç sn, bitiş sn]`, bankada `kurs: 1`). Videolar indirilip barındırılmaz
+   (tüm hakları Kızılay'da): `soru.js` YouTube iframe API ile sessiz başlatır ve bölümü döngüyle oynatır. Cevaplar, yalnız
+   bölüm karelerini gören kör bir çözümle 14/14 doğrulandı. `data/kizilay_izle.json` ilk yardım konu sayfalarının anlatım
+   sonuna "Videolu anlatım" kartlarını (tıklanınca YouTube oynatıcısı) ve güncel kuralla çelişen yerler için notu koyar.
    `uv` ve `kurs` soruları çalışma ve konu sayfalarında çıkar; "çıkmış soru" sayısına (`stats.guncel`) ve deneme sınavına girmez.
 7. **Derleme** — `python -I build_bank.py <çalışma_dizini> <site>` → `sorular.js` + WebP görseller (magenta → kırmızı).
 8. **Sayfalar** — `python3 build_pages.py <çalışma_dizini> <site>` → `konular.js`, `hazirlik.html`, `konu-<id>.html`,

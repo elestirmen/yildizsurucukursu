@@ -1,0 +1,240 @@
+{
+ "k01": {
+  "topic": "iy-tyd",
+  "yt": [
+   "weyZkZ4Cf08",
+   53,
+   84
+  ],
+  "q": "Videoda yemek yerken boğazını tutan, öksüremeyen ve konuşamayan kişiye sırtına vurulduktan sonra uygulanan ilk yardım yöntemi hangisidir?",
+  "o": [
+   "Sırtüstü yatırılıp kalp masajı yapılması",
+   "Arkasından sarılıp göbek ile göğüs kemiği arasına içe ve yukarı doğru bası uygulanması",
+   "Su içirilerek lokmanın yutturulmaya çalışılması",
+   "Ağzına parmakla körlemesine girilerek lokmanın aranması"
+  ],
+  "a": 1,
+  "exp": "Kişi yemek yerken lokma soluk borusuna kaçmış; boğazını tutuyor, öksüremiyor ve konuşamıyor. Bu, hava yolunun tam tıkandığını gösterir. İlk yardımcı önce kişiyi öne eğip kürek kemikleri arasına avuç topuğuyla 5 kez vurur; cisim çıkmazsa arkasına geçip yumruğunu göbek ile göğüs kemiğinin alt ucu arasına yerleştirir ve 5 kez içe-yukarı doğru bası uygular (Heimlich manevrası). Videoda lokma bu sırada dışarı atılıyor. Su içirmek ya da ağızda körlemesine parmakla aramak tıkanıklığı artırabilir; kalp masajı ancak kişinin bilinci kaybolursa gündeme gelir."
+ },
+ "k02": {
+  "topic": "iy-bilinc",
+  "yt": [
+   "R1mYLrqW7V0",
+   34,
+   54
+  ],
+  "q": "Videoda yere düşüp kasılmalar geçiren kişiye yapılan ilk yardım ile ilgili aşağıdakilerden hangisi doğrudur?",
+  "o": [
+   "Kasılmaları durdurmak için kol ve bacakları sıkıca tutulmuştur.",
+   "Dilini ısırmasın diye ağzına sert bir cisim yerleştirilmiştir.",
+   "Başı darbelere karşı korunmuş, başının altına yumuşak bir şey konmuştur.",
+   "Kendine gelmesi için yüzüne su serpilmiştir."
+  ],
+  "a": 2,
+  "exp": "Sara (epilepsi) nöbetinde kasılmalar engellenmeye çalışılmaz, ağza bir şey sokulmaz, su içirilmez ve yüze su serpilmez. İlk yardımcı çevredeki tehlikeli eşyaları uzaklaştırır, başın yere çarpmasını önler ve altına yumuşak bir şey koyar; nöbet bitince solunumu kontrol edip kişiyi koma pozisyonuna alır. Videodaki ilk yardımcı da başı korumuş ve altına katlanmış bir giysi yerleştirmiştir."
+ },
+ "k03": {
+  "topic": "iy-bilinc",
+  "yt": [
+   "Ir84RzdWR20",
+   14,
+   50
+  ],
+  "q": "Videoda basketbol oynarken göğsünü tutarak yere çöken kişiye yapılan ilk yardım ile ilgili aşağıdakilerden hangisi doğrudur?",
+  "o": [
+   "Kişi oturtularak sırtı desteklenmiş ve 112 aranmıştır.",
+   "Kişi ayağa kaldırılıp yürütülmüştür.",
+   "Kişiye su içirilmiştir.",
+   "Kişi sırtüstü yatırılıp ayakları yükseltilmiştir."
+  ],
+  "a": 0,
+  "exp": "Göğüs ağrısı kalp krizi belirtisi olabilir. Kişi yürütülmez, yorulmaz; kalbin yükünü azaltmak ve rahat solunum yapabilmesi için sırtı desteklenerek yarı oturur pozisyonda tutulur, sıkan giysileri gevşetilir ve hemen 112 aranır. Videoda da kişi yerde oturtulup sırtından desteklenmiş, bu sırada bir kişi 112'yi aramıştır. Ayakların yükseltildiği şok pozisyonu kalbe gelen kanı artırarak kalbin yükünü çoğaltır."
+ },
+ "k04": {
+  "topic": "iy-tasima",
+  "yt": [
+   "XKfk4G5yoEc",
+   22,
+   59
+  ],
+  "q": "Videoda bilinci kapalı olan ancak solunumu bulunan kişiye verilen pozisyonun amacı aşağıdakilerden hangisidir?",
+  "o": [
+   "Beyne giden kan miktarını artırmak",
+   "Dilin geriye kaçmasını ve kusmukla hava yolunun tıkanmasını önlemek",
+   "Kırık olan bölgeyi hareketsiz hâle getirmek",
+   "Kişiyi kalp masajına hazırlamak"
+  ],
+  "a": 1,
+  "exp": "Bilinci kapalı, solunumu olan kişiye koma pozisyonu (yarı yüzüstü yan yatış) verilir: üstteki bacak dizden bükülür, üstteki el yanağın altına alınır ve kişi yana çevrilir. Bu pozisyonda dil geriye kaçıp hava yolunu kapatamaz; kişi kusarsa kusmuk dışarı akar, soluk borusuna kaçmaz. Beyne giden kan miktarını artırmak şok pozisyonunun amacıdır."
+ },
+ "k05": {
+  "topic": "iy-kanama",
+  "yt": [
+   "n3uM-u5i_U8",
+   3,
+   14
+  ],
+  "q": "Videoda sırtüstü yatırılan kişinin ayaklarının yükseltilmesinin amacı nedir?",
+  "o": [
+   "Bacaklardaki kanamayı durdurmak",
+   "Kusmuğun hava yoluna kaçmasını önlemek",
+   "Kanın beyin, kalp ve akciğerler gibi hayati organlara yönelmesini sağlamak",
+   "Bacak kaslarındaki kramp ve ağrıyı gidermek"
+  ],
+  "a": 2,
+  "exp": "Bayılma ve şokta kişi sırtüstü yatırılıp ayakları yaklaşık 30 cm yükseltilir (şok pozisyonu). Böylece kan hayati organlara, özellikle beyne yönelir. Videoda ayrıca kişinin üzeri örtülerek ısı kaybı önlenmiş, hava yolu açılıp solunumu kontrol edilmiştir."
+ },
+ "k06": {
+  "topic": "iy-tasima",
+  "yt": [
+   "lpUFlenQS9Y",
+   27,
+   44
+  ],
+  "q": "Videoda araç içindeki yaralıyı dışarı çıkaran ilk yardımcı, aşağıdakilerden hangisine özellikle dikkat etmektedir?",
+  "o": [
+   "Yaralının baş-boyun-gövde ekseninin bozulmamasına",
+   "Yaralının kendi ayakları üzerinde yürümesine",
+   "Yaralının önce bacaklarından tutularak çekilmesine",
+   "Emniyet kemerinin yaralı dışarı alındıktan sonra açılmasına"
+  ],
+  "a": 0,
+  "exp": "Videoda Rautek manevrası uygulanıyor: ilk yardımcı emniyet kemerini açar, yaralıya yandan yaklaşır, bir eliyle çenesini, diğer eliyle kolunu kavrar ve baş-boyun-gövde eksenini bozmadan yaralıyı araçtan çeker. Omurga yaralanması olabileceği için eksen korunmazsa kalıcı felç oluşabilir. Bu manevra yalnızca yaralının araçta kalması hayati tehlike oluşturuyorsa (yangın, patlama tehlikesi, solunumun olmaması gibi) uygulanır."
+ },
+ "k07": {
+  "topic": "iy-tyd",
+  "yt": [
+   "pXt_Rc7HOAg",
+   56,
+   93
+  ],
+  "q": "Videoda kalp masajı (göğüs basısı) yapan ilk yardımcı ellerini nereye yerleştirmiştir?",
+  "o": [
+   "Göğüs kemiğinin alt yarısına",
+   "Göğüs kemiğinin üst ucuna, boyna yakın bölgeye",
+   "Göbeğin hemen üstüne",
+   "Sol göğüs kafesinin üzerine, kalbin hizasına"
+  ],
+  "a": 0,
+  "exp": "Göğüs basısı için göğüs kemiğinin alt ve üst uçları bulunur, bir elin topuğu göğüs kemiğinin alt yarısına (göğsün ortasına) konur, diğer el üstüne yerleştirilip parmaklar kenetlenir. Dirsekler bükülmeden, kollar göğse dik tutularak yetişkinde göğüs 5–6 cm çöktürülür; dakikada 100–120 bası yapılır ve 30 basıdan sonra 2 suni solunum verilir."
+ },
+ "k08": {
+  "topic": "iy-degerlendirme",
+  "yt": [
+   "wuLjw4Sk3_4",
+   34,
+   50
+  ],
+  "q": "Videoda ilk yardımcının yaptığı uygulamanın amacı aşağıdakilerden hangisidir?",
+  "o": [
+   "Boyun omurlarını sabitlemek",
+   "Hava yolunu açmak",
+   "Şah damarından nabız almak",
+   "Bilinç düzeyini kontrol etmek"
+  ],
+  "a": 1,
+  "exp": "İlk yardımcı bir elini alına, diğer elinin iki parmağını çene kemiğinin altına koyup alından bastırırken çeneyi kaldırıyor: baş geri-çene yukarı pozisyonu. Bilinci kapalı kişide dil geriye kayarak hava yolunu tıkayabilir; bu pozisyon dili öne alarak hava yolunu açar. Ardından solunum bak-dinle-hisset yöntemiyle 10 saniye kontrol edilir."
+ },
+ "k09": {
+  "topic": "iy-degerlendirme",
+  "yt": [
+   "wuLjw4Sk3_4",
+   50,
+   59
+  ],
+  "q": "Videoda ilk yardımcının yaptığı kontrol ve bu kontrolün süresi için aşağıdakilerden hangisi doğrudur?",
+  "o": [
+   "Nabız kontrolü, 1 dakika",
+   "Solunum kontrolü (bak-dinle-hisset), 10 saniye",
+   "Bilinç kontrolü, 30 saniye",
+   "Göz bebeği kontrolü, 5 saniye"
+  ],
+  "a": 1,
+  "exp": "Baş geri-çene yukarı pozisyonunu koruyan ilk yardımcı yanağını kişinin ağzına yaklaştırıp gözünü göğse çeviriyor: göğsün hareketine bakar, solunum sesini dinler, nefesi yanağında hisseder. Bu bak-dinle-hisset yöntemiyle solunum 10 saniye kontrol edilir. Normal solunum yoksa 112 aranır ve temel yaşam desteğine başlanır."
+ },
+ "k10": {
+  "topic": "iy-kanama",
+  "yt": [
+   "pwgkzOFRZlk",
+   14,
+   38
+  ],
+  "q": "Videoda kolundan kanayan kişiye kanamayı durdurmak için ilk olarak hangi yöntem uygulanmıştır?",
+  "o": [
+   "Kanayan yere temiz bir bezle doğrudan baskı uygulanması",
+   "Turnike uygulanması",
+   "Yaraya buz konulması",
+   "Yaranın bol suyla yıkanması"
+  ],
+  "a": 0,
+  "exp": "Dış kanamada ilk yöntem, kanayan yere temiz bir bezle doğrudan baskı uygulamaktır; kanama durmazsa ilk bez kaldırılmadan üstüne ikinci bez konup baskı artırılır ve bandajla sarılır. Videoda ardından kol kalp seviyesinin üzerine kaldırılıyor. Turnike yalnızca bu yöntemlerle durdurulamayan, hayatı tehdit eden kanamada ya da uzuv kopmasında son çare olarak uygulanır."
+ },
+ "k11": {
+  "topic": "iy-kanama",
+  "yt": [
+   "6MY-SjjnJRc",
+   3,
+   15
+  ],
+  "q": "Videoda burnu kanayan kişiye yapılan ilk yardım uygulaması hangisidir?",
+  "o": [
+   "Sırtüstü yatırılıp başı geriye doğru yatırılmıştır.",
+   "Oturtulup başı hafifçe öne eğilmiş, burun kanatları sıkılmıştır.",
+   "Burnuna pamuk tıkanıp ayakta bekletilmiştir.",
+   "Başı geriye yatırılıp ensesine soğuk uygulama yapılmıştır."
+  ],
+  "a": 1,
+  "exp": "Burun kanamasında kişi sakinleştirilip oturtulur, başı hafifçe öne eğilir ve burun kanatları yaklaşık 5 dakika sıkılır. Baş öne eğildiğinde kan yutulmaz ve hava yoluna kaçmaz; baş geriye yatırılmaz. Kanama durmazsa ya da sık tekrarlıyorsa sağlık kuruluşuna başvurulur."
+ },
+ "k12": {
+  "topic": "iy-kanama",
+  "yt": [
+   "r06vGfLm3cU",
+   7,
+   25
+  ],
+  "q": "Videoda kulağından kan gelen kişiye yapılan uygulama ile ilgili aşağıdakilerden hangisi doğrudur?",
+  "o": [
+   "Kanamayı durdurmak için kulak deliği pamukla tıkanmıştır.",
+   "Kulak, tıkanmadan temiz bir bezle kapatılmıştır.",
+   "Kulağa su dökülerek kan temizlenmiştir.",
+   "Kulak içine pamuklu çubukla girilerek temizlik yapılmıştır."
+  ],
+  "a": 1,
+  "exp": "Kulaktan gelen kan, kafatası tabanındaki bir kırığın belirtisi olabilir. Kulak deliği tıkanmaz, içine bir şey sokulmaz ve yıkanmaz; kan dışarı akabilecek şekilde kulak temiz bir bezle kapatılır. Bilinci yerinde olan kişi hareket ettirilmeden sırtüstü yatırılır, bilinci kapalıysa kanayan kulağın üzerine yan yatırılır ve 112 aranır."
+ },
+ "k13": {
+  "topic": "iy-yara",
+  "yt": [
+   "yO5atoCYN70",
+   3,
+   37
+  ],
+  "q": "Videoda kopan uzuv parçası sağlık kuruluşuna götürülmek üzere nasıl hazırlanmıştır?",
+  "o": [
+   "Parça doğrudan buzun içine gömülmüştür.",
+   "Parça temiz, su geçirmez bir torbaya konup ağzı kapatılmış, bu torba buz bulunan ikinci bir torbaya yerleştirilmiştir.",
+   "Parça alkolle temizlenip açıkta bırakılmıştır.",
+   "Parça sıcak tutulması için battaniyeye sarılmıştır."
+  ],
+  "a": 1,
+  "exp": "Kopan parça temiz, su geçirmez bir torbaya konup ağzı kapatılır. Bu torba, bir ölçek suya iki ölçek buz konmuş ikinci bir torbaya ya da kaba yerleştirilir; parça buza doğrudan değdirilmez, çünkü dokular donarak zarar görür. Torbanın üzerine yaralının adı soyadı yazılır ve parça yaralıyla aynı araçla, en geç 6 saat içinde sağlık kuruluşuna ulaştırılır."
+ },
+ "k14": {
+  "topic": "iy-kirik",
+  "yt": [
+   "ebenn7Z6nxs",
+   3,
+   13
+  ],
+  "q": "Videoda uyluk kemiği kırığı olan kişiye dış taraftan konan atel nereden nereye kadar uzanmaktadır?",
+  "o": [
+   "Kalçadan dize kadar",
+   "Dizden ayak bileğine kadar",
+   "Koltuk altından ayak bileğine kadar",
+   "Belden dize kadar"
+  ],
+  "a": 2,
+  "exp": "Kırık tespitinde atel, kırığın altındaki ve üstündeki eklemleri de içine alacak uzunlukta olmalıdır. Uyluk kemiği kırığında kalça ve diz eklemleri hareketsiz kalmalıdır; bu yüzden dış taraftaki atel koltuk altından ayak bileğine kadar uzatılır, ardından sabitleme malzemeleriyle tespit tamamlanır."
+ }
+}

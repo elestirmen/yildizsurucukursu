@@ -1,0 +1,29 @@
+{
+ "_kaynak": "Türk Kızılay ilk yardım eğitim videoları (www.ilkyardim.org.tr, YouTube kanalı 'Türk Kızılay'). Tüm hakları Türk Kızılay'a aittir; sitede yalnızca YouTube oynatıcısıyla gösterilir, dosya indirilip barındırılmaz. Biçim: [YouTube kimliği, başlık, süre].",
+ "iy-degerlendirme": {
+  "v": [["wuLjw4Sk3_4", "Yetişkinde ilk değerlendirme", "1:04"], ["SvutWNYbHEM", "Hasta/yaralıda ikinci değerlendirme", "1:55"]]
+ },
+ "iy-tyd": {
+  "v": [["pXt_Rc7HOAg", "Yetişkinlerde temel yaşam desteği", "2:06"], ["weyZkZ4Cf08", "Solunum yolu tıkanmasında ilk yardım", "1:32"]],
+  "not": "Videolar 2015'te çekildi. Güncel kılavuzda göğüs basısı dakikada 100–120 hızda ve 5–6 cm derinlikte yapılır; sınavda yukarıdaki anlatımı esas alın."
+ },
+ "iy-kanama": {
+  "v": [["pwgkzOFRZlk", "Dış kanamada ilk yardım ve turnike", "1:55"], ["6MY-SjjnJRc", "Burun kanamasında ilk yardım", "0:19"], ["r06vGfLm3cU", "Kulak kanamasında ilk yardım", "0:29"], ["n3uM-u5i_U8", "Bayılma ve şokta ilk yardım", "0:18"]],
+  "not": "Turnike videosu 2015'te çekildi: videodaki turnikenin 15–20 dakikada bir gevşetilmesi eski bir uygulamadır. Güncel kurala göre turnike ilk yardımcı tarafından gevşetilmez; sınavda yukarıdaki anlatımı esas alın."
+ },
+ "iy-yara": {
+  "v": [["yO5atoCYN70", "Uzuv kopmasında ilk yardım", "0:43"]]
+ },
+ "iy-kirik": {
+  "v": [["ebenn7Z6nxs", "Uyluk kemiği kırığı", "0:18"], ["PpYqq1_c3K4", "Kalça kırığı", "0:21"], ["0EAzyE9Uezg", "Diz kapağı kırığı", "0:15"], ["GE6TgT14MW0", "Ayak bileği kırığı", "0:13"], ["XeGQ5fJGtwg", "Üst kol kırığı", "0:13"], ["xDJlNY-aK-4", "Dirsek kırığı", "0:15"], ["gC-eJFrbH_E", "Ön kol kırığı", "0:15"], ["_Uks54inYY0", "Köprücük kemiği kırığı ve omuz çıkığı", "0:18"]]
+ },
+ "iy-bilinc": {
+  "v": [["XKfk4G5yoEc", "Komada ilk yardım", "1:04"], ["n3uM-u5i_U8", "Bayılma ve şokta ilk yardım", "0:18"], ["R1mYLrqW7V0", "Sara krizinde ilk yardım", "1:21"], ["Ir84RzdWR20", "Göğüs ağrısında ilk yardım", "1:29"]]
+ },
+ "iy-yanik": {
+  "v": [["4XFrthUufb0", "Yanıkta ilk yardım", "0:45"]]
+ },
+ "iy-tasima": {
+  "v": [["lpUFlenQS9Y", "Yaralıyı araçtan çıkarma (Rautek) manevrası", "0:49"], ["XKfk4G5yoEc", "Koma pozisyonu", "1:04"]]
+ }
+}

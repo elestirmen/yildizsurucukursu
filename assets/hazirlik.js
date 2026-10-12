@@ -21,6 +21,16 @@
     if (!D) return;
     const ids = QS.map((q) => q.i);
 
+    // --- Türk Kızılay videoları: tıklanınca YouTube oynatıcısı yüklenir (öncesinde yalnız kapak resmi) ---
+    $$('.kv-play').forEach((b) => b.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0&playsinline=1`;
+      f.title = b.getAttribute('aria-label').replace(/ videosunu oynat$/, '');
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.allowFullscreen = true;
+      b.replaceWith(f);
+    }));
+
     // --- adım çubuğu: okundu / uygulama yıldızı / çözülen soru ---
     function paintSteps() {
       const read = S.read.has(D.k);
@@ -201,7 +211,7 @@
         let label;
         if (kind === 'karisik') { qs = Y.pick(qs, 'all', 'newfirst').slice(0, 20); Y.shuffle(qs); label = 'Karışık 20 soru' + (d ? ' · ' + DERS[d] : ''); }
         else if (kind === 'yanlis') { qs = Y.pick(qs, 'wrong'); label = 'Yanlışlarım'; }
-        else if (kind === 'video') { qs = Y.pick(qs.filter((q) => q.v), 'all', 'newfirst'); label = 'Video sorular'; }
+        else if (kind === 'video') { qs = Y.pick(qs.filter((q) => q.v || q.yt), 'all', 'newfirst'); label = 'Video sorular'; }
         else { qs = Y.pick(qs, 'mark'); label = 'İşaretlediklerim'; }
         if (!qs.length) { runBox.innerHTML = `<div class="card card-pad"><p class="es-sub">Bu seçimde soru yok.</p><div class="q-actions"><a class="btn btn-line" href="#calis">Hazırlığa dön</a></div></div>`; return; }
         P = Y.Practice(runBox, { qs, label, topicLinks: true, backLabel: 'Hazırlığa dön', onBack: () => { location.hash = 'calis'; } });

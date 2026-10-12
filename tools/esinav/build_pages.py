@@ -109,7 +109,9 @@ order = [k for d in DORDER for k in titles if k.startswith(d + '-')]
 count = {k: sum(1 for q in live if q['k'] == k) for k in titles}
 dcount = {d: sum(1 for q in live if q['d'] == d) for d in DORDER}
 n_live = fmt(stats['guncel'])
-n_vid = sum(1 for q in live if q.get('v'))
+n_vid = sum(1 for q in live if q.get('v') or q.get('yt'))
+# Türk Kızılay videoları: ilk yardım konularında YouTube oynatıcısıyla gösterilir (data/kizilay_izle.json)
+IZLE = {k: v for k, v in json.load(open(os.path.join(HERE, 'data', 'kizilay_izle.json'), encoding='utf-8')).items() if not k.startswith('_')}
 konu_url = lambda k: f'konu-{k}.html'
 img_path = lambda k: f'assets/img/konu/{k}.webp'
 has_img = lambda k: os.path.exists(os.path.join(SITE, img_path(k)))
@@ -182,6 +184,8 @@ ICON = lambda i: f'<svg class="ic"><use href="#{i}"/></svg>'
 
 
 def src_text(q):
+    if q.get('st'):
+        return q['st']
     if q.get('es'):
         return 'MEB e-Sınav örnek sorusu · cevap anahtarı yayımlanmadı, kursumuzca belirlendi'
     o = SESS.get(q['src'][0])
@@ -221,11 +225,25 @@ for i, k in enumerate(order):
     for q in live:
         if q['k'] != k:
             continue
-        x = {f: q[f] for f in ('i', 'd', 'k', 'q', 'o', 'a', 'e', 'g', 'og', 'es', 'src') if f in q}
+        x = {f: q[f] for f in ('i', 'd', 'k', 'q', 'o', 'a', 'e', 'g', 'og', 'es', 'src', 'v', 'vv', 'yt', 'uv', 'kurs', 'nt') if f in q}
         x['st'] = src_text(q)
         qs.append(x)
     n = len(qs)
+    n_ek = sum(1 for q in qs if q.get('uv') or q.get('kurs'))  # alıştırma videoları: çıkmış soru sayısına girmez
+    n_meb = n - n_ek
     freq = sum(1 for q in qs if len(q.get('src', [])) >= 3)
+    izle = IZLE.get(k)
+    izle_html = ''
+    if izle:
+        cards = ''.join(f'<figure class="kv"><div class="kv-box"><button class="yt-play kv-play" type="button" data-yt="{vid}" aria-label="{e(t)} videosunu oynat"><img src="https://i.ytimg.com/vi/{vid}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">{ICON("i-play")}</button></div><figcaption>{e(t)}<small>{dur}</small></figcaption></figure>'
+                        for vid, t, dur in izle['v'])
+        izle_html = f'''
+            <div class="kv-wrap">
+              <h3>{ICON("i-play")}Videolu anlatım: Türk Kızılay</h3>
+              <p class="kv-sub">Türk Kızılay'ın ilk yardım eğitim videoları. Videolar YouTube'dan oynatılır, tüm hakları Türk Kızılay'a aittir (<a href="https://www.ilkyardim.org.tr/" target="_blank" rel="noopener">ilkyardim.org.tr</a>).</p>
+              {f'<p class="kv-note">{e(izle["not"])}</p>' if izle.get('not') else ''}
+              <div class="kv-grid">{cards}</div>
+            </div>'''
 
     if k in KIT_HEAD:
         media = f'<div class="kp-media kp-kit"><div class="kn-vis" data-kit="{KIT_HEAD[k]}"></div></div>'
@@ -266,7 +284,7 @@ for i, k in enumerate(order):
              f'<a class="next" href="e-sinav.html#deneme"><small>Tüm konular bitti →</small>Deneme sınavına gir</a>')
 
     page = head(f'{titles[k]} | {DERS[d]} Konu Anlatımı ve Çıkmış Sorular | Ürgüp Yıldız Sürücü Kursu',
-                e((v.get('ozet') or titles[k])[:150] + f' Bu konudan {n} çıkmış soru.'), konu_url(k))
+                e((v.get('ozet') or titles[k])[:150] + f' Bu konudan {n_meb} çıkmış soru.'), konu_url(k))
     page += nav(False, 'hazirlik')
     page += f'''
   <main id="icerik">
@@ -275,7 +293,7 @@ for i, k in enumerate(order):
         <div class="wrap kp-head-in">
           <div class="kp-head-txt">
             <ol class="crumbs"><li><a href="index.html">Ana sayfa</a></li><li><a href="hazirlik.html">Sınava Hazırlık</a></li><li><a href="hazirlik.html#ders-{d}">{DERS[d]}</a></li></ol>
-            <p class="kp-kick"><span class="chip-d" data-d="{d}">{DERS[d]}</span><span>Konu {num} / {len(ks_d)}</span><span>{n} çıkmış soru</span>{f'<span class="kp-has-app">{ICON("i-play")}Uygulamalı</span>' if app else ''}</p>
+            <p class="kp-kick"><span class="chip-d" data-d="{d}">{DERS[d]}</span><span>Konu {num} / {len(ks_d)}</span><span>{n_meb} çıkmış soru</span>{f'<span class="kp-has-app">{ICON("i-play")}Uygulamalı</span>' if app else ''}</p>
             <h1>{e(titles[k])}</h1>
             {f'<p class="kp-lead">{e(v["ozet"])}</p>' if v.get('ozet') else ''}
           </div>
@@ -288,12 +306,12 @@ for i, k in enumerate(order):
           <section class="kp-sec" id="anlatim" aria-labelledby="h-anlatim">
             <h2 class="kp-h" id="h-anlatim"><span class="kp-no">1</span>Konu anlatımı</h2>
             {f'<div class="kn-sum"><h3>{ICON("i-check")}Akılda kalsın</h3><ul>{sik}</ul></div>' if sik else ''}
-            <div class="kn-article">{v.get('html', '')}</div>
+            <div class="kn-article">{v.get('html', '')}</div>{izle_html}
             <div class="kp-read" id="anlatim-son"><button class="btn btn-line" type="button" data-read>{ICON('i-check')}<span>Okudum, devam et</span></button></div>
           </section>{app_html}
           <section class="kp-sec" id="sorular" aria-labelledby="h-sorular">
             <h2 class="kp-h" id="h-sorular"><span class="kp-no">{sec_no['sorular']}</span>Bu konunun soruları</h2>
-            <p class="kp-sec-sub">MEB sınavlarında bu konudan çıkmış {n} soru{f' ({freq} tanesi en az üç sınavda soruldu)' if freq else ''}. Her soruda doğru cevabı ve açıklamasını hemen görürsünüz.</p>
+            <p class="kp-sec-sub">MEB sınavlarında bu konudan çıkmış {n_meb} soru{f' ({freq} tanesi en az üç sınavda soruldu)' if freq else ''}{f', ayrıca {n_ek} video alıştırma sorusu' if n_ek else ''}. Her soruda doğru cevabı ve açıklamasını hemen görürsünüz.</p>
             <div class="card card-pad kp-q-start" id="kp-q-start">
               <div class="opt-group"><p>Hangi sorular?</p><div class="seg" role="group" aria-label="Soru filtresi">
                 <button type="button" data-f="all" aria-pressed="true">Tümü <small>{n}</small></button><button type="button" data-f="new" aria-pressed="false">Çözmediklerim <small>{n}</small></button><button type="button" data-f="wrong" aria-pressed="false">Yanlışlarım <small>0</small></button><button type="button" data-f="mark" aria-pressed="false">İşaretlediklerim <small>0</small></button></div></div>
@@ -470,7 +488,7 @@ es += f'''
                   <li>MEB'in 2012–2016 yılları arasında yaptığı Motorlu Taşıt Sürücü Adayları ve Kursiyerleri Sınavı'nın yayımlanmış soru kitapçıkları ve <b>resmî cevap anahtarları</b>.</li>
                   <li>MEB'in e-Sınav deneme sitesinde yayımladığı güncel e-Sınav soruları ve {stats['video']} animasyonlu (video) sorusu (bu soruların cevap anahtarı yayımlanmadığı için cevaplar eğitmenlerimizce belirlenmiştir).</li>
                   <li>Mevzuatı değişen sorular deneme sınavına ve konu sorularına alınmaz.</li>
-                  <li>Çalışma bölümünde ayrıca, kaynağı doğrulanamayan {stats.get('video_ek', 0)} MEB tarzı animasyonlu soru ve kursumuzca hazırlanan {stats.get('video_kurs', 0)} animasyonlu alıştırma sorusu vardır; bunlar deneme sınavına girmez.</li>
+                  <li>Çalışma bölümünde ayrıca, kaynağı doğrulanamayan {stats.get('video_ek', 0)} MEB tarzı animasyonlu soru ve kursumuzca hazırlanan {stats.get('video_kurs', 0) - stats.get('video_kizilay', 0)} animasyonlu alıştırma sorusu vardır. İlk yardım konularında da Türk Kızılay'ın eğitim videolarından alınan bölümlerle kursumuzca hazırlanmış {stats.get('video_kizilay', 0)} video soru bulunur. Bunlar deneme sınavına girmez.</li>
                 </ul>
               </div>
             </div>

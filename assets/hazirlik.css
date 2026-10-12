@@ -123,6 +123,19 @@
 .kp-sec-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
 .kp-sec-head .kp-h { margin-bottom: 8px; }
 .kp-sec-sub { max-width: 760px; margin: 0 0 18px; color: var(--muted); }
+/* Konu anlatımının sonunda Türk Kızılay videoları */
+.kv-wrap { margin: 28px 0 8px; padding-top: 22px; border-top: 1px solid var(--line); }
+.kv-wrap h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; }
+.kv-wrap h3 .ic { width: 20px; height: 20px; color: var(--red); }
+.kv-sub { max-width: 760px; margin: 0 0 12px; font-size: 15px; color: var(--muted); }
+.kv-note { max-width: 760px; margin: 0 0 14px; padding: 10px 14px; border-radius: 10px; background: var(--gold-soft); font-size: 15px; line-height: 1.5; }
+.kv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.kv { margin: 0; }
+.kv-box { border-radius: 10px; }
+.kv-box .yt-play .ic { width: 52px; height: 52px; padding: 15px; }
+.kv figcaption { margin-top: 7px; font-size: 15px; font-weight: 650; line-height: 1.35; }
+.kv figcaption small { display: block; margin-top: 2px; font-weight: 500; color: var(--muted); }
+@media (max-width: 560px) { .kv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .kv figcaption { font-size: 14px; } .kv-box .yt-play .ic { width: 44px; height: 44px; padding: 13px; } }
 .kp-sec .kn-sum { margin-top: 0; }
 .kp-read { margin-top: 28px; padding-top: 22px; border-top: 1px dashed var(--line-2); }
 .kp-read .btn.is-read { border-color: var(--ok); color: var(--ok); }
