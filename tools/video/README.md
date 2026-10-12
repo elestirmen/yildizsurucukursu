@@ -51,7 +51,8 @@ uzun dizinlerde açılamadığı için `TMPDIR` değiştirilmez, kareler `--work
   `follow` (arkadan; `reverse` önden geriye bakar), `driver` (sürücü koltuğu; `pitch` derece, `lamps: [[id, t0, t1]]`
   kit.js ikaz lambaları).
 - Levhalar `A.sign(kitKimliği, x, z, bakışYönü)` ile sitedeki kit.js çizimlerinden gelir.
-- İlk yardım sahneleri: `A.person({ id, model: 'man-b' | 'woman', x, z, ang, lie: 'back' | 'side', clip, at, pose(P, t) })`.
+- Poz verilmiş kişiler (ilk yardım sahneleri için yazıldı; düşük çokgenli karakterlerle inandırıcı olmadığı için
+  y12–y17 2026-10-12'de kaldırıldı, kimlikleri yeniden kullanılmaz): `A.person({ id, model: 'man-b' | 'woman', x, z, ang, lie: 'back' | 'side', clip, at, pose(P, t) })`.
   `pose` içinde `P.kneel({ lean, drop })` (diz çökme; eğilme kalçadan), `P.arm('L'|'R', hedef, pole)` ve `P.leg(...)`
   (iki kemikli IK; dirsek/diz pole noktasına doğru bükülür), `P.rot(kemik, dünyaEkseni, derece)`, `P.look('head', hedef)`.
   Kemik adları iki iskelette ortaktır (`hips`, `chest`, `head`, `upperArmL`, `handR` …). Başka kişinin kemiği
